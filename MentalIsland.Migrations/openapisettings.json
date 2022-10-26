@@ -1,0 +1,40 @@
+{
+    "$schema": "https://gitee.com/dotnetchina/Furion/raw/net6/schemas/v3/furion-schema.json",
+    "SpecificationDocumentSettings": {
+        "DocumentTitle": "心理咨询",
+        "RoutePrefix": "MentalIsland",
+        "DefaultGroupName": "MentalIsland",
+        "RouteTemplate": "MentalIsland/{documentName}.json",
+        "GroupOpenApiInfos": [
+            {
+                "Group": "MentalIsland",
+                "Title": "心理咨询",
+                "Version": "v2",
+                "License": {
+                    "Name": "© 2022 堆绿云科技"
+                }
+            }
+        ]
+    },
+    "AppSettings": {
+        "InjectMiniProfiler": true
+    },
+    "DynamicApiControllerSettings": {
+        "SupportedMvcController": true,
+        "DefaultHttpMethod": "POST",
+        "LowercaseRoute": false,
+        "CamelCaseSeparator": "",
+        "UrlParameterization": true,
+        //"AbandonControllerAffixes": [
+        //    "Controller"
+        //],
+        "AbandonActionAffixes": [
+            "Async"
+        ],
+        "KeepVerb": true,
+        "KeepName": true
+    },
+    "UnifyResultSettings": {
+        "SupportMvcController": true
+    }
+}

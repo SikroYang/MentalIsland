@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Furion" Version="4.6.8" />
+        <PackageReference Include="Furion.Extras.ObjectMapper.Mapster" Version="4.6.8" />
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.10" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.10" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="6.0.10" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\MentalIsland.AllDependency\MentalIsland.AllDependency.csproj" />
+    </ItemGroup>
+</Project>
