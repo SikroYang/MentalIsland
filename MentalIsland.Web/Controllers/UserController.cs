@@ -5,6 +5,7 @@ using MentalIsland.Migrations.Extensions;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SqlSugar;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
@@ -18,7 +19,15 @@ namespace MentalIsland.Web.Controllers;
 [Authorize4MentalIsland]
 public class UserController : WebApiBaseController<UserController>
 {
-    public IIdentityContract IdentityContract { get; set; }
+#pragma warning disable CS8618 // 在退出构造函数时，不可为 null 的字段必须包含非 null 值。请考虑声明为可以为 null。
+
+    /// <summary>
+    /// 用户操作仓库
+    /// </summary>
+    public readonly ISqlSugarClient client;
+
+#pragma warning restore CS8618 // 在退出构造函数时，不可为 null 的字段必须包含非 null 值。请考虑声明为可以为 null。
+
     /// <summary>
     /// 登录
     /// </summary>
@@ -29,7 +38,9 @@ public class UserController : WebApiBaseController<UserController>
     {
         if (User?.Identity != null && User.Identity.IsAuthenticated) throw Oops.Bah("请勿重复登录!").StatusCode(500);
         var passwordHash = BitConverter.ToString(MD5.Create().ComputeHash(Encoding.UTF8.GetBytes(Password))).Replace("-", "").ToLower();
-        var user = new User() { Id = 1L, UserName = UserName,PasswordHash = passwordHash};
+
+        // client.Queryable<User>()
+        var user = new User() { Id = 1L, UserName = UserName, PasswordHash = passwordHash };
 
         await SignInManager.SignInAsync(HttpContext, user);
 

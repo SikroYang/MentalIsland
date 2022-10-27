@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MentalIsland.Migrations.Extensions;
 
-[AppDbContext("SqlServer", DbProvider.SqlServer)]
+[AppDbContext("Sqlite", DbProvider.Sqlite)]
 public class MentalIslandDBContext : AppDbContext<MentalIslandDBContext>
 {
     public MentalIslandDBContext(DbContextOptions<MentalIslandDBContext> options) : base(options)

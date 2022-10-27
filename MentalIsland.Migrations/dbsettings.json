@@ -2,6 +2,7 @@
     "$schema": "https://gitee.com/dotnetchina/Furion/raw/net6/schemas/v3/furion-schema.json",
     "Urls": "http://*:5222;https://*:5223",
     "ConnectionStrings": {
-        "SqlServer": "Server=.;Database=Furion;User=sa;Password=ok;MultipleActiveResultSets=True;"
+        "SqlServer": "Server=.;Database=MentalIsland;User=sa;Password=ok;MultipleActiveResultSets=True;",
+        "Sqlite": "./MentalIsland.db"
     }
 }
