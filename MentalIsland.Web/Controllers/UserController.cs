@@ -1,6 +1,7 @@
 ﻿using Furion.FriendlyException;
-using MentalIsland.Core.CodeFirst.Identity;
-using MentalIsland.Core.CodeFirst.Identity.Models;
+using MentalIsland.Core.CodeFirst.Models.Identity;
+// using MentalIsland.Core.CodeFirst.Identity;
+// using MentalIsland.Core.CodeFirst.Identity.Models;
 using MentalIsland.Migrations.Extensions;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
@@ -39,8 +40,10 @@ public class UserController : WebApiBaseController<UserController>
         if (User?.Identity != null && User.Identity.IsAuthenticated) throw Oops.Bah("请勿重复登录!").StatusCode(500);
         var passwordHash = BitConverter.ToString(MD5.Create().ComputeHash(Encoding.UTF8.GetBytes(Password))).Replace("-", "").ToLower();
 
-        // client.Queryable<User>()
-        var user = new User() { Id = 1L, UserName = UserName, PasswordHash = passwordHash };
+        var user = await client.Queryable<User>().FirstAsync(u => u.UserName == UserName && u.PasswordHash == passwordHash);
+        // var user = new User() { Id = 1L, UserName = UserName, PasswordHash = passwordHash };
+
+        if (user == null) throw Oops.Bah("账号密码错误或该用户不存在").StatusCode(1001);
 
         await SignInManager.SignInAsync(HttpContext, user);
 

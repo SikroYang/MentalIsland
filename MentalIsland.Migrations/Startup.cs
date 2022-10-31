@@ -1,13 +1,15 @@
-﻿using Furion;
+﻿using System.Reflection;
+using Furion;
 using MentalIsland.Migrations.Extensions;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
+// using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using SqlSugar;
 
 namespace MentalIsland.Migrations;
 public class Startup : AppStartup
@@ -54,6 +56,9 @@ public class Startup : AppStartup
         //{
         //    dbContextService.Database.Migrate(); //执行迁移
         //}
+
+        MentalIslandDBContext.CreateAndInsertData();
+
         if (env.IsDevelopment())
         {
             app.UseDeveloperExceptionPage();

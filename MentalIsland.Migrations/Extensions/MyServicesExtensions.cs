@@ -12,14 +12,14 @@ public static class MyServicesExtensions
     public static IServiceCollection AddConfig(this IServiceCollection services, IConfiguration config)
     {
         // 设置依赖注入中间件
-
-        //Add MailKit
+        // 注入Sqlsugar
+        services.AddSqlsugarSetup(config);
+        // Add MailKit
         services.AddMailKit(optionBuilder =>
         {
             var option = App.GetConfig<MailKitOptions>("MailKitSettings:Outlook");
             optionBuilder.UseMailKit(option);
         });
-        services.AddSqlsugarSetup(config);
 
         return services;
     }
@@ -27,15 +27,15 @@ public static class MyServicesExtensions
     public static IServiceCollection AddMyDependencyGroup(this IServiceCollection services)
     {
         // 设置依赖注入中间件
-        services.AddAutoDependency();
+        // services.AddAutoDependency();
         // 配置数据库上下文，支持N个数据库
-        services.AddDatabaseAccessor(options =>
-        {
-            // 配置默认数据库
-            options.AddDbPool<MentalIslandDBContext>();
-            // 配置多个数据库，多个数据库必须指定数据库上下文定位器
-            //  options.AddDbPool<SqliteDbContext, SqliteDbContextLocaotr>();
-        }, "MentalIsland.Migrations");
+        // services.AddDatabaseAccessor(options =>
+        // {
+        //     // 配置默认数据库
+        //     options.AddDbPool<MentalIslandDBContext>();
+        //     // 配置多个数据库，多个数据库必须指定数据库上下文定位器
+        //     //  options.AddDbPool<SqliteDbContext, SqliteDbContextLocaotr>();
+        // }, "MentalIsland.Migrations");
         return services;
     }
 
@@ -47,6 +47,7 @@ public static class MyServicesExtensions
             DbType = SqlSugar.DbType.Sqlite,
             ConnectionString = configuration.GetConnectionString(dbName),
             IsAutoCloseConnection = true,
+            InitKeyType = InitKeyType.Attribute, //从实体特性中读取主键自增列信息
         };
 
         SqlSugarScope sqlSugar = new SqlSugarScope(configConnection,

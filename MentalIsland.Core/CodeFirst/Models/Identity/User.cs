@@ -1,11 +1,16 @@
-using Furion.DatabaseAccessor;
+using System.ComponentModel;
+using System.Data;
+using MentalIsland.Core.CodeFirst.SqlSugarHelper;
+using SqlSugar;
 
-namespace MentalIsland.Core.CodeFirst.Identity.Models;
+namespace MentalIsland.Core.CodeFirst.Models.Identity;
 
 /// <summary>
 /// 用户
 /// </summary>
-public class User : Entity<long>
+[SugarTable("Users")]
+[Description("用户表")]
+public class User : Entity<int>
 {
     /// <summary>
     /// 用户名
@@ -32,11 +37,4 @@ public class User : Entity<long>
     /// </summary>
     public string Country { get; set; } = default!;
 
-    /// <summary>
-    /// 默认值
-    /// </summary>
-    public User()
-    {
-        CreatedTime = DateTimeOffset.Now;
-    }
 }

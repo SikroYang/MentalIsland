@@ -3,6 +3,6 @@
     "Urls": "http://*:5222;https://*:5223",
     "ConnectionStrings": {
         "SqlServer": "Server=.;Database=MentalIsland;User=sa;Password=ok;MultipleActiveResultSets=True;",
-        "Sqlite": "./MentalIsland.db"
+        "Sqlite": "Data Source=MentalIsland.db"
     }
 }
