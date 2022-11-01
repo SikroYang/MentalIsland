@@ -5,7 +5,7 @@ using System.Collections;
 using System.Data;
 using System.Reflection;
 using Furion;
-using MentalIsland.Core.CodeFirst.SeedData;
+using MentalIsland.Core.CodeFirst.SqlSugarBase;
 using SqlSugar;
 
 namespace MentalIsland.Migrations.Extensions;
@@ -52,10 +52,10 @@ public static class MentalIslandDBContext
             var instance = Activator.CreateInstance(seedType);
 
             var hasDataMethod = seedType.GetMethod("HasData");
-            var seedData = ((IEnumerable)hasDataMethod?.Invoke(instance, null))?.Cast<object>();
+            var seedData = ((IEnumerable?)hasDataMethod?.Invoke(instance, null))?.Cast<object>();
             if (seedData == null) continue;
 
-            var entityType = seedType.GetInterfaces().First().GetGenericArguments().First();
+            var entityType = seedType.GetInterfaces().First(t => t.IsGenericType).GetGenericArguments().First();
 
             var seedDataTable = seedData.ToList().ToDataTable();
             seedDataTable.TableName = client.EntityMaintenance.GetEntityInfo(entityType).DbTableName;
@@ -69,7 +69,7 @@ public static class MentalIslandDBContext
     public static DataTable ToDataTable<T>(this List<T> list)
     {
         DataTable result = new();
-        if (list.Count > 0)
+        if (list != null && list.Count > 0)
         {
             // result.TableName = list[0].GetType().Name; // 表名赋值
             PropertyInfo[] propertys = list[0].GetType().GetProperties();
@@ -105,5 +105,52 @@ public static class MentalIslandDBContext
     {
         var sc = pi.GetCustomAttributes<SugarColumn>(false).FirstOrDefault(u => u.IsIgnore == true);
         return sc != null;
+    }
+
+
+    /// <summary>
+    /// 初始化数据库结构
+    /// </summary>
+    public static void InitDataBase()
+    {
+        var client = App.GetService<ISqlSugarClient>();
+        client.DbMaintenance.CreateDatabase();
+
+        // 获取所有实体表-初始化表结构
+        var entityTypes = App.EffectiveTypes.Where(u => !u.IsInterface && !u.IsAbstract && u.IsClass
+            && u.IsDefined(typeof(SugarTable), false));
+        if (!entityTypes.Any()) return;
+        foreach (var entityType in entityTypes)
+        {
+            client.CodeFirst.InitTables(entityType);
+        }
+
+        // 获取所有种子配置-初始化数据
+        var seedDataTypes = App.EffectiveTypes.Where(u => !u.IsInterface && !u.IsAbstract && u.IsClass
+            && u.GetInterfaces().Any(i => typeof(ISeedData) == i));
+        if (!seedDataTypes.Any()) return;
+        foreach (var seedType in seedDataTypes)
+        {
+            var instance = Activator.CreateInstance(seedType);
+
+            var hasDataMethod = seedType.GetMethod("HasData");
+            var seedData = ((IEnumerable?)hasDataMethod?.Invoke(instance, null))?.Cast<object>();
+            if (seedData == null) continue;
+
+            var seedDataTable = seedData.ToList().ToDataTable();
+            var entityType = seedType.GetInterfaces().First(t => t.IsGenericType).GetGenericArguments().First();
+            seedDataTable.TableName = client.EntityMaintenance.GetEntityInfo(entityType).DbTableName;
+            if (seedDataTable.Columns.Contains("Id"))
+            {
+                var storage = client.Storageable(seedDataTable).WhereColumns("Id").ToStorage();
+                storage.AsInsertable.ExecuteCommand();
+                storage.AsUpdateable.ExecuteCommand();
+            }
+            else // 没有主键或者不是预定义的主键(没主键有重复的可能)
+            {
+                var storage = client.Storageable(seedDataTable).ToStorage();
+                storage.AsInsertable.ExecuteCommand();
+            }
+        }
     }
 }

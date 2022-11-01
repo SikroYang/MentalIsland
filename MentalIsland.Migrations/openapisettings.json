@@ -24,10 +24,7 @@
         "DefaultHttpMethod": "POST",
         "LowercaseRoute": false,
         "CamelCaseSeparator": "",
-        "UrlParameterization": true,
-        //"AbandonControllerAffixes": [
-        //    "Controller"
-        //],
+        // "UrlParameterization": true,
         "AbandonActionAffixes": [
             "Async"
         ],

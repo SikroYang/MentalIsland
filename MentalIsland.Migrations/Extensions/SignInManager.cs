@@ -1,5 +1,5 @@
 // using MentalIsland.Core.CodeFirst.Identity.Models;
-using MentalIsland.Core.CodeFirst.Models.Identity;
+using MentalIsland.Core.CodeFirst.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;

@@ -11,7 +11,13 @@ public class AjaxResult<T>
     /// <summary>
     /// 类型
     /// </summary>
-    public AjaxResultType Type { get; set; } = AjaxResultType.Success;
+    public AjaxResultType TypeId { get; set; } = AjaxResultType.Success;
+
+    /// <summary>
+    /// 类型描述
+    /// </summary>
+    public virtual string Type => TypeId.ToString();
+
     /// <summary>
     /// 消息
     /// </summary>

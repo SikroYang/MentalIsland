@@ -1,9 +1,8 @@
 using System.ComponentModel;
-using System.Data;
-using MentalIsland.Core.CodeFirst.SqlSugarHelper;
+using MentalIsland.Core.CodeFirst.SqlSugarBase;
 using SqlSugar;
 
-namespace MentalIsland.Core.CodeFirst.Models.Identity;
+namespace MentalIsland.Core.CodeFirst.Models;
 
 /// <summary>
 /// ”√ªß

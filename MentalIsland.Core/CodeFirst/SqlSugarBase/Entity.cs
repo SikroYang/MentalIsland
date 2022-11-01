@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using SqlSugar;
 
-namespace MentalIsland.Core.CodeFirst.SqlSugarHelper;
+namespace MentalIsland.Core.CodeFirst.SqlSugarBase;
 
 public class Entity<T>
 {

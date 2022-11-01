@@ -1,4 +1,4 @@
-namespace MentalIsland.Core.CodeFirst.SeedData;
+namespace MentalIsland.Core.CodeFirst.SqlSugarBase;
 
 /// <summary>
 /// 实体种子数据接口
@@ -14,4 +14,5 @@ public interface ISqlSugarEntitySeedData<TEntity>
     IEnumerable<TEntity> HasData();
 }
 
-public class ISeedData { }
+public interface ISeedData { }
+

@@ -1,8 +1,10 @@
 ﻿using Furion.FriendlyException;
-using MentalIsland.Core.CodeFirst.Models.Identity;
-// using MentalIsland.Core.CodeFirst.Identity;
-// using MentalIsland.Core.CodeFirst.Identity.Models;
+using Mapster;
+using MentalIsland.Core.CodeFirst.Models;
+using MentalIsland.Core.CodeFirst.SqlSugarBase;
 using MentalIsland.Migrations.Extensions;
+using MentalIsland.Web.Models.OutPubModels;
+using MentalIsland.Web.Models.InputModels;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +12,7 @@ using SqlSugar;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using System.ComponentModel.DataAnnotations;
 
 namespace MentalIsland.Web.Controllers;
 
@@ -25,7 +28,7 @@ public class UserController : WebApiBaseController<UserController>
     /// <summary>
     /// 用户操作仓库
     /// </summary>
-    public readonly ISqlSugarClient client;
+    public readonly SqlSugarRepository<User> userRepository;
 
 #pragma warning restore CS8618 // 在退出构造函数时，不可为 null 的字段必须包含非 null 值。请考虑声明为可以为 null。
 
@@ -33,21 +36,21 @@ public class UserController : WebApiBaseController<UserController>
     /// 登录
     /// </summary>
     /// <returns></returns>
-    [HttpGet]
+    [HttpPost]
     [AllowAnonymous]
-    public async Task<User> Login(string UserName, string Password)
+    public async Task<UserOutput> Login([Required] UserLoginInput userLogin)
     {
         if (User?.Identity != null && User.Identity.IsAuthenticated) throw Oops.Bah("请勿重复登录!").StatusCode(500);
-        var passwordHash = BitConverter.ToString(MD5.Create().ComputeHash(Encoding.UTF8.GetBytes(Password))).Replace("-", "").ToLower();
+        var passwordHash = BitConverter.ToString(MD5.Create().ComputeHash(Encoding.UTF8.GetBytes(userLogin.Password))).Replace("-", "").ToLower();
 
-        var user = await client.Queryable<User>().FirstAsync(u => u.UserName == UserName && u.PasswordHash == passwordHash);
+        var user = await userRepository.GetFirstAsync(u => u.UserName == userLogin.UserName && u.PasswordHash == passwordHash);
         // var user = new User() { Id = 1L, UserName = UserName, PasswordHash = passwordHash };
 
         if (user == null) throw Oops.Bah("账号密码错误或该用户不存在").StatusCode(1001);
 
         await SignInManager.SignInAsync(HttpContext, user);
 
-        return user;
+        return user.Adapt<UserOutput>();
     }
 
     /// <summary>
@@ -70,5 +73,29 @@ public class UserController : WebApiBaseController<UserController>
     {
         await HttpContext.SignOutAsync();
         return "退出登录成功!";
+    }
+
+    /// <summary>
+    /// 获取用户信息
+    /// </summary>
+    /// <returns></returns>
+    [HttpPost]
+    public async Task<UserOutput> UserInfo()
+    {
+        var user = await userRepository.GetByIdAsync(User.Id);
+        return user.Adapt<UserOutput>();
+    }
+
+    /// <summary>
+    /// 获取用户信息
+    /// </summary>
+    /// <returns></returns>
+    [HttpPost("[action]/{Id?}")]
+    public async Task<UserOutput> UserInfo(int? Id)
+    {
+        if (!Id.HasValue) throw Oops.Bah("Id不能为空").StatusCode();
+        var user = await userRepository.GetByIdAsync(Id);
+        if (user == null) throw Oops.Bah("该用户不存在!").StatusCode();
+        return user.Adapt<UserOutput>();
     }
 }

@@ -1,6 +1,7 @@
 using System.Text;
 using System.Security.Cryptography;
-using MentalIsland.Core.CodeFirst.Models.Identity;
+using MentalIsland.Core.CodeFirst.Models;
+using MentalIsland.Core.CodeFirst.SqlSugarBase;
 
 namespace MentalIsland.Core.CodeFirst.SeedData;
 

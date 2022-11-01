@@ -1,4 +1,5 @@
 using Furion;
+using MentalIsland.Core.CodeFirst.SqlSugarBase;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NETCore.MailKit.Extensions;
@@ -60,5 +61,7 @@ public static class MyServicesExtensions
                 };
             });
         services.AddSingleton<ISqlSugarClient>(sqlSugar);//这边是SqlSugarScope用AddSingleton
+        services.AddScoped(typeof(SqlSugarRepository<>)); // 注册仓储
+        services.AddUnitOfWork<SqlSugarUnitOfWork>(); // 注册事务与工作单元
     }
 }

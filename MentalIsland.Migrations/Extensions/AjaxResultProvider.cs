@@ -90,7 +90,7 @@ public class AjaxResultProvider : IUnifyResultProvider
         {
             Code = statusCode,
             Content = statusCode < 400 ? "请求成功!" : errors is string str ? str : JSON.Serialize(errors),
-            Type = Type,
+            TypeId = Type,
             Data = data,
             Errors = errors,
             Extras = UnifyContext.Take(),

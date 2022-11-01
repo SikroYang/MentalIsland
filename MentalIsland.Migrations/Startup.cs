@@ -57,7 +57,8 @@ public class Startup : AppStartup
         //    dbContextService.Database.Migrate(); //执行迁移
         //}
 
-        MentalIslandDBContext.CreateAndInsertData();
+        // 初始化数据库表结构及种子数据
+        MentalIslandDBContext.InitDataBase();
 
         if (env.IsDevelopment())
         {
@@ -81,7 +82,13 @@ public class Startup : AppStartup
         app.UseAuthentication();
         app.UseAuthorization();
 
-        app.UseInject();
+        app.UseInject(options =>
+        {
+            options.ConfigureSwaggerUI(c =>
+            {
+                c.DefaultModelsExpandDepth(-1);
+            });
+        });
         app.UseUnifyResultStatusCodes();
 
         app.UseEndpoints(endpoints =>
