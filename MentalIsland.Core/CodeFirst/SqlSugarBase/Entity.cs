@@ -3,13 +3,13 @@ using SqlSugar;
 
 namespace MentalIsland.Core.CodeFirst.SqlSugarBase;
 
-public class Entity<T>
+public class Entity
 {
     /// <summary>
     /// 主键Id
     /// </summary>
     [SugarColumn(ColumnDescription = "Id主键", IsPrimaryKey = true, IsIdentity = true)]
-    public virtual T Id { get; set; }
+    public virtual int Id { get; set; }
 
     /// <summary>
     /// 创建者Id
@@ -28,7 +28,7 @@ public class Entity<T>
     /// 创建时间
     /// </summary>
     [SugarColumn(ColumnDescription = "创建时间")]
-    public virtual DateTime CreatedTime { get; set; } = DateTime.Now;
+    public virtual DateTime CreatedTime { get; set; }
 
     /// <summary>
     /// 修改者Id
@@ -55,28 +55,4 @@ public class Entity<T>
     [SugarColumn(ColumnDescription = "软删除")]
     public virtual bool IsDeleted { get; set; } = false;
 
-
-    /// <summary>
-    /// 更新信息列
-    /// </summary>
-    /// <returns></returns>
-    public virtual string[] UpdateColumn()
-    {
-        var result = new[] { nameof(UpdatedUserId), nameof(UpdatedUserName), nameof(UpdatedTime) };
-        return result;
-    }
-
-    /// <summary>
-    /// 假删除的列，包含更新信息
-    /// </summary>
-    /// <returns></returns>
-    public virtual string[] FalseDeleteColumn()
-    {
-        var updateColumn = UpdateColumn();
-        var deleteColumn = new[] { nameof(IsDeleted) };
-        var result = new string[updateColumn.Length + deleteColumn.Length];
-        deleteColumn.CopyTo(result, 0);
-        updateColumn.CopyTo(result, deleteColumn.Length);
-        return result;
-    }
 }

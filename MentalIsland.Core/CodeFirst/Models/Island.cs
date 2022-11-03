@@ -9,7 +9,7 @@ namespace MentalIsland.Core.CodeFirst.Models;
 /// </summary>
 [SugarTable("Islands")]
 [Description("岛群表")]
-public class Island : Entity<int>
+public class Island : Entity
 {
     /// <summary>
     /// 岛群名称

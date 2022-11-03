@@ -2,6 +2,7 @@ using System.Text;
 using System.Security.Cryptography;
 using MentalIsland.Core.CodeFirst.Models;
 using MentalIsland.Core.CodeFirst.SqlSugarBase;
+using Furion.DataEncryption;
 
 namespace MentalIsland.Core.CodeFirst.SeedData;
 
@@ -13,11 +14,12 @@ public class UserSeedData : ISeedData, ISqlSugarEntitySeedData<User>
             new User{
                 Id = 1,
                 UserName = "admin",
-                PasswordHash = BitConverter.ToString(MD5.Create().ComputeHash(Encoding.UTF8.GetBytes("admin123"))).Replace("-","").ToLower(),
+                PasswordHash = MD5Encryption.Encrypt("admin123"),
                 Country = "China",
                 Email = "yxx95lz@163.com",
                 NickName = "Sikro",
                 PhoneNumber = "15962191164",
+                UserType = Enums.UserType.Normal
             }
         };
     }

@@ -1,15 +1,12 @@
-﻿using System.Reflection;
-using Furion;
+﻿using Furion;
 using MentalIsland.Migrations.Extensions;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-// using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using SqlSugar;
 
 namespace MentalIsland.Migrations;
 public class Startup : AppStartup
@@ -28,9 +25,12 @@ public class Startup : AppStartup
         services.AddMyDependencyGroup();
 
         services.AddCorsAccessor();
-
+        services.AddSession(options =>
+        {
+            options.IdleTimeout = TimeSpan.FromMinutes(5);
+        });
         services.AddControllers()
-            .AddInjectWithUnifyResult<AjaxResultProvider>()
+            .AddInjectWithUnifyResult<AjaxResultProvider>(o => o.ConfigureSwaggerGen(c => c.DocumentFilter<SwaggerHideApiFilterAttribute>()))
             .AddDataValidation()
             .AddJsonOptions(options =>
             {
@@ -90,7 +90,7 @@ public class Startup : AppStartup
             });
         });
         app.UseUnifyResultStatusCodes();
-
+        app.UseSession();
         app.UseEndpoints(endpoints =>
         {
             // endpoints.MapMetrics("/wujierp/metrics");

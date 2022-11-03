@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using MentalIsland.Core.CodeFirst.Enums;
 using MentalIsland.Core.CodeFirst.SqlSugarBase;
 using SqlSugar;
 
@@ -9,7 +10,7 @@ namespace MentalIsland.Core.CodeFirst.Models;
 /// </summary>
 [SugarTable("Users")]
 [Description("用户表")]
-public class User : Entity<int>
+public class User : Entity
 {
     /// <summary>
     /// 用户名
@@ -35,5 +36,14 @@ public class User : Entity<int>
     /// 国家/地区
     /// </summary>
     public string Country { get; set; } = default!;
+    /// <summary>
+    /// 是否锁定用户
+    /// </summary>
+    public bool IsLocked { get; set; } = false;
+
+    /// <summary>
+    /// 用户类型
+    /// </summary>
+    public UserType UserType { get; set; } = UserType.Normal;
 
 }

@@ -49,14 +49,6 @@
             "type": "shell",
             "command": "yarn && yarn dev",
             "options": {
-                "cwd": "Vue.Web"
-            }
-        },
-        {
-            "label": "yarn run2",
-            "type": "shell",
-            "command": "yarn && yarn dev",
-            "options": {
                 "cwd": "Vue.Project"
             }
         }

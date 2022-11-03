@@ -1,5 +1,8 @@
 namespace MentalIsland.Web.Models.OutPubModels;
 
+/// <summary>
+/// 用户信息
+/// </summary>
 public class UserOutput
 {
     /// <summary>
@@ -30,4 +33,8 @@ public class UserOutput
     /// 国家/地区
     /// </summary>
     public string Country { get; set; } = default!;
+    /// <summary>
+    /// 是否锁定
+    /// </summary>
+    public bool IsLocked { get; set; } = default!;
 }

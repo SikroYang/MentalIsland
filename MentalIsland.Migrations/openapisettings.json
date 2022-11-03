@@ -5,6 +5,7 @@
         "RoutePrefix": "MentalIsland",
         "DefaultGroupName": "MentalIsland",
         "RouteTemplate": "MentalIsland/{documentName}.json",
+        "EnableTagsOrderDocumentFilter": true,
         "GroupOpenApiInfos": [
             {
                 "Group": "MentalIsland",
@@ -24,7 +25,7 @@
         "DefaultHttpMethod": "POST",
         "LowercaseRoute": false,
         "CamelCaseSeparator": "",
-        // "UrlParameterization": true,
+        "UrlParameterization": true,
         "AbandonActionAffixes": [
             "Async"
         ],

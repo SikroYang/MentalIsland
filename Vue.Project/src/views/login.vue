@@ -21,7 +21,6 @@
 <script type="text/ecmascript-6">
 import { login } from '../api/userMG'
 import { setCookie, getCookie, delCookie } from '../utils/util'
-import md5 from 'js-md5'
 export default {
   name: 'login',
   data() {
@@ -52,7 +51,7 @@ export default {
       type: 'success'
     })
     // 获取图形验证码
-    this.getcode()
+    // this.getcode()
     // 获取存在本地的用户名密码
     this.getuserpwd()
 
@@ -79,8 +78,7 @@ export default {
           //   this.$router.push({ path: '/goods/Goods' })
           // }, 1000)
           // 注释
-          console.log(this.ruleForm, { UserName: this.ruleForm.UserName, Password: this.ruleForm.Password });
-          login({ UserName: this.ruleForm.UserName, Password: this.ruleForm.Password }).then(res => {
+          login(this.ruleForm).then(res => {
             console.log(res);
             if (res.Type == "Success") {
               if (this.rememberpwd) {
@@ -100,7 +98,7 @@ export default {
                 // 缓存用户个人信息
                 localStorage.setItem('userdata', JSON.stringify(res.Data))
                 this.$store.commit('login', 'true')
-                this.$router.push({ path: '/goods/Goods' })
+                this.$router.push({ path: '/system/user' })
               }, 1000)
             } else {
               this.$message.error(res.Errors)
@@ -110,7 +108,7 @@ export default {
           })
         } else {
           // 获取图形验证码
-          this.getcode()
+          // this.getcode()
           this.$message.error('请输入用户名密码！')
           this.logining = false
           return false
