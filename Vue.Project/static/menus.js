@@ -13,6 +13,13 @@ export const menu = [
         hasThird: 'N',
         url: 'system/user',
         menus: null
+      }, {
+        menuid: 102,
+        icon: 'li-icon-scxt',
+        menuname: '商城系统管理',
+        hasThird: 'N',
+        url: 'system/user',
+        menus: null
       },
     ]
   },

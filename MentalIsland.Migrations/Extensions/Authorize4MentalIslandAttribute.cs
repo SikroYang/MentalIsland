@@ -9,22 +9,9 @@ namespace MentalIsland.Migrations.Extensions;
 
 public class Authorize4MentalIslandAttribute : Attribute, IAsyncAuthorizationFilter
 {
-    // public override void OnActionExecuting(ActionExecutingContext context)
-    // {
-    //     var descriptor = context.ActionDescriptor as ControllerActionDescriptor;
-    //     if (descriptor == null || descriptor.MethodInfo.CustomAttributes
-    //         .Any(f => f.AttributeType.Name == "AllowAnonymousAttribute")) return;
-
-    //     var principal = context.HttpContext.User;
-
-    //     if (principal?.Identity != null && principal.Identity.IsAuthenticated)
-    //         return;
-    //     else
-    //         throw Oops.Oh("您还未登录!").StatusCode(401);
-    // }
-
     public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
     {
+        if (context.HttpContext.Request.Headers.Authorization == "") return;
         // 获取控制器信息
         var actionDescriptor = context.ActionDescriptor as ControllerActionDescriptor;
 

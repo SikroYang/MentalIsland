@@ -13,7 +13,7 @@ using Furion.DataEncryption;
 namespace MentalIsland.Web.Areas.Api.Controllers;
 
 /// <summary>
-/// 用户控制器
+/// 用户管理
 /// </summary>
 [Area("Api")]
 [Route("[area]/[controller]")]
@@ -39,8 +39,6 @@ public class UserController : WebApiBaseController<UserController>
         var exp = new Expressionable<User>().And(u => !u.IsDeleted);
         if (!string.IsNullOrWhiteSpace(searchInfo.IsLocked))
             exp.And(u => u.IsLocked == (searchInfo.IsLocked == "Y"));
-        if (!string.IsNullOrWhiteSpace(searchInfo.NickName))
-            exp.And(u => u.NickName.Contains(searchInfo.NickName));
         if (!string.IsNullOrWhiteSpace(searchInfo.UserName))
             exp.And(u => u.UserName.Contains(searchInfo.UserName));
         if (!string.IsNullOrWhiteSpace(searchInfo.PhoneNumber))
@@ -80,6 +78,7 @@ public class UserController : WebApiBaseController<UserController>
     public async Task<int> AddOrUpdateUser(UserInput user)
     {
         var userRes = user.Adapt<User>();
+        userRes.UserName = user.PhoneNumber;
         bool isSuccess;
         int Id = user.Id ?? 0;
         if (Id == 0)

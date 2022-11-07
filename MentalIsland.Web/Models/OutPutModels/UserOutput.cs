@@ -28,7 +28,7 @@ public class UserOutput
     /// <summary>
     /// 昵称
     /// </summary>
-    public string NickName { get; set; } = default!;
+    public string FullName { get; set; } = default!;
     /// <summary>
     /// 国家/地区
     /// </summary>

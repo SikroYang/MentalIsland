@@ -36,6 +36,22 @@
             "problemMatcher": "$msCompile"
         },
         {
+            "label": "publish",
+            "type": "shell",
+            "command": "dotnet",
+            "options": {
+                "cwd": "MentalIsland.Web"
+            },
+            "args": [
+                "publish",
+                "-c",
+                "Release",
+                "-o",
+                "publish/"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
             "label": "clean",
             "type": "shell",
             "command": "dotnet clean",

@@ -1,0 +1,54 @@
+version: '3'
+
+networks:
+  nginx:
+    name: nginx
+    driver: bridge
+
+services:
+  # docker 管理WebUI
+  portainer:
+    image: portainer/portainer-ce:latest
+    container_name: portainer
+    restart: always
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./portainer/data:/data # host:docker
+    ports:
+      - 3089:9000
+    networks:
+      nginx:
+        aliases:
+          - portainer
+
+  # nginx 扩展分支
+  openresty:
+    image: openresty/openresty:buster
+    container_name: openresty
+    restart: always
+    user: root
+    environment:
+      - TZ="Asia/Shanghai"
+    volumes:
+      - ./nginx/config/nginx.conf:/usr/local/openresty/nginx/conf/nginx.conf:ro
+      - ./nginx/log:/usr/local/openresty/nginx/logs
+      - /etc/localtime:/etc/localtime
+    ports:
+      - 80:80
+    networks:
+      nginx:
+        aliases:
+          - nginx
+
+  # 心理岛网站后端+后台
+  MentalIsland:
+    build: .
+    image: yxx/mentalisland:latest
+    container_name: MentalIsland
+    restart: always
+    ports:
+      - 5775:5775
+    networks:
+      nginx:
+        aliases:
+          - MentalIsland

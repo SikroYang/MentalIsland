@@ -18,17 +18,23 @@ public class Startup : AppStartup
         // services.AddFreeSqlSetup();
 
         // Cookies 身份验证
-        services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-        .AddCookie();
+        services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
+        // Jwt 身份验证
+        // services.AddJwt(options =>
+        // {
+        //     options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+        //     options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+        // })
+        // .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme);
 
         services.AddConfig(App.Configuration);
         services.AddMyDependencyGroup();
 
-        services.AddCorsAccessor();
         services.AddSession(options =>
         {
             options.IdleTimeout = TimeSpan.FromMinutes(5);
         });
+        services.AddCorsAccessor();
         services.AddControllers()
             .AddInjectWithUnifyResult<AjaxResultProvider>(o => o.ConfigureSwaggerGen(c => c.DocumentFilter<SwaggerHideApiFilterAttribute>()))
             .AddDataValidation()

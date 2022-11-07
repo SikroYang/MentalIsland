@@ -12,11 +12,6 @@ public class UserInput
     /// </summary>
     public int? Id { get; set; }
     /// <summary>
-    /// 用户名
-    /// </summary>
-    [Required(ErrorMessage = "用户名不能为空")]
-    public string UserName { get; set; } = default!;
-    /// <summary>
     /// 密码
     /// </summary>
     public string Password { get; set; } = default!;
@@ -36,7 +31,7 @@ public class UserInput
     /// 昵称
     /// </summary>
     [Required(ErrorMessage = "昵称不能为空")]
-    public string NickName { get; set; } = default!;
+    public string FullName { get; set; } = default!;
     /// <summary>
     /// 国家/地区
     /// </summary>

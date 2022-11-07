@@ -38,7 +38,7 @@ public class EmailController : WebApiBaseController<EmailController>
         var Title = string.IsNullOrWhiteSpace(sendEmail.Title) ? "(无标题)" : sendEmail.Title;
         await EmailService.SendAsync(sendEmail.MailAddr, Title, sendEmail.Content, Encoding.UTF8);
 
-        var serverMail = App.GetConfig<string>("MailKitSettings:Outlook:SenderEmail");
+        var serverMail = App.GetConfig<string>("MailKitSettings:163:SenderEmail");
 
         return @$"To: {sendEmail.MailAddr} 发送成功
                 From: {serverMail}

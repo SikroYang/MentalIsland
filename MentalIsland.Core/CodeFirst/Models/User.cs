@@ -27,7 +27,7 @@ public class User : Entity
     /// <summary>
     /// êÇ³Æ
     /// </summary>
-    public string NickName { get; set; } = default!;
+    public string FullName { get; set; } = default!;
     /// <summary>
     /// ÃÜÂëHash
     /// </summary>

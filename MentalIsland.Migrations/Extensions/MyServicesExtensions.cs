@@ -19,7 +19,7 @@ public static class MyServicesExtensions
         // Add MailKit
         services.AddMailKit(optionBuilder =>
         {
-            var option = App.GetConfig<MailKitOptions>("MailKitSettings:Outlook");
+            var option = App.GetConfig<MailKitOptions>("MailKitSettings:163");
             optionBuilder.UseMailKit(option);
         });
 

@@ -16,11 +16,11 @@ using System.Text;
 namespace MentalIsland.Web.Areas.Api.Controllers;
 
 /// <summary>
-/// 登录授权
+/// 注册授权管理
 /// </summary>
 [Area("Api")]
 [Route("[area]/[controller]")]
-[Authorize4MentalIsland]
+[AllowAnonymous]
 public class AuthController : WebApiBaseController<AuthController>
 {
 #pragma warning disable CS8618 // 在退出构造函数时，不可为 null 的字段必须包含非 null 值。请考虑声明为可以为 null。
@@ -68,6 +68,7 @@ public class AuthController : WebApiBaseController<AuthController>
         HttpContext.Session.Remove("VERIFYCODE");
 
         var userRes = user.Adapt<User>();
+        userRes.UserName = user.PhoneNumber;
         bool isSuccess;
         user.Id = 0;
         userRes.PasswordHash = MD5Encryption.Encrypt(user.Password);
@@ -83,14 +84,12 @@ public class AuthController : WebApiBaseController<AuthController>
     /// </summary>
     /// <returns></returns>
     [HttpPost]
-    [AllowAnonymous]
     public async Task<UserOutput> Login([Required] UserLoginInput userLogin)
     {
         if (User?.Identity != null && User.Identity.IsAuthenticated) throw Oops.Bah("请勿重复登录!").StatusCode(500);
         var passwordHash = MD5Encryption.Encrypt(userLogin.Password);
 
-        var user = await userRepository.GetFirstAsync(u => u.UserName == userLogin.UserName && u.PasswordHash == passwordHash);
-        // var user = new User() { Id = 1L, UserName = UserName, PasswordHash = passwordHash };
+        var user = await userRepository.GetFirstAsync(u => (u.UserName == userLogin.UserName || u.PhoneNumber == userLogin.UserName || u.Email == userLogin.UserName) && u.PasswordHash == passwordHash);
 
         if (user == null) throw Oops.Bah("账号密码错误或该用户不存在").StatusCode(1001);
 
@@ -104,6 +103,7 @@ public class AuthController : WebApiBaseController<AuthController>
     /// </summary>
     /// <returns></returns>
     [HttpPost]
+    [Authorize4MentalIsland]
     public async Task<string> Logout()
     {
         await HttpContext.SignOutAsync();

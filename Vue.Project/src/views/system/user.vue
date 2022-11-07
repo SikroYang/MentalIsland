@@ -21,7 +21,7 @@
         <el-input size="small" v-model="formInline.UserName" placeholder="输入用户名"></el-input>
       </el-form-item>
       <el-form-item label="">
-        <el-input size="small" v-model="formInline.NickName" placeholder="输入用户昵称"></el-input>
+        <el-input size="small" v-model="formInline.FullName" placeholder="输入用户昵称"></el-input>
       </el-form-item>
       <el-form-item label="">
         <el-input size="small" v-model="formInline.PhoneNumber" placeholder="输入手机号"></el-input>
@@ -39,7 +39,7 @@
       </el-table-column>
       <el-table-column align="center" sortable prop="UserName" label="用户名" width="120">
       </el-table-column>
-      <el-table-column align="center" sortable prop="NickName" label="姓名" width="120">
+      <el-table-column align="center" sortable prop="FullName" label="姓名" width="120">
       </el-table-column>
       <el-table-column align="center" sortable prop="PhoneNumber" label="手机号" width="120">
       </el-table-column>
@@ -78,8 +78,8 @@
         <el-form-item label="用户名" prop="UserName">
           <el-input size="small" v-model="editForm.UserName" auto-complete="off" placeholder="请输入用户名"></el-input>
         </el-form-item>
-        <el-form-item label="姓名" prop="NickName">
-          <el-input size="small" v-model="editForm.NickName" auto-complete="off" placeholder="请输入姓名"></el-input>
+        <el-form-item label="姓名" prop="FullName">
+          <el-input size="small" v-model="editForm.FullName" auto-complete="off" placeholder="请输入姓名"></el-input>
         </el-form-item>
         <!-- <el-form-item label="角色" prop="roleId">
           <el-select size="small" v-model="editForm.roleId" placeholder="请选择" class="userRole">
@@ -154,7 +154,7 @@ export default {
       editForm: {
         Id: '',
         UserName: '',
-        NickName: '',
+        FullName: '',
         // roleId: '',
         PhoneNumber: '',
         Email: '',
@@ -173,7 +173,7 @@ export default {
         UserName: [
           { required: true, message: '请输入用户名', trigger: 'blur' }
         ],
-        NickName: [
+        FullName: [
           { required: true, message: '请输入姓名', trigger: 'blur' }
         ],
         Country: [
@@ -208,7 +208,7 @@ export default {
         size: 10,
         // deptId: '',
         UserName: '',
-        NickName: '',
+        FullName: '',
         PhoneNumber: '',
         IsLocked: ''
       },
@@ -314,7 +314,7 @@ export default {
         this.title = '修改用户'
         this.editForm.Id = row.Id
         this.editForm.UserName = row.UserName
-        this.editForm.NickName = row.NickName
+        this.editForm.FullName = row.FullName
         // this.editForm.roleId = row.roleId
         this.editForm.PhoneNumber = row.PhoneNumber
         this.editForm.Email = row.Email
@@ -324,7 +324,7 @@ export default {
         this.title = '添加用户'
         this.editForm.Id = ''
         this.editForm.UserName = ''
-        this.editForm.NickName = ''
+        this.editForm.FullName = ''
         // this.editForm.roleId = ''
         this.editForm.PhoneNumber = ''
         this.editForm.Email = ''

@@ -12,7 +12,7 @@ public class UserSearchInput
     /// <summary>
     /// 用户昵称
     /// </summary>
-    public string NickName { get; set; } = default!;
+    public string FullName { get; set; } = default!;
     /// <summary>
     /// 手机号
     /// </summary>
