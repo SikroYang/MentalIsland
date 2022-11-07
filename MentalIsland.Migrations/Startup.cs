@@ -30,6 +30,11 @@ public class Startup : AppStartup
         services.AddConfig(App.Configuration);
         services.AddMyDependencyGroup();
 
+        services.AddSession(options =>
+        {
+            options.IdleTimeout = TimeSpan.FromMinutes(1);
+        });
+
         services.AddCorsAccessor();
         services.AddControllers()
             .AddInjectWithUnifyResult<AjaxResultProvider>(o => o.ConfigureSwaggerGen(c => c.DocumentFilter<SwaggerHideApiFilterAttribute>()))
@@ -81,6 +86,8 @@ public class Startup : AppStartup
 
         app.UseRouting();
         // app.UseHttpMetrics();
+
+        app.UseSession();
         app.UseCorsAccessor();
 
         app.UseAuthentication();
