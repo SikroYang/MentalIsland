@@ -18,7 +18,7 @@ public class Startup : AppStartup
         // services.AddFreeSqlSetup();
 
         // Cookies 身份验证
-        services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
+        services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(CookieAuthenticationDefaults.AuthenticationScheme);
         // Jwt 身份验证
         // services.AddJwt(options =>
         // {
@@ -30,10 +30,6 @@ public class Startup : AppStartup
         services.AddConfig(App.Configuration);
         services.AddMyDependencyGroup();
 
-        services.AddSession(options =>
-        {
-            options.IdleTimeout = TimeSpan.FromMinutes(5);
-        });
         services.AddCorsAccessor();
         services.AddControllers()
             .AddInjectWithUnifyResult<AjaxResultProvider>(o => o.ConfigureSwaggerGen(c => c.DocumentFilter<SwaggerHideApiFilterAttribute>()))
@@ -77,6 +73,8 @@ public class Startup : AppStartup
             app.UseHsts();
         }
 
+        app.UseUnifyResultStatusCodes();
+
         //app.UseHttpsRedirection();
         app.UseDefaultFiles();
         app.UseStaticFiles();
@@ -95,8 +93,7 @@ public class Startup : AppStartup
                 c.DefaultModelsExpandDepth(-1);
             });
         });
-        app.UseUnifyResultStatusCodes();
-        app.UseSession();
+
         app.UseEndpoints(endpoints =>
         {
             // endpoints.MapMetrics("/wujierp/metrics");

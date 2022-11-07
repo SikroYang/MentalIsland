@@ -13,7 +13,7 @@ namespace MentalIsland.Web.Areas.Api.Controllers;
 /// </summary>
 [Area("Api")]
 [Route("[area]/[controller]")]
-[Authorize4MentalIsland]
+[MentalIslandAuthorize]
 public class EmailController : WebApiBaseController<EmailController>
 {
 

@@ -18,30 +18,30 @@ public class Island : Entity
     /// <summary>
     /// 岛群描述
     /// </summary>
-    public string Description { get; set; } = default!;
+    public string? Description { get; set; }
     /// <summary>
     /// 岛群QQ群号
     /// </summary>
-    public string QQunNumber { get; set; } = default!;
+    public string? QQunNumber { get; set; }
     /// <summary>
     /// 岛群QQ群二维码
     /// </summary>
-    public string QQunQRCodeFile { get; set; } = default!;
+    public string? QQunQRCodeFile { get; set; }
     /// <summary>
     /// 岛群人数
     /// </summary>
-    public int PersonNumber { get; set; }
+    public int PersonNumber { get; set; } = 0;
     /// <summary>
     /// 岛群发帖数
     /// </summary>
-    public int PostNumber { get; set; }
+    public int PostNumber { get; set; } = 0;
     /// <summary>
     /// 岛群最后发帖时间
     /// </summary>
-    public DateTime LastPostTime { get; set; }
+    public DateTime? LastPostTime { get; set; }
     /// <summary>
     /// 岛群最后回复时间
     /// </summary>
-    public DateTime LastReplyTime { get; set; }
+    public DateTime? LastReplyTime { get; set; }
 
 }

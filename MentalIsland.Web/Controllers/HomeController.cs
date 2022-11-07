@@ -8,7 +8,7 @@ namespace MentalIsland.Web.Controllers;
 /// 首页(测试,请忽略)
 /// </summary>
 [Route("[controller]")]
-[Authorize4MentalIsland]
+[Authorize]
 [SwaggerHideApiFilter]
 public class HomeController : WebApiBaseController<HomeController>
 {

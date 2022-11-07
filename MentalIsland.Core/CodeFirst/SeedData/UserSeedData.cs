@@ -17,7 +17,7 @@ public class UserSeedData : ISeedData, ISqlSugarEntitySeedData<User>
                 PasswordHash = MD5Encryption.Encrypt("admin123"),
                 Country = "China",
                 Email = "yxx95lz@163.com",
-                FullName = "Sikro",
+                FullName = "admin",
                 PhoneNumber = "15962191164",
                 UserType = Enums.UserType.Admin
             }

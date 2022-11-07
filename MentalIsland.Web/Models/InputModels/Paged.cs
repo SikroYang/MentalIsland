@@ -8,7 +8,7 @@ public class Paged
     /// <summary>
     /// 当前页
     /// </summary>
-    public int Page { get; set; } = 1;
+    public int Page { get; set; } = -1;
 
     /// <summary>
     /// 返回条数

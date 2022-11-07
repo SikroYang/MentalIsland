@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Mvc;
 using SqlSugar;
 using System.ComponentModel.DataAnnotations;
 using Furion.DataEncryption;
+using Furion.UnifyResult;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MentalIsland.Web.Areas.Api.Controllers;
 
@@ -17,7 +19,7 @@ namespace MentalIsland.Web.Areas.Api.Controllers;
 /// </summary>
 [Area("Api")]
 [Route("[area]/[controller]")]
-[Authorize4MentalIsland]
+[MentalIslandAuthorize]
 public class UserController : WebApiBaseController<UserController>
 {
 #pragma warning disable CS8618 // 在退出构造函数时，不可为 null 的字段必须包含非 null 值。请考虑声明为可以为 null。
@@ -34,7 +36,7 @@ public class UserController : WebApiBaseController<UserController>
     /// </summary>
     /// <returns></returns>
     [HttpPost]
-    public async Task<List<UserOutput>> List(UserSearchInput searchInfo)
+    public async Task<PagedList<UserOutput>> List(UserSearchInput searchInfo)
     {
         var exp = new Expressionable<User>().And(u => !u.IsDeleted);
         if (!string.IsNullOrWhiteSpace(searchInfo.IsLocked))
@@ -43,8 +45,12 @@ public class UserController : WebApiBaseController<UserController>
             exp.And(u => u.UserName.Contains(searchInfo.UserName));
         if (!string.IsNullOrWhiteSpace(searchInfo.PhoneNumber))
             exp.And(u => u.PhoneNumber.Contains(searchInfo.PhoneNumber));
-        var result = await userRepository.AsQueryable().Where(exp.ToExpression()).ToListAsync();
-        return result.Adapt<List<UserOutput>>();
+
+        var result = userRepository.AsQueryable().Where(exp.ToExpression());
+        var list = searchInfo.Page > 0 ? await result.ToListAsync() : await result.ToPageListAsync(searchInfo.Page, searchInfo.Size);
+        if (searchInfo.Page > 0)
+            return new PagedList<UserOutput> { Page = searchInfo.Page, Size = searchInfo.Size, Total = await result.CountAsync(), List = list.Adapt<List<UserOutput>>() };
+        return new PagedList<UserOutput> { Total = await result.CountAsync(), List = list.Adapt<List<UserOutput>>() };
     }
 
     /// <summary>

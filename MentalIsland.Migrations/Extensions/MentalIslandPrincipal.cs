@@ -14,9 +14,9 @@ public class MentalIslandPrincipal : ClaimsPrincipal
 
     public string? UserName => FindFirstValue<string>(ClaimTypes.Name);
 
-    //public string? PhoneNumber { get; set; }
+    public string? PhoneNumber => FindFirstValue<string>(ClaimTypes.MobilePhone);
 
-    //public string? NickName { get; set; }
+    public string? FullName => FindFirstValue<string>(ClaimTypes.GivenName);
 
     private T? FindFirstValue<T>(string type)
     {

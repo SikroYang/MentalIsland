@@ -16,6 +16,8 @@ public static class SignInManager
         {
             new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
             new Claim(ClaimTypes.Name, user.UserName),
+            new Claim(ClaimTypes.GivenName, user.FullName),
+            new Claim(ClaimTypes.MobilePhone, user.PhoneNumber),
         }, CookieAuthenticationDefaults.AuthenticationScheme);
 
 

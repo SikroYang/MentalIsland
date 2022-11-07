@@ -59,3 +59,67 @@ public class UserRegistryInput : UserInput
     [RegularExpression(@"^[A-Za-z]\w{5,17}$", ErrorMessage = "密码必须以字母开头，长度在6~18之间，只能包含字母、数字和下划线")]
     public new string Password { get; set; } = default!;
 }
+
+/// <summary>
+/// 用户登录
+/// </summary>
+public class UserLoginInput
+{
+    /// <summary>
+    /// 用户名
+    /// </summary>
+    public string UserName { get; set; } = default!;
+    /// <summary>
+    /// 密码
+    /// </summary>
+    public string Password { get; set; } = default!;
+}
+
+/// <summary>
+/// 查询用户信息
+/// </summary>
+public class UserSearchInput : Paged
+{
+    /// <summary>
+    /// 用户名
+    /// </summary>
+    public string UserName { get; set; } = default!;
+    /// <summary>
+    /// 用户昵称
+    /// </summary>
+    public string FullName { get; set; } = default!;
+    /// <summary>
+    /// 手机号
+    /// </summary>
+    public string PhoneNumber { get; set; } = default!;
+    /// <summary>
+    /// 是否锁定
+    /// Y.是
+    /// N.否
+    /// </summary>
+    public string IsLocked { get; set; } = default!;
+}
+
+
+/// <summary>
+/// 用户锁定请求
+/// </summary>
+public class UserLockInput : OnlyId
+{
+    /// <summary>
+    /// 是否锁定
+    /// </summary>
+    public bool IsLocked { get; set; }
+}
+
+
+/// <summary>
+/// 重置密码请求
+/// </summary>
+public class UserResetPwdInput : OnlyId
+{
+    /// <summary>
+    /// 验证码
+    /// </summary>
+    public string VerifyCode { get; set; } = default!;
+}

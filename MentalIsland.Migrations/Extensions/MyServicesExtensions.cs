@@ -3,6 +3,7 @@ using Furion;
 using MentalIsland.Core.CodeFirst.SqlSugarBase;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using NETCore.MailKit.Extensions;
 using NETCore.MailKit.Infrastructure.Internal;
 using SqlSugar;
@@ -30,6 +31,24 @@ public static class MyServicesExtensions
     {
         // 设置依赖注入中间件
         // services.AddAutoDependency();
+
+        // 日志记录
+        if (App.GetConfig<bool>("Logging:File:Enable")) // 日志写入文件
+        {
+            Array.ForEach(new[] { LogLevel.Information, LogLevel.Warning, LogLevel.Error }, logLevel =>
+            {
+                services.AddFileLogging(options =>
+                {
+                    options.FileNameRule = fileName => string.Format(fileName, DateTime.Now, logLevel.ToString()); // 每天创建一个文件
+                    options.WriteFilter = logMsg => logMsg.LogLevel == logLevel; // 日志级别
+                    options.HandleWriteError = (writeError) => // 写入失败时启用备用文件
+                    {
+                        writeError.UseRollbackFileName(Path.GetFileNameWithoutExtension(writeError.CurrentFileName) + "-oops" + Path.GetExtension(writeError.CurrentFileName));
+                    };
+                });
+            });
+        }
+
         // 配置数据库上下文，支持N个数据库
         // services.AddDatabaseAccessor(options =>
         // {
@@ -85,7 +104,7 @@ public static class MyServicesExtensions
                             if (entityInfo.PropertyName == "CreatedUserId")
                                 entityInfo.SetValue(App.User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
                             if (entityInfo.PropertyName == "CreatedUserName")
-                                entityInfo.SetValue(App.User.FindFirst(ClaimTypes.Name)?.Value);
+                                entityInfo.SetValue(App.User.FindFirst(ClaimTypes.GivenName)?.Value);
                         }
                     }
                     // 更新操作
@@ -98,7 +117,7 @@ public static class MyServicesExtensions
                             if (entityInfo.PropertyName == "UpdatedUserId")
                                 entityInfo.SetValue(App.User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
                             if (entityInfo.PropertyName == "UpdatedUserName")
-                                entityInfo.SetValue(App.User.FindFirst(ClaimTypes.Name)?.Value);
+                                entityInfo.SetValue(App.User.FindFirst(ClaimTypes.GivenName)?.Value);
                         }
 
                     }

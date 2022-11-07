@@ -103,7 +103,7 @@ public class AuthController : WebApiBaseController<AuthController>
     /// </summary>
     /// <returns></returns>
     [HttpPost]
-    [Authorize4MentalIsland]
+    [MentalIslandAuthorize]
     public async Task<string> Logout()
     {
         await HttpContext.SignOutAsync();

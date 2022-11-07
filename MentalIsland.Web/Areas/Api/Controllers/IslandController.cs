@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using SqlSugar;
 using System.ComponentModel.DataAnnotations;
 using Furion.DataEncryption;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MentalIsland.Web.Areas.Api.Controllers;
 
@@ -17,7 +18,7 @@ namespace MentalIsland.Web.Areas.Api.Controllers;
 /// </summary>
 [Area("Api")]
 [Route("[area]/[controller]")]
-[Authorize4MentalIsland]
+[MentalIslandAuthorize]
 public class IslandController : WebApiBaseController<IslandController>
 {
 #pragma warning disable CS8618 // 在退出构造函数时，不可为 null 的字段必须包含非 null 值。请考虑声明为可以为 null。
@@ -34,17 +35,15 @@ public class IslandController : WebApiBaseController<IslandController>
     /// </summary>
     /// <returns></returns>
     [HttpPost]
-    public async Task<List<UserOutput>> List(UserSearchInput searchInfo)
+    public async Task<List<IslandOutput>> List(IslandSearchInput searchInfo)
     {
         var exp = new Expressionable<Island>().And(i => !i.IsDeleted);
-        if (!string.IsNullOrWhiteSpace(searchInfo.UserName))
-            exp.And(i => i.CreatedUserName.Contains(searchInfo.UserName));
-        if (!string.IsNullOrWhiteSpace(searchInfo.UserName))
-            exp.And(i => i.Name.Contains(searchInfo.UserName));
-        if (!string.IsNullOrWhiteSpace(searchInfo.PhoneNumber))
-            exp.And(i => i.Description.Contains(searchInfo.PhoneNumber));
+        if (!string.IsNullOrWhiteSpace(searchInfo.Name))
+            exp.And(i => i.Name.Contains(searchInfo.Name));
+        if (!string.IsNullOrWhiteSpace(searchInfo.Description))
+            exp.And(i => i.Description.Contains(searchInfo.Description));
         var result = await islandRepository.AsQueryable().Where(exp.ToExpression()).ToListAsync();
-        return result.Adapt<List<UserOutput>>();
+        return result.Adapt<List<IslandOutput>>();
     }
 
     /// <summary>
@@ -52,7 +51,7 @@ public class IslandController : WebApiBaseController<IslandController>
     /// </summary>
     /// <returns></returns>
     [HttpPost]
-    public async Task<int> AddOrUpdateUser(UserInput user)
+    public async Task<int> AddOrUpdateIsland(IslandInput user)
     {
         var userRes = user.Adapt<Island>();
         bool isSuccess;
@@ -75,7 +74,7 @@ public class IslandController : WebApiBaseController<IslandController>
     /// </summary>
     /// <returns></returns>
     [HttpPost]
-    public async Task<string> DeleteUser(OnlyId model)
+    public async Task<string> DeleteIsland(OnlyId model)
     {
         var deleteUser = await islandRepository.GetByIdAsync(model.Id);
         if (deleteUser == null || deleteUser.IsDeleted) throw Oops.Bah("该用户不存在或已删除").StatusCode();

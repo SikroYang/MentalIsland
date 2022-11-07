@@ -7,11 +7,10 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace MentalIsland.Migrations.Extensions;
 
-public class Authorize4MentalIslandAttribute : Attribute, IAsyncAuthorizationFilter
+public class MentalIslandAuthorize : Attribute, IAsyncAuthorizationFilter
 {
     public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
     {
-        if (context.HttpContext.Request.Headers.Authorization == "") return;
         // 获取控制器信息
         var actionDescriptor = context.ActionDescriptor as ControllerActionDescriptor;
 
@@ -22,8 +21,7 @@ public class Authorize4MentalIslandAttribute : Attribute, IAsyncAuthorizationFil
         var methodType = actionDescriptor.MethodInfo;
 
         // 是否匿名访问
-        var allowAnonymouse = context.Filters.Any(u => u is IAllowAnonymousFilter)
-                        || controllerType.IsDefined(typeof(AllowAnonymousAttribute), true)
+        var allowAnonymouse = (!methodType.IsDefined(typeof(MentalIslandAuthorize), true) && controllerType.IsDefined(typeof(AllowAnonymousAttribute), true))
                         || methodType.IsDefined(typeof(AllowAnonymousAttribute), true);
 
         if (allowAnonymouse) await Task.CompletedTask;

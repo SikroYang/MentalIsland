@@ -386,3 +386,4 @@ pnpm-debug.log*
 *.sw?
 */publish.zip
 *.db
+MentalIsland.Web/wwwroot/Upload/

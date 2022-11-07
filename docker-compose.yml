@@ -48,6 +48,8 @@ services:
     restart: always
     ports:
       - 5775:5775
+    volumes:
+      - ./MentalIsland.Web/wwwroot/images:/MentalIsland/wwwroot/images
     networks:
       nginx:
         aliases:

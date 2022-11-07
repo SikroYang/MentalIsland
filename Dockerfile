@@ -7,14 +7,14 @@ COPY ["MentalIsland.AllDependency/","MentalIsland.AllDependency/"]
 COPY ["MentalIsland.Core/","MentalIsland.Core/"]
 COPY ["MentalIsland.Migrations/","MentalIsland.Migrations/"]
 COPY ["MentalIsland.Web/","MentalIsland.Web/"]
-WORKDIR "/MentalIsland/MentalIsland.Web"
+WORKDIR /MentalIsland/MentalIsland.Web
 RUN dotnet publish -c Release -o publish/
 
 FROM node:lts-bullseye as build
 WORKDIR /MentalIsland
 
 COPY ["Vue.Project/","Vue.Project/"]
-WORKDIR "/MentalIsland/Vue.Project"
+WORKDIR /MentalIsland/Vue.Project
 RUN yarn && yarn build
 
 FROM base AS final
