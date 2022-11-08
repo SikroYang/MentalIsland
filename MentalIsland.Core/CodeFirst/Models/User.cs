@@ -46,4 +46,11 @@ public class User : Entity
     /// </summary>
     public UserType UserType { get; set; } = UserType.Normal;
 
+    /// <summary>
+    /// 用户已关注岛群
+    /// </summary>
+    [SugarColumn(IsIgnore = true)]
+    [Navigate(typeof(User_Island), nameof(User_Island.UserId), nameof(User_Island.IslandId))]
+    public virtual List<Island> Islands { get; set; }
+
 }

@@ -32,7 +32,9 @@ public class Startup : AppStartup
 
         services.AddSession(options =>
         {
-            options.IdleTimeout = TimeSpan.FromMinutes(1);
+            options.IdleTimeout = TimeSpan.FromMinutes(10);
+            options.Cookie.Name = ".MentalIsland.Session";
+            options.Cookie.IsEssential = true;
         });
 
         services.AddCorsAccessor();
@@ -65,7 +67,7 @@ public class Startup : AppStartup
         //}
 
         // 初始化数据库表结构及种子数据
-        MentalIslandDBContext.InitDataBase();
+        MentalIslandSqlSugarInit.InitDataBase();
 
         if (env.IsDevelopment())
         {

@@ -19,7 +19,8 @@ public class UserSeedData : ISeedData, ISqlSugarEntitySeedData<User>
                 Email = "yxx95lz@163.com",
                 FullName = "admin",
                 PhoneNumber = "15962191164",
-                UserType = Enums.UserType.Admin
+                UserType = Enums.UserType.Admin,
+                CreatedTime = DateTime.Now
             }
         };
     }

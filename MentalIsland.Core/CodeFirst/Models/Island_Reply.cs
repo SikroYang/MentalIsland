@@ -21,11 +21,4 @@ public class Island_Reply : Entity
     /// </summary>
     public int PostId { get; set; }
 
-    /// <summary>
-    /// Ìû×Óµ¼º½ÊôĞÔ
-    /// </summary>
-    [SugarColumn(IsIgnore = true)]
-    [Navigate(NavigateType.OneToMany, nameof(PostId))]
-    public virtual Island_Post Post { get; set; }
-
 }

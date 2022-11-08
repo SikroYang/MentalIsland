@@ -22,6 +22,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\MentalIsland.AllDependency\MentalIsland.AllDependency.csproj" />
+        <ProjectReference Include="..\MentalIsland.AllDependency\MentalIsland.AllDependency.csproj" />
     </ItemGroup>
 </Project>

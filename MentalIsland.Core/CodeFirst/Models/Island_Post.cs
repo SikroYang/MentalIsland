@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel;
 using MentalIsland.Core.CodeFirst.SqlSugarBase;
 using SqlSugar;
+using Furion;
 
 namespace MentalIsland.Core.CodeFirst.Models;
 
@@ -19,6 +20,7 @@ public class Island_Post : Entity
     /// <summary>
     /// 内容
     /// </summary>
+    [SugarColumn(ColumnDataType = "nvarchar(255)")] // Sqlite 不支持max
     public string Content { get; set; } = default!;
     /// <summary>
     /// 回复数
@@ -34,10 +36,9 @@ public class Island_Post : Entity
     public int IslandId { get; set; }
 
     /// <summary>
-    /// 岛群导航属性
+    /// 评论列表
     /// </summary>
     [SugarColumn(IsIgnore = true)]
-    [Navigate(NavigateType.OneToMany, nameof(IslandId))]
-    public virtual Island Island { get; set; }
-
+    [Navigate(NavigateType.OneToMany, nameof(Island_Reply.PostId))]
+    public virtual List<Island_Reply> Replies { get; set; }
 }

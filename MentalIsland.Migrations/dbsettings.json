@@ -1,6 +1,7 @@
 {
     "ConnectionStrings": {
-        "SqlServer": "Server=.;Database=MentalIsland;User=sa;Password=ok;MultipleActiveResultSets=True;",
+        "SqlServer": "Server=mssql;Database=MentalIsland;User=sa;Password=MentalIsland.2022;MultipleActiveResultSets=True;",
         "Sqlite": "Data Source=MentalIsland.db"
-    }
+    },
+    "DbType": "SqlServer"
 }
