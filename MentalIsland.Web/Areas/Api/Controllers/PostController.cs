@@ -80,6 +80,19 @@ public class PostController : WebApiBaseController<PostController>
     }
 
     /// <summary>
+    /// 帖子根据Id查询
+    /// </summary>
+    /// <returns></returns>
+    [HttpPost]
+    public async Task<PostOutput> PostById(OnlyId model)
+    {
+        if (model.Id <= 0) throw Oops.Bah("Id必须大于0").StatusCode();
+        var result = await postRepository.AsQueryable().Includes(l => l.Replies).FirstAsync(l => l.Id == model.Id);
+        if (result == null || result.IsDeleted) throw Oops.Bah("该帖子不存在或已删除").StatusCode();
+        return result.Adapt<PostOutput>();
+    }
+
+    /// <summary>
     /// 删除帖子
     /// </summary>
     /// <returns></returns>

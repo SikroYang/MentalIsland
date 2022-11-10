@@ -16,9 +16,9 @@ export const menu = [
       }, {
         menuid: 102,
         icon: 'li-icon-scxt',
-        menuname: '商城系统管理',
+        menuname: '岛群管理',
         hasThird: 'N',
-        url: 'system/user',
+        url: 'system/island',
         menus: null
       },
     ]

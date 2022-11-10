@@ -67,6 +67,22 @@
             "options": {
                 "cwd": "Vue.Project"
             }
+        },
+        {
+            "label": "yarn build & copy",
+            "type": "shell",
+            "command": "yarn && yarn build && cp -r -fo ./BackEnd ../MentalIsland.Web/wwwroot",
+            "options": {
+                "cwd": "Vue.Project"
+            }
+        },
+        {
+            "label": "vue copy",
+            "type": "shell",
+            "command": "cp -r -fo ./BackEnd ../MentalIsland.Web/wwwroot",
+            "options": {
+                "cwd": "Vue.Project"
+            }
         }
     ]
 }

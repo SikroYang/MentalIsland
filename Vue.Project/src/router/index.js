@@ -45,6 +45,16 @@ export default new Router({
       name: '用户管理',
       component: user,
       meta: {
+        title: "用户管理",
+        requireAuth: true
+      }
+    },
+    {
+      path: '/system/island',
+      name: '岛群管理',
+      component: user,
+      meta: {
+        title: "岛群管理",
         requireAuth: true
       }
     }]

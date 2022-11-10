@@ -81,37 +81,64 @@ public class IslandController : WebApiBaseController<IslandController>
     public async Task<string> DeleteIsland(OnlyId model)
     {
         var deleteIsland = await islandRepository.GetByIdAsync(model.Id);
-        if (deleteIsland == null || deleteIsland.IsDeleted) throw Oops.Bah("该岛屿不存在或已删除").StatusCode();
+        if (deleteIsland == null || deleteIsland.IsDeleted) throw Oops.Bah("该岛群不存在或已删除").StatusCode();
         var isSuccess = await islandRepository.RecycleByIdAsync<Island>(deleteIsland.Id);
         if (!isSuccess) throw Oops.Bah("删除失败,请检查后重新尝试!").StatusCode();
         return "删除成功!";
     }
 
     /// <summary>
-    /// 关注岛屿
+    /// 关注岛群
     /// </summary>
     /// <returns></returns>
     [HttpPost]
     public async Task<string> FollowIsland(OnlyId model)
     {
         var island = await islandRepository.GetByIdAsync(model.Id);
-        if (island == null || island.IsDeleted) throw Oops.Bah("该岛屿不存在或已删除").StatusCode();
+        if (island == null || island.IsDeleted) throw Oops.Bah("该岛群不存在或已删除").StatusCode();
 
-        var list = new List<Island>{
-            new Island{
-                Id = island.Id,
-                Users= new List<User> { new User { Id = Convert.ToInt32(User.Id) } }
-            }
+        var opIsland = new Island
+        {
+            Id = island.Id,
+            Users = new List<User> { new User { Id = Convert.ToInt32(User.Id) } }
         };
 
         //默认模式：只更新关系表 （删除添加）
-        var isSuccess = await islandRepository.Context.UpdateNav(list)
+        var isSuccess = await islandRepository.Context.UpdateNav(opIsland)
                         .Include(l => l.Users)
                         .ExecuteCommandAsync();//技巧：只更新中间表可以只传A和B表的主键其他不用赋值
 
         // var isSuccess = await islandRepository.RecycleByIdAsync<Island>(island.Id);
         if (!isSuccess) throw Oops.Bah("关注失败,请检查后重新尝试!").StatusCode();
         return "关注成功!";
+    }
+
+    /// <summary>
+    /// 取消关注岛群
+    /// </summary>
+    /// <returns></returns>
+    [HttpPost]
+    public async Task<string> CancelFollowIsland(OnlyId model)
+    {
+        var island = await islandRepository.AsQueryable().Includes(wa => wa.Users).FirstAsync(l => l.Id == Convert.ToInt32(model.Id));
+        if (island == null || island.IsDeleted) throw Oops.Bah("该岛群不存在或已删除").StatusCode();
+
+        var isFollow = island.Users.Any(u => u.Id == User.Id);
+        if (!isFollow) throw Oops.Bah("您未关注当前岛群").StatusCode();
+
+        var opIsland = new Island
+        {
+            Id = island.Id,
+            Users = new List<User> { new User { Id = Convert.ToInt32(User.Id) } }
+        };
+
+        var isSuccess = await islandRepository.Context.DeleteNav(opIsland)
+                        .Include(l => l.Users)
+                        .ExecuteCommandAsync();
+
+        // var isSuccess = await islandRepository.RecycleByIdAsync<Island>(island.Id);
+        if (!isSuccess) throw Oops.Bah("取消关注失败,请检查后重新尝试!").StatusCode();
+        return "取消关注成功!";
     }
 
     /// <summary>

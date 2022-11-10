@@ -1,12 +1,12 @@
 /**
- * 系统管理 用户管理
+ * 系统管理 岛群管理
  */
 <template>
   <div>
     <!-- 面包屑导航 -->
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item>用户管理</el-breadcrumb-item>
+      <el-breadcrumb-item>岛群管理</el-breadcrumb-item>
     </el-breadcrumb>
     <!-- 搜索筛选 -->
     <el-form :inline="true" :model="formInline" class="user-search">
@@ -133,12 +133,10 @@
 <script>
 // 导入请求方法
 import {
-  userList,
-  userSave,
-  userDelete,
-  userPwd,
-  userLock,
-} from '../../api/userMG'
+  IslandsList,
+  IslandSave,
+  IslandDelete
+} from '../../api/basisMG'
 import Pagination from '../../components/Pagination'
 export default {
   data() {
@@ -175,27 +173,6 @@ export default {
         ],
         FullName: [
           { required: true, message: '请输入姓名', trigger: 'blur' }
-        ],
-        Country: [
-          { required: true, message: '请输入国家或地区', trigger: 'blur' }
-        ],
-        PhoneNumber: [
-          { required: true, message: '请输入手机号', trigger: 'blur' },
-          {
-            pattern: /^1(3\d|47|5((?!4)\d)|7(0|1|[6-8])|8\d)\d{8,8}$/,
-            required: true,
-            message: '请输入正确的手机号',
-            trigger: 'blur'
-          }
-        ],
-        Email: [
-          { required: true, message: '请输入邮箱', trigger: 'blur' },
-          {
-            pattern: /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/,
-            required: true,
-            message: '请输入正确的邮箱',
-            trigger: 'blur'
-          }
         ],
       },
       // 重置密码
@@ -256,7 +233,7 @@ export default {
        * 调用接口，注释上面模拟数据 取消下面注释
        */
       // 获取用户列表
-      userList(parameter).then(res => {
+      IslandsList(parameter).then(res => {
         this.loading = false
         if (res.Type != "Success") {
           this.$message({
@@ -264,11 +241,11 @@ export default {
             message: res.Content
           })
         } else {
-          this.userData = res.Data.List
+          this.userData = res.Data
           // 分页赋值
           this.pageparm.currentPage = this.formInline.Page
           this.pageparm.pageSize = this.formInline.Size
-          this.pageparm.total = res.Data.Total
+          this.pageparm.total = res.count
         }
       })
     },

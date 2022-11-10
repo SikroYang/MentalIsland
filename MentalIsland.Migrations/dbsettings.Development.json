@@ -1,6 +1,0 @@
-{
-    "ConnectionStrings": {
-        "Sqlite": "Data Source=MentalIsland.db"
-    },
-    "DbType": "Sqlite"
-}

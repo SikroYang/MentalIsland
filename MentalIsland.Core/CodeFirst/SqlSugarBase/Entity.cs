@@ -50,9 +50,9 @@ public class Entity
     public virtual DateTime? UpdatedTime { get; set; }
 
     /// <summary>
-    /// 软删除
+    /// 逻辑删除
     /// </summary>
-    [SugarColumn(ColumnDescription = "软删除")]
+    [SugarColumn(ColumnDescription = "逻辑删除")]
     public virtual bool IsDeleted { get; set; } = false;
 
 }
