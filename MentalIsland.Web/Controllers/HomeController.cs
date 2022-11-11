@@ -1,4 +1,4 @@
-﻿using MentalIsland.Migrations.Extensions;
+﻿using MentalIsland.Migrations.Extensions.ControllerEx;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

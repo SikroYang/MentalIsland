@@ -13,6 +13,8 @@ import index from '@/views/index';
  */
 // 用户管理
 import user from '@/views/system/user';
+import island from '@/views/system/island';
+import article from '@/views/system/article';
 
 // 启用路由
 Vue.use(Router);
@@ -52,9 +54,18 @@ export default new Router({
     {
       path: '/system/island',
       name: '岛群管理',
-      component: user,
+      component: island,
       meta: {
         title: "岛群管理",
+        requireAuth: true
+      }
+    },
+    {
+      path: '/system/article',
+      name: '文章管理',
+      component: article,
+      meta: {
+        title: "文章管理",
         requireAuth: true
       }
     }]

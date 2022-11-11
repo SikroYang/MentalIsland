@@ -1,6 +1,8 @@
 ﻿using System.Text;
 using Furion;
 using MentalIsland.Migrations.Extensions;
+using MentalIsland.Migrations.Extensions.Auth;
+using MentalIsland.Migrations.Extensions.ControllerEx;
 using MentalIsland.Web.Models.InputModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

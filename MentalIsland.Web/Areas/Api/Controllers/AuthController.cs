@@ -12,6 +12,8 @@ using System.ComponentModel.DataAnnotations;
 using Furion.DataEncryption;
 using NETCore.MailKit.Core;
 using System.Text;
+using MentalIsland.Migrations.Extensions.ControllerEx;
+using MentalIsland.Migrations.Extensions.Auth;
 
 namespace MentalIsland.Web.Areas.Api.Controllers;
 

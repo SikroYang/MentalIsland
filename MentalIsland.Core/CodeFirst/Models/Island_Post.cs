@@ -1,8 +1,6 @@
-using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel;
 using MentalIsland.Core.CodeFirst.SqlSugarBase;
 using SqlSugar;
-using Furion;
 
 namespace MentalIsland.Core.CodeFirst.Models;
 
@@ -20,7 +18,7 @@ public class Island_Post : Entity
     /// <summary>
     /// 内容
     /// </summary>
-    [SugarColumn(ColumnDataType = "nvarchar(255)")] // Sqlite 不支持max
+    [SugarColumn(ColumnDataType = "nvarchar(max)")] // Sqlite 不支持max
     public string Content { get; set; } = default!;
     /// <summary>
     /// 回复数

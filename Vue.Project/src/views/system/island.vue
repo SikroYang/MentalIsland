@@ -18,10 +18,10 @@
         </el-select>
       </el-form-item>
       <el-form-item label="">
-        <el-input size="small" v-model="formInline.UserName" placeholder="输入用户名"></el-input>
+        <el-input size="small" v-model="formInline.UserName" placeholder="输入岛群名"></el-input>
       </el-form-item>
       <el-form-item label="">
-        <el-input size="small" v-model="formInline.FullName" placeholder="输入用户昵称"></el-input>
+        <el-input size="small" v-model="formInline.FullName" placeholder="输入岛群昵称"></el-input>
       </el-form-item>
       <el-form-item label="">
         <el-input size="small" v-model="formInline.PhoneNumber" placeholder="输入手机号"></el-input>
@@ -29,7 +29,6 @@
       <el-form-item>
         <el-button size="small" type="primary" icon="el-icon-search" @click="search">搜索</el-button>
         <el-button size="small" type="primary" icon="el-icon-plus" @click="handleEdit()">添加</el-button>
-        <!-- <el-button size="small" type="primary" @click="handleunit()">部门设置</el-button> -->
       </el-form-item>
     </el-form>
     <!--列表-->
@@ -37,36 +36,25 @@
       border element-loading-text="拼命加载中" style="width: 100%;">
       <el-table-column align="center" type="selection" width="50">
       </el-table-column>
-      <el-table-column align="center" sortable prop="UserName" label="用户名" width="120">
+      <el-table-column align="center" prop="UserName" label="岛群名" width="120">
       </el-table-column>
-      <el-table-column align="center" sortable prop="FullName" label="姓名" width="120">
+      <el-table-column align="center" prop="FullName" label="姓名" width="120">
       </el-table-column>
-      <el-table-column align="center" sortable prop="PhoneNumber" label="手机号" width="120">
+      <el-table-column align="center" prop="PhoneNumber" label="手机号" width="120">
       </el-table-column>
-      <el-table-column align="center" sortable prop="Email" label="邮箱" min-width="120">
+      <el-table-column align="center" prop="Email" label="邮箱" min-width="120">
       </el-table-column>
-      <el-table-column align="center" sortable prop="Country" label="区域/国家" min-width="120">
+      <el-table-column align="center" prop="Country" label="区域/国家" min-width="120">
       </el-table-column>
-      <el-table-column align="center" sortable prop="CreatedTime" label="创建时间" min-width="120">
+      <el-table-column align="center" prop="CreatedTime" label="创建时间" min-width="120">
         <template slot-scope="scope">
           <div>{{ scope.row.CreatedTime | timestampToTime }}</div>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" sortable prop="IsLocked" label="状态" min-width="50">
-        <template slot-scope="scope">
-          <el-switch v-model="!scope.row.IsLocked ? nshow : fshow" active-color="#13ce66" inactive-color="#ff4949"
-            @change="editType(scope.$index, scope.row)">
-          </el-switch>
         </template>
       </el-table-column>
       <el-table-column label="操作" min-width="300">
         <template slot-scope="scope">
           <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
           <el-button size="mini" type="danger" @click="deleteUser(scope.$index, scope.row)">删除</el-button>
-          <el-button size="mini" type="success" @click="resetpwd(scope.$index, scope.row)">重置密码</el-button>
-          <!-- <el-button size="mini" type="success" @click="dataAccess(scope.$index, scope.row)">数据权限</el-button> -->
-          <!-- <el-button size="mini" type="success" @click="offlineUser(scope.$index, scope.row)">下线</el-button> -->
-          <!-- <el-button size="mini" type="success" @click="refreshCache(scope.$index, scope.row)">刷新缓存</el-button> -->
         </template>
       </el-table-column>
     </el-table>
@@ -75,18 +63,12 @@
     <!-- 编辑界面 -->
     <el-dialog :title="title" :visible.sync="editFormVisible" width="30%" @click='closeDialog("edit")'>
       <el-form label-width="120px" ref="editForm" :model="editForm" :rules="rules">
-        <el-form-item label="用户名" prop="UserName">
-          <el-input size="small" v-model="editForm.UserName" auto-complete="off" placeholder="请输入用户名"></el-input>
+        <el-form-item label="岛群名" prop="UserName">
+          <el-input size="small" v-model="editForm.UserName" auto-complete="off" placeholder="请输入岛群名"></el-input>
         </el-form-item>
         <el-form-item label="姓名" prop="FullName">
           <el-input size="small" v-model="editForm.FullName" auto-complete="off" placeholder="请输入姓名"></el-input>
         </el-form-item>
-        <!-- <el-form-item label="角色" prop="roleId">
-          <el-select size="small" v-model="editForm.roleId" placeholder="请选择" class="userRole">
-            <el-option label="公司管理员" value="1"></el-option>
-            <el-option label="普通用户" value="2"></el-option>
-          </el-select>
-        </el-form-item> -->
         <el-form-item label="手机号" prop="PhoneNumber">
           <el-input size="small" v-model="editForm.PhoneNumber" placeholder="请输入手机号"></el-input>
         </el-form-item>
@@ -96,35 +78,11 @@
         <el-form-item label="区域/国家" prop="Country">
           <el-input size="small" v-model="editForm.Country" placeholder="请输入区域或国家"></el-input>
         </el-form-item>
-        <!-- <el-form-item label="性别" prop="userSex">
-          <el-radio v-model="editForm.userSex" label="男">男</el-radio>
-          <el-radio v-model="editForm.userSex" label="女">女</el-radio>
-        </el-form-item> -->
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button size="small" @click='closeDialog("edit")'>取消</el-button>
         <el-button size="small" type="primary" :loading="loading" class="title" @click="submitForm('editForm')">保存
         </el-button>
-      </div>
-    </el-dialog>
-    <!-- 数据权限 -->
-    <el-dialog title="数据权限" :visible.sync="dataAccessshow" width="30%" @click='closeDialog("perm")'>
-      <el-tree ref="tree" default-expand-all="" :data="UserDept" :props="defaultProps" :default-checked-keys="checkmenu"
-        node-key="id" show-checkbox>
-      </el-tree>
-      <div slot="footer" class="dialog-footer">
-        <el-button size="small" @click='closeDialog("perm")'>取消</el-button>
-        <el-button size="small" type="primary" :loading="loading" class="title" @click="menuPermSave">保存</el-button>
-      </div>
-    </el-dialog>
-    <!-- 所属单位 -->
-    <el-dialog title="所属单位" :visible.sync="unitAccessshow" width="30%" @click='closeDialog("unit")'>
-      <el-tree ref="tree" default-expand-all="" :data="UserDept" :props="defaultProps" @check-change="handleClick"
-        :default-checked-keys="checkmenu" node-key="id" show-checkbox check-strictly>
-      </el-tree>
-      <div slot="footer" class="dialog-footer">
-        <el-button size="small" @click='closeDialog("unit")'>取消</el-button>
-        <el-button size="small" type="primary" :loading="loading" class="title" @click="unitPermSave">保存</el-button>
       </div>
     </el-dialog>
   </div>
@@ -144,7 +102,7 @@ export default {
       nshow: true, //switch开启
       fshow: false, //switch关闭
       loading: false, //是显示加载
-      title: '添加用户',
+      title: '添加岛群',
       editFormVisible: false, //控制编辑页面显示与隐藏
       dataAccessshow: false, //控制数据权限显示与隐藏
       unitAccessshow: false, //控制所属单位隐藏与显示
@@ -158,26 +116,16 @@ export default {
         Email: '',
         Country: '',
       },
-      // 部门参数
-      unitparm: {
-        userIds: '',
-        deptId: '',
-        deptName: ''
-      },
       // 选择数据
       selectdata: [],
       // rules表单验证
       rules: {
         UserName: [
-          { required: true, message: '请输入用户名', trigger: 'blur' }
+          { required: true, message: '请输入岛群名', trigger: 'blur' }
         ],
         FullName: [
           { required: true, message: '请输入姓名', trigger: 'blur' }
         ],
-      },
-      // 重置密码
-      resetpsd: {
-        Id: ''
       },
       // 请求数据参数
       formInline: {
@@ -188,7 +136,7 @@ export default {
         PhoneNumber: '',
         IsLocked: ''
       },
-      //用户数据
+      //岛群数据
       userData: [],
       defaultProps: {
         children: 'children',
@@ -232,7 +180,7 @@ export default {
       /***
        * 调用接口，注释上面模拟数据 取消下面注释
        */
-      // 获取用户列表
+      // 获取岛群列表
       IslandsList(parameter).then(res => {
         this.loading = false
         if (res.Type != "Success") {
@@ -287,7 +235,7 @@ export default {
     handleEdit: function (index, row) {
       this.editFormVisible = true
       if (row != undefined && row != 'undefined') {
-        this.title = '修改用户'
+        this.title = '修改岛群'
         this.editForm.Id = row.Id
         this.editForm.UserName = row.UserName
         this.editForm.FullName = row.FullName
@@ -297,7 +245,7 @@ export default {
         this.editForm.Country = row.Country
         // this.editForm.userSex = row.userSex
       } else {
-        this.title = '添加用户'
+        this.title = '添加岛群'
         this.editForm.Id = ''
         this.editForm.UserName = ''
         this.editForm.FullName = ''
@@ -364,7 +312,7 @@ export default {
         this.unitAccessshow = false
       }
     },
-    // 删除用户
+    // 删除岛群
     deleteUser(index, row) {
       this.$confirm('确定要删除吗?', '信息', {
         confirmButtonText: '确定',

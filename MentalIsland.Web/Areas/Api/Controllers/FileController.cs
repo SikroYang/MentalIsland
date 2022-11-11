@@ -1,10 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Furion;
 using Furion.FriendlyException;
-using MentalIsland.Core.CodeFirst.Models;
-using MentalIsland.Core.CodeFirst.SqlSugarBase;
-using MentalIsland.Migrations.Extensions;
-using Microsoft.AspNetCore.Authorization;
+using MentalIsland.Migrations.Extensions.Auth;
+using MentalIsland.Migrations.Extensions.ControllerEx;
 using Microsoft.AspNetCore.Mvc;
 using Snowflake.Core;
 

@@ -11,6 +11,8 @@ using System.ComponentModel.DataAnnotations;
 using Furion.DataEncryption;
 using Furion.UnifyResult;
 using Microsoft.AspNetCore.Authorization;
+using MentalIsland.Migrations.Extensions.ControllerEx;
+using MentalIsland.Migrations.Extensions.Auth;
 
 namespace MentalIsland.Web.Areas.Api.Controllers;
 
@@ -47,10 +49,11 @@ public class UserController : WebApiBaseController<UserController>
             exp.And(u => u.PhoneNumber.Contains(searchInfo.PhoneNumber));
 
         var result = userRepository.AsQueryable().Where(exp.ToExpression());
-        var list = searchInfo.Page > 0 ? await result.ToListAsync() : await result.ToPageListAsync(searchInfo.Page, searchInfo.Size);
+        var list = searchInfo.Page <= 0 ? await result.ToListAsync() : await result.ToPageListAsync(searchInfo.Page, searchInfo.Size);
+        var Total = await result.CountAsync();
         if (searchInfo.Page > 0)
-            return new PagedList<UserOutput> { Page = searchInfo.Page, Size = searchInfo.Size, Total = await result.CountAsync(), List = list.Adapt<List<UserOutput>>() };
-        return new PagedList<UserOutput> { Total = await result.CountAsync(), List = list.Adapt<List<UserOutput>>() };
+            return new PagedList<UserOutput> { Page = searchInfo.Page, Size = searchInfo.Size, Total = Total, List = list.Adapt<List<UserOutput>>() };
+        return new PagedList<UserOutput> { Total = Total, List = list.Adapt<List<UserOutput>>() };
     }
 
     /// <summary>

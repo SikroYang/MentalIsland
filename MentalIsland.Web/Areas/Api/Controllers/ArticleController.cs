@@ -5,6 +5,8 @@ using Mapster;
 using MentalIsland.Core.CodeFirst.Models;
 using MentalIsland.Core.CodeFirst.SqlSugarBase;
 using MentalIsland.Migrations.Extensions;
+using MentalIsland.Migrations.Extensions.Auth;
+using MentalIsland.Migrations.Extensions.ControllerEx;
 using MentalIsland.Web.Models.InputModels;
 using MentalIsland.Web.Models.OutPubModels;
 using Microsoft.AspNetCore.Authorization;
@@ -42,25 +44,31 @@ public class ArticleController : WebApiBaseController<ArticleController>
     [HttpPost]
     public async Task<PagedList<ArticleOutput>> List(ArticleSearchInput searchInfo)
     {
-        var exp = new Expressionable<Article>().And(a => !a.IsDeleted);
+        var exp = new Expressionable<Article, ArticleType>().And((a, t) => !a.IsDeleted && !t.IsDeleted);
         if (searchInfo.ArticleTypeId > 0)
-            exp.And(a => a.ArticleTypeId == searchInfo.ArticleTypeId);
+            exp.And((a, t) => a.ArticleTypeId == searchInfo.ArticleTypeId);
         if (!string.IsNullOrWhiteSpace(searchInfo.Title))
-            exp.And(a => a.Title.Contains(searchInfo.Title));
+            exp.And((a, t) => a.Title.Contains(searchInfo.Title));
 
-        var result = articleRepository.AsQueryable().Where(exp.ToExpression()).LeftJoin<ArticleType>((a, t) => a.ArticleTypeId == t.Id).Select((a, t) => new ArticleOutput
-        {
-            Id = a.Id,
-            ArticleTypeId = a.ArticleTypeId,
-            Title = a.Title,
-            Content = a.Content,
-            CreatedTime = a.CreatedTime,
-            ArticleTypeName = t.Name
-        });
-        var list = searchInfo.Page > 0 ? await result.ToListAsync() : await result.ToPageListAsync(searchInfo.Page, searchInfo.Size);
+        var result = articleRepository.AsQueryable()
+                        .LeftJoin<ArticleType>((a, t) => a.ArticleTypeId == t.Id)
+                        .Where(exp.ToExpression())
+                        .Select((a, t) => new ArticleOutput
+                        {
+                            Id = a.Id,
+                            ArticleTypeId = a.ArticleTypeId,
+                            Title = a.Title,
+                            Content = a.Content,
+                            CreatedTime = a.CreatedTime,
+                            ArticleTypeName = t.Name
+                        });
+        var sqlStr = result.ToSqlString();
+
+        var Total = await result.CountAsync();
+        var list = searchInfo.Page > 0 ? await result.ToPageListAsync(searchInfo.Page, searchInfo.Size) : await result.ToListAsync();
         if (searchInfo.Page > 0)
-            return new PagedList<ArticleOutput> { Page = searchInfo.Page, Size = searchInfo.Size, Total = await result.CountAsync(), List = list };
-        return new PagedList<ArticleOutput> { Total = await result.CountAsync(), List = list };
+            return new PagedList<ArticleOutput> { Page = searchInfo.Page, Size = searchInfo.Size, Total = Total, List = list };
+        return new PagedList<ArticleOutput> { Total = Total, List = list };
     }
 
     /// <summary>

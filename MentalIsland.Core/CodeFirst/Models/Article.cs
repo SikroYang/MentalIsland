@@ -5,28 +5,28 @@ using SqlSugar;
 namespace MentalIsland.Core.CodeFirst.Models;
 
 /// <summary>
-/// ¿ÆÆÕÎÄÕÂ
+/// ç§‘æ™®æ–‡ç« 
 /// </summary>
 [SugarTable("Articles")]
-[Description("¿ÆÆÕÎÄÕÂ±í")]
+[Description("ç§‘æ™®æ–‡ç« è¡¨")]
 public class Article : Entity
 {
     /// <summary>
-    /// ±êÌâ
+    /// æ ‡é¢˜
     /// </summary>
     public string Title { get; set; } = default!;
     /// <summary>
-    /// ÄÚÈİ
+    /// å†…å®¹
     /// </summary>
     public string Content { get; set; } = default!;
     /// <summary>
-    /// Í¼Æ¬µØÖ·
+    /// å›¾ç‰‡åœ°å€
     /// </summary>
     [SugarColumn(IsNullable = true)]
     public string? ImageUrl { get; set; } = default!;
 
     /// <summary>
-    /// ÎÄÕÂÀàĞÍÍâ¼ü
+    /// æ–‡ç« ç±»å‹å¤–é”®
     /// </summary>
     public int ArticleTypeId { get; set; }
 }

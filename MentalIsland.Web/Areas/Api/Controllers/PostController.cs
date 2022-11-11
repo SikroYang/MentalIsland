@@ -2,14 +2,12 @@
 using Mapster;
 using MentalIsland.Core.CodeFirst.Models;
 using MentalIsland.Core.CodeFirst.SqlSugarBase;
-using MentalIsland.Migrations.Extensions;
 using MentalIsland.Web.Models.OutPubModels;
 using MentalIsland.Web.Models.InputModels;
 using Microsoft.AspNetCore.Mvc;
 using SqlSugar;
-using System.ComponentModel.DataAnnotations;
-using Furion.DataEncryption;
-using Microsoft.AspNetCore.Authorization;
+using MentalIsland.Migrations.Extensions.ControllerEx;
+using MentalIsland.Migrations.Extensions.Auth;
 
 namespace MentalIsland.Web.Areas.Api.Controllers;
 

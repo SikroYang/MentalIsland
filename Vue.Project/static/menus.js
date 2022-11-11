@@ -20,6 +20,13 @@ export const menu = [
         hasThird: 'N',
         url: 'system/island',
         menus: null
+      }, {
+        menuid: 103,
+        icon: 'li-icon-scxt',
+        menuname: '文章管理',
+        hasThird: 'N',
+        url: 'system/article',
+        menus: null
       },
     ]
   },
