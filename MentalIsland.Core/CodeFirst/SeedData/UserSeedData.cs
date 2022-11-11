@@ -21,7 +21,7 @@ public class UserSeedData : ISeedData, ISqlSugarEntitySeedData<User>
     {
         return new List<User>{
             new User{
-                // Id = 1,
+                Id = 1,
                 UserName = "admin",
                 PasswordHash = MD5Encryption.Encrypt("admin123"),
                 Country = "China",

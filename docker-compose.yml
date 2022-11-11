@@ -40,26 +40,26 @@ services:
         aliases:
           - nginx
 
-  mssql:
-    image: mcr.microsoft.com/mssql/server:2019-latest
-    container_name: mssql
-    restart: unless-stopped
-    user: root
-    environment:
-      ACCEPT_EULA: Y
-      MSSQL_SA_PASSWORD: MentalIsland.2022
-      # MSSQL_SA_PASSWORD: /run/secrets/mysql_root_password #Sikro.1993
-      MSSQL_PID: Express
-    volumes:
-      - ./mssql/data:/var/opt/mssql/data
-      - ./mssql/log:/var/opt/mssql/log
-      - ./mssql/backup:/var/opt/backup
-    ports:
-      - 1433:1433
-    networks:
-      nginx:
-        aliases:
-          - mssql
+  # mssql:
+  #   image: mcr.microsoft.com/mssql/server:2019-latest
+  #   container_name: mssql
+  #   restart: unless-stopped
+  #   user: root
+  #   environment:
+  #     ACCEPT_EULA: Y
+  #     MSSQL_SA_PASSWORD: MentalIsland.2022
+  #     # MSSQL_SA_PASSWORD: /run/secrets/mysql_root_password #Sikro.1993
+  #     MSSQL_PID: Express
+  #   volumes:
+  #     - ./mssql/data:/var/opt/mssql/data
+  #     - ./mssql/log:/var/opt/mssql/log
+  #     - ./mssql/backup:/var/opt/backup
+  #   ports:
+  #     - 1433:1433
+  #   networks:
+  #     nginx:
+  #       aliases:
+  #         - mssql
 
   # 心理岛网站后端+后台
   MentalIsland:
@@ -71,8 +71,8 @@ services:
       - 5775:5775
     volumes:
       - ./MentalIsland.Web/wwwroot/images:/MentalIsland/wwwroot/images
-    depends_on:
-      - mssql
+    # depends_on:
+    #   - mssql
     networks:
       nginx:
         aliases:

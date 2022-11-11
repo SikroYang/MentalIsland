@@ -18,7 +18,7 @@ public class Island_Post : Entity
     /// <summary>
     /// 内容
     /// </summary>
-    [SugarColumn(ColumnDataType = "nvarchar(max)")] // Sqlite 不支持max
+    [SugarColumn(ColumnDataType = "nvarchar(255)")] // Sqlite 不支持max
     public string Content { get; set; } = default!;
     /// <summary>
     /// 回复数
