@@ -6,14 +6,23 @@ using Furion.DataEncryption;
 
 namespace MentalIsland.Core.CodeFirst.SeedData;
 
+/// <summary>
+/// 岛群数据种子类
+/// </summary>
 public class IslandSeedData : ISeedData, ISqlSugarEntitySeedData<Island>
 {
-    // 测试数据
+    // SqlServer 不需要插入Id(自增)
+    // Sqlite 需要出入Id(在数据种子层 自增不起作用)
+
+    /// <summary>
+    /// 岛群数据种子
+    /// </summary>
     public IEnumerable<Island> HasData()
     {
+        // 测试数据
         return new List<Island>{
             new Island{
-                Id = 1,
+                // Id = 1,
                 Name = "岛群一",
                 Description = "创建第一个岛群",
                 CreatedTime = DateTime.Now

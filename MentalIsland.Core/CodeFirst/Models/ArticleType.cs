@@ -14,8 +14,8 @@ public class ArticleType
     /// <summary>
     /// 主键
     /// </summary>
-    [SugarColumn(IsPrimaryKey = true, IsIdentity = true)]
-    public int Id { get; set; }
+    [SugarColumn(ColumnDescription = "Id主键", IsPrimaryKey = true, IsIdentity = true)]
+    public virtual int Id { get; set; }
 
     /// <summary>
     /// 类型名
