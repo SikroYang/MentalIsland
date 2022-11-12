@@ -1,20 +1,20 @@
 /**
- * 系统管理 岛群管理
+ * 系统管理 帖子管理
  */
 <template>
   <div>
     <!-- 面包屑导航 -->
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item>岛群管理</el-breadcrumb-item>
+      <el-breadcrumb-item>帖子管理</el-breadcrumb-item>
     </el-breadcrumb>
     <!-- 搜索筛选 -->
     <el-form :inline="true" :model="formInline" class="user-search">
       <el-form-item label="">
-        <el-input size="small" v-model="formInline.Name" placeholder="输入岛群名"></el-input>
+        <el-input size="small" v-model="formInline.Name" placeholder="输入帖子名"></el-input>
       </el-form-item>
       <el-form-item label="">
-        <el-input size="small" v-model="formInline.Description" placeholder="输入岛群简介"></el-input>
+        <el-input size="small" v-model="formInline.Description" placeholder="输入帖子简介"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button size="small" type="primary" icon="el-icon-search" @click="search">搜索</el-button>
@@ -26,7 +26,7 @@
       border element-loading-text="拼命加载中" style="width: 100%;">
       <el-table-column align="center" type="selection" width="50">
       </el-table-column>
-      <el-table-column align="center" prop="Name" label="岛群名" width="120">
+      <el-table-column align="center" prop="Name" label="帖子名" width="120">
       </el-table-column>
       <el-table-column align="center" prop="Description" label="姓名" width="120">
       </el-table-column>
@@ -39,7 +39,6 @@
       </el-table-column>
       <el-table-column label="操作" min-width="300">
         <template slot-scope="scope">
-          <el-button size="mini" @click="searchPost(scope.$index, scope.row)">查看帖子</el-button>
           <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
           <el-button size="mini" type="danger" @click="deleteUser(scope.$index, scope.row)">删除</el-button>
         </template>
@@ -50,8 +49,8 @@
     <!-- 编辑界面 -->
     <el-dialog :title="title" :visible.sync="editFormVisible" width="30%" @click='closeDialog("edit")'>
       <el-form label-width="120px" ref="editForm" :model="editForm" :rules="rules">
-        <el-form-item label="岛群名" prop="Name">
-          <el-input size="small" v-model="editForm.Name" auto-complete="off" placeholder="请输入岛群名"></el-input>
+        <el-form-item label="帖子名" prop="Name">
+          <el-input size="small" v-model="editForm.Name" auto-complete="off" placeholder="请输入帖子名"></el-input>
         </el-form-item>
         <el-form-item label="群岛简介" prop="Description">
           <el-input size="small" v-model="editForm.Description" auto-complete="off" placeholder="请输入群岛简介"></el-input>
@@ -83,7 +82,7 @@ export default {
       nshow: true, //switch开启
       fshow: false, //switch关闭
       loading: false, //是显示加载
-      title: '添加岛群',
+      title: '添加帖子',
       editFormVisible: false, //控制编辑页面显示与隐藏
       dataAccessshow: false, //控制数据权限显示与隐藏
       unitAccessshow: false, //控制所属单位隐藏与显示
@@ -101,7 +100,7 @@ export default {
       // rules表单验证
       rules: {
         Name: [
-          { required: true, message: '请输入岛群名', trigger: 'blur' }
+          { required: true, message: '请输入帖子名', trigger: 'blur' }
         ],
         Description: [
           { required: true, message: '请输入群岛简介', trigger: 'blur' }
@@ -114,7 +113,7 @@ export default {
         Name: '',
         Description: '',
       },
-      //岛群数据
+      //帖子数据
       userData: [],
       defaultProps: {
         children: 'children',
@@ -158,7 +157,7 @@ export default {
       /***
        * 调用接口，注释上面模拟数据 取消下面注释
        */
-      // 获取岛群列表
+      // 获取帖子列表
       IslandsList(parameter).then(res => {
         this.loading = false
         if (res.Type != "Success") {
@@ -189,13 +188,13 @@ export default {
     handleEdit: function (index, row) {
       this.editFormVisible = true
       if (row != undefined && row != 'undefined') {
-        this.title = '修改岛群'
+        this.title = '修改帖子'
         this.editForm.Id = row.Id
         this.editForm.Name = row.Name
         this.editForm.Description = row.Description
         this.editForm.QQunNumber = row.QQunNumber
       } else {
-        this.title = '添加岛群'
+        this.title = '添加帖子'
         this.editForm.Id = ''
         this.editForm.Name = ''
         this.editForm.Description = ''
@@ -258,7 +257,7 @@ export default {
         this.unitAccessshow = false
       }
     },
-    // 删除岛群
+    // 删除帖子
     deleteUser(index, row) {
       this.$confirm('确定要删除吗?', '信息', {
         confirmButtonText: '确定',
