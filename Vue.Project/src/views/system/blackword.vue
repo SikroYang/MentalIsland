@@ -69,7 +69,7 @@
 import {
   BlackWordList,
   BlackWordSave,
-  ReplyDelete
+  BlackWordDelete
 } from '../../api/basisMG'
 import Pagination from '../../components/Pagination'
 export default {
@@ -247,7 +247,7 @@ export default {
       })
         .then(() => {
           // 删除
-          ReplyDelete({ Id: row.Id })
+          BlackWordDelete({ Id: row.Id })
             .then(res => {
               if (res.Type == 'Success') {
                 this.$message({
