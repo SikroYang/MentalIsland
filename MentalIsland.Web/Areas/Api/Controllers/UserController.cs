@@ -13,6 +13,7 @@ using Furion.UnifyResult;
 using Microsoft.AspNetCore.Authorization;
 using MentalIsland.Migrations.Extensions.ControllerEx;
 using MentalIsland.Migrations.Extensions.Auth;
+using MentalIsland.Web.Models.Extensions;
 
 namespace MentalIsland.Web.Areas.Api.Controllers;
 
@@ -30,6 +31,14 @@ public class UserController : WebApiBaseController<UserController>
     /// 用户操作仓库
     /// </summary>
     public readonly SqlSugarRepository<User> userRepository;
+    /// <summary>
+    /// 用户心情笔记操作仓库
+    /// </summary>
+    public readonly SqlSugarRepository<UserMoonNote> userMoonNoteRepository;
+    /// <summary>
+    /// 屏蔽词操作仓库
+    /// </summary>
+    public readonly SqlSugarRepository<BlackKey> blackkeyRepository;
 
 #pragma warning restore CS8618 // 在退出构造函数时，不可为 null 的字段必须包含非 null 值。请考虑声明为可以为 null。
 
@@ -162,5 +171,108 @@ public class UserController : WebApiBaseController<UserController>
             x => new { x.PasswordHash, x.UpdatedTime, x.UpdatedUserId, x.UpdatedUserName }).ExecuteCommandHasChangeAsync();
         if (!isSuccess) throw Oops.Bah("重置密码失败,请检查后重新尝试!").StatusCode();
         return "重置密码成功!";
+    }
+
+    /// <summary>
+    /// 获取今日心情和笔记
+    /// </summary>
+    /// <returns></returns>
+    [HttpPost]
+    public async Task<TodayInput> TodayInfo()
+    {
+        var result = await userMoonNoteRepository.AsQueryable().FirstAsync(wa => wa.UserId == User.Id && wa.Today == DateTime.Today);
+        return result.Adapt<TodayInput>() ?? new TodayInput();
+    }
+
+    /// <summary>
+    /// 修改今日心情和笔记
+    /// </summary>
+    /// <returns></returns>
+    [HttpPost]
+    public async Task<string> SetTodayInfo(TodayInput model)
+    {
+        if (model.Note.ContainsKeyWords()) throw Oops.Bah("您发表的内容包含敏感词").StatusCode();
+        var result = await userMoonNoteRepository.AsQueryable().FirstAsync(wa => wa.UserId == User.Id && wa.Today == DateTime.Today);
+        bool isSuccess;
+        if (result == null)
+        {
+            var umnRes = model.Adapt<UserMoonNote>();
+            umnRes.UserId = User?.Id ?? 0;
+            var Id = await userMoonNoteRepository.AsInsertable(umnRes).ExecuteReturnIdentityAsync();
+            isSuccess = Id > 0;
+        }
+        else
+        {
+            result.Moon = string.IsNullOrWhiteSpace(model.Moon) ? result.Moon : model.Moon;
+            result.Note = string.IsNullOrWhiteSpace(model.Note) ? result.Note : model.Note;
+            isSuccess = await userMoonNoteRepository.AsUpdateable(result).IgnoreColumns(true).ExecuteCommandHasChangeAsync();
+        }
+        if (isSuccess) return "修改成功!";
+        else throw Oops.Bah("修改失败,请联系管理员").StatusCode();
+    }
+
+    /// <summary>
+    /// 获取屏蔽词
+    /// </summary>
+    /// <returns></returns>
+    [HttpPost]
+    public async Task<List<BlackKey>> BlackWord()
+    {
+        var result = await blackkeyRepository.AsQueryable().ToListAsync();
+        return result;
+    }
+
+    /// <summary>
+    /// 修改屏蔽词
+    /// </summary>
+    /// <returns></returns>
+    [HttpPost]
+    public async Task<string> SetBlackWord(BlackWordInput model)
+    {
+        var result = model.Id > 0 ? await blackkeyRepository.AsQueryable().FirstAsync(wa => wa.Id == model.Id) : null;
+        bool isSuccess;
+        if (result == null)
+        {
+            var keywords = model.Keyword.Split(new[] { "|", "\r", "\n" }, StringSplitOptions.RemoveEmptyEntries);
+            List<BlackKey> list;
+            if (keywords.Length > 1)
+            {
+                list = keywords.Select(wa => new BlackKey { Keyword = wa }).ToList();
+            }
+            else
+            {
+                var keys = model.Adapt<BlackKey>();
+                list = new List<BlackKey> { keys };
+            }
+            var Id = await blackkeyRepository.AsInsertable(list).ExecuteReturnIdentityAsync();
+            isSuccess = Id > 0;
+        }
+        else
+        {
+            var keywords = model.Keyword.Split(new[] { "|", "\r", "\n" }, StringSplitOptions.RemoveEmptyEntries);
+            if (keywords.Length > 1)
+            {
+                throw Oops.Bah("修改模式下不能写入多个关键词").StatusCode();
+            }
+            result.Keyword = model.Keyword;
+            isSuccess = await blackkeyRepository.AsUpdateable(result).IgnoreColumns(true).ExecuteCommandHasChangeAsync();
+        }
+        if (isSuccess) return "修改成功!";
+        else throw Oops.Bah("修改失败,请联系管理员").StatusCode();
+    }
+
+
+    /// <summary>
+    /// 删除屏蔽词
+    /// </summary>
+    /// <returns></returns>
+    [HttpPost]
+    public async Task<string> BlackWordDelete(OnlyId model)
+    {
+        var deleteKey = await blackkeyRepository.GetByIdAsync(model.Id);
+        if (deleteKey == null) throw Oops.Bah("该帖子不存在或已删除").StatusCode();
+        var isSuccess = await blackkeyRepository.DeleteByIdAsync(deleteKey.Id);
+        if (!isSuccess) throw Oops.Bah("删除失败,请检查后重新尝试!").StatusCode();
+        return "删除成功!";
     }
 }

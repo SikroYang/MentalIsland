@@ -15,6 +15,9 @@ import index from '@/views/index';
 import user from '@/views/system/user';
 import island from '@/views/system/island';
 import article from '@/views/system/article';
+import post from '@/views/system/post';
+import reply from '@/views/system/reply';
+import blackword from '@/views/system/blackword';
 
 // 启用路由
 Vue.use(Router);
@@ -66,6 +69,33 @@ export default new Router({
       component: article,
       meta: {
         title: "文章管理",
+        requireAuth: true
+      }
+    },
+    {
+      path: '/system/post',
+      name: '帖子管理',
+      component: post,
+      meta: {
+        title: "帖子管理",
+        requireAuth: true
+      }
+    },
+    {
+      path: '/system/reply',
+      name: '评论管理',
+      component: reply,
+      meta: {
+        title: "评论管理",
+        requireAuth: true
+      }
+    },
+    {
+      path: '/system/blackword',
+      name: '屏蔽关键词管理',
+      component: blackword,
+      meta: {
+        title: "屏蔽关键词管理",
         requireAuth: true
       }
     }]

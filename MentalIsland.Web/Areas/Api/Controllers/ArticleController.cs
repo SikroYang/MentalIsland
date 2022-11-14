@@ -7,6 +7,7 @@ using MentalIsland.Core.CodeFirst.SqlSugarBase;
 using MentalIsland.Migrations.Extensions;
 using MentalIsland.Migrations.Extensions.Auth;
 using MentalIsland.Migrations.Extensions.ControllerEx;
+using MentalIsland.Web.Models.Extensions;
 using MentalIsland.Web.Models.InputModels;
 using MentalIsland.Web.Models.OutPubModels;
 using Microsoft.AspNetCore.Authorization;
@@ -78,7 +79,8 @@ public class ArticleController : WebApiBaseController<ArticleController>
     [HttpPost]
     public async Task<int> AddOrUpdate(ArticleInput article)
     {
-        if (article.ArticleTypeId <= 0) Oops.Bah("类型Id必须大于0").StatusCode();
+        if (article.Title.ContainsKeyWords() || article.Content.ContainsKeyWords()) throw Oops.Bah("您发表的文章包含敏感词").StatusCode();
+        if (article.ArticleTypeId <= 0) throw Oops.Bah("类型Id必须大于0").StatusCode();
         var articleRes = article.Adapt<Article>();
         bool isSuccess;
         int Id = article.Id ?? 0;

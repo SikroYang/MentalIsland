@@ -5,36 +5,36 @@ using SqlSugar;
 namespace MentalIsland.Core.CodeFirst.Models;
 
 /// <summary>
-/// µºÈºÌû×Ó
+/// å²›ç¾¤å¸–å­
 /// </summary>
 [SugarTable("Island_Posts")]
-[Description("Ìû×Ó±í")]
+[Description("å¸–å­è¡¨")]
 public class Island_Post : Entity
 {
     /// <summary>
-    /// Ìû×Ó±êÌâ
+    /// å¸–å­æ ‡é¢˜
     /// </summary>
     public string Title { get; set; } = default!;
     /// <summary>
-    /// ÄÚÈİ
+    /// å†…å®¹
     /// </summary>
-    [SugarColumn(ColumnDataType = "nvarchar(255)")] // Sqlite ²»Ö§³Ömax
+    [SugarColumn(ColumnDataType = "nvarchar(255)")] // Sqlite ä¸æ”¯æŒmax
     public string Content { get; set; } = default!;
     /// <summary>
-    /// »Ø¸´Êı
+    /// å›å¤æ•°
     /// </summary>
     public int ReplyNumber { get; set; }
     /// <summary>
-    /// ×îºó»Ø¸´Ê±¼ä
+    /// æœ€åå›å¤æ—¶é—´
     /// </summary>
     public DateTime LastReplyTime { get; set; }
     /// <summary>
-    /// µºÈºId
+    /// å²›ç¾¤Id
     /// </summary>
     public int IslandId { get; set; }
 
     /// <summary>
-    /// ÆÀÂÛÁĞ±í
+    /// è¯„è®ºåˆ—è¡¨
     /// </summary>
     [SugarColumn(IsIgnore = true)]
     [Navigate(NavigateType.OneToMany, nameof(Island_Reply.PostId))]

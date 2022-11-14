@@ -171,7 +171,7 @@ export default {
           // 分页赋值
           this.pageparm.currentPage = this.formInline.Page
           this.pageparm.pageSize = this.formInline.Size
-          this.pageparm.total = res.count
+          this.pageparm.total = res.Data.length
         }
       })
     },
@@ -184,6 +184,12 @@ export default {
     //搜索事件
     search() {
       this.getdata(this.formInline)
+    },
+    searchPost: function (index, row) {
+      this.$router.push({
+        path: "./post",
+        query: { id: row.Id },
+      });
     },
     //显示编辑界面
     handleEdit: function (index, row) {

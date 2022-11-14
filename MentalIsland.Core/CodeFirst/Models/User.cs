@@ -53,4 +53,11 @@ public class User : Entity
     [Navigate(typeof(User_Island), nameof(User_Island.UserId), nameof(User_Island.IslandId))]
     public virtual List<Island> Islands { get; set; }
 
+    /// <summary>
+    /// 用户已关注岛群
+    /// </summary>
+    [SugarColumn(IsIgnore = true)]
+    [Navigate(NavigateType.OneToMany, nameof(UserMoonNote.UserId))]
+    public virtual List<UserMoonNote> MoodNotes { get; set; }
+
 }

@@ -11,10 +11,7 @@
     <!-- 搜索筛选 -->
     <el-form :inline="true" :model="formInline" class="user-search">
       <el-form-item label="">
-        <el-input size="small" v-model="formInline.Name" placeholder="输入帖子名"></el-input>
-      </el-form-item>
-      <el-form-item label="">
-        <el-input size="small" v-model="formInline.Description" placeholder="输入帖子简介"></el-input>
+        <el-input size="small" v-model="formInline.Title" placeholder="输入帖子标题"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button size="small" type="primary" icon="el-icon-search" @click="search">搜索</el-button>
@@ -26,11 +23,17 @@
       border element-loading-text="拼命加载中" style="width: 100%;">
       <el-table-column align="center" type="selection" width="50">
       </el-table-column>
-      <el-table-column align="center" prop="Name" label="帖子名" width="120">
+      <el-table-column align="center" prop="Title" label="帖子标题" width="120">
       </el-table-column>
-      <el-table-column align="center" prop="Description" label="姓名" width="120">
-      </el-table-column>
-      <el-table-column align="center" prop="QQunNumber" label="QQ群号" width="120">
+      <el-table-column align="center" label="帖子内容" width="500">
+        <template slot-scope="scope">
+          <el-popover trigger="hover" placement="top">
+            <p>{{ scope.row.Content }}</p>
+            <div slot="reference" class="name-wrapper">
+              <el-tag size="medium">{{ scope.row.Content.substring(0, 50) }}</el-tag>
+            </div>
+          </el-popover>
+        </template>
       </el-table-column>
       <el-table-column align="center" prop="CreatedTime" label="创建时间" min-width="120">
         <template slot-scope="scope">
@@ -39,6 +42,7 @@
       </el-table-column>
       <el-table-column label="操作" min-width="300">
         <template slot-scope="scope">
+          <el-button size="mini" @click="searchReply(scope.row.Id)">查看评论</el-button>
           <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
           <el-button size="mini" type="danger" @click="deleteUser(scope.$index, scope.row)">删除</el-button>
         </template>
@@ -47,16 +51,17 @@
     <!-- 分页组件 -->
     <Pagination v-bind:child-msg="pageparm" @callFather="callFather"></Pagination>
     <!-- 编辑界面 -->
-    <el-dialog :title="title" :visible.sync="editFormVisible" width="30%" @click='closeDialog("edit")'>
+    <el-dialog :title="title" :visible.sync="editFormVisible" width="60%" @click='closeDialog("edit")'>
       <el-form label-width="120px" ref="editForm" :model="editForm" :rules="rules">
-        <el-form-item label="帖子名" prop="Name">
-          <el-input size="small" v-model="editForm.Name" auto-complete="off" placeholder="请输入帖子名"></el-input>
+        <el-form-item label="岛群Id" prop="IslandId">
+          <el-input size="small" v-model="editForm.IslandId" auto-complete="off" placeholder="请输入岛群Id"></el-input>
         </el-form-item>
-        <el-form-item label="群岛简介" prop="Description">
-          <el-input size="small" v-model="editForm.Description" auto-complete="off" placeholder="请输入群岛简介"></el-input>
+        <el-form-item label="帖子标题" prop="Title">
+          <el-input size="small" v-model="editForm.Title" auto-complete="off" placeholder="请输入帖子标题"></el-input>
         </el-form-item>
-        <el-form-item label="QQ群号" prop="QQunNumber">
-          <el-input size="small" v-model="editForm.QQunNumber" placeholder="请输入QQ群号"></el-input>
+        <el-form-item label="帖子内容" prop="Content">
+          <el-input type="textarea" :autosize="{ minRows: 3, maxRows: 12 }" size="small" v-model="editForm.Content"
+            auto-complete="off" placeholder="请输入帖子内容"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -71,47 +76,50 @@
 <script>
 // 导入请求方法
 import {
-  IslandsList,
-  IslandSave,
-  IslandDelete
+  PostsList,
+  PostSave,
+  PostDelete
 } from '../../api/basisMG'
 import Pagination from '../../components/Pagination'
 export default {
   data() {
     return {
-      nshow: true, //switch开启
-      fshow: false, //switch关闭
       loading: false, //是显示加载
       title: '添加帖子',
       editFormVisible: false, //控制编辑页面显示与隐藏
-      dataAccessshow: false, //控制数据权限显示与隐藏
-      unitAccessshow: false, //控制所属单位隐藏与显示
       // 编辑与添加
       editForm: {
         Id: '',
-        Name: '',
-        Description: '',
-        QQunNumber: '',
-        Email: '',
-        Country: '',
+        IslandId: '',
+        Title: '',
+        Content: '',
       },
       // 选择数据
       selectdata: [],
       // rules表单验证
       rules: {
-        Name: [
-          { required: true, message: '请输入帖子名', trigger: 'blur' }
+        IslandId: [
+          { required: true, message: '请输入岛群Id', trigger: 'blur' },
+          {
+            pattern: /^\d+$/,
+            required: true,
+            message: '岛群Id必须是数字',
+            trigger: 'blur'
+          }
         ],
-        Description: [
-          { required: true, message: '请输入群岛简介', trigger: 'blur' }
+        Title: [
+          { required: true, message: '请输入帖子标题', trigger: 'blur' }
+        ],
+        Content: [
+          { required: true, message: '请输入帖子内容', trigger: 'blur' }
         ],
       },
       // 请求数据参数
       formInline: {
         Page: 1,
         Size: 10,
-        Name: '',
-        Description: '',
+        IslandId: 0,
+        Title: '',
       },
       //帖子数据
       userData: [],
@@ -143,6 +151,7 @@ export default {
    * 创建完毕
    */
   created() {
+    this.formInline.IslandId = this.$route.query.id;
     this.getdata(this.formInline)
   },
 
@@ -158,7 +167,7 @@ export default {
        * 调用接口，注释上面模拟数据 取消下面注释
        */
       // 获取帖子列表
-      IslandsList(parameter).then(res => {
+      PostsList(parameter).then(res => {
         this.loading = false
         if (res.Type != "Success") {
           this.$message({
@@ -184,21 +193,28 @@ export default {
     search() {
       this.getdata(this.formInline)
     },
+    searchReply: function (id) {
+      this.$router.push({
+        path: "./reply",
+        query: { id },
+      });
+    },
     //显示编辑界面
     handleEdit: function (index, row) {
       this.editFormVisible = true
       if (row != undefined && row != 'undefined') {
         this.title = '修改帖子'
         this.editForm.Id = row.Id
-        this.editForm.Name = row.Name
-        this.editForm.Description = row.Description
-        this.editForm.QQunNumber = row.QQunNumber
+        this.editForm.IslandId = row.IslandId
+        this.editForm.Title = row.Title
+        this.editForm.Content = row.Content
       } else {
         this.title = '添加帖子'
+        var islandId = this.formInline.IslandId ? this.formInline.IslandId : ''
         this.editForm.Id = ''
-        this.editForm.Name = ''
-        this.editForm.Description = ''
-        this.editForm.QQunNumber = ''
+        this.editForm.IslandId = islandId
+        this.editForm.Title = ''
+        this.editForm.Content = ''
       }
     },
     // 编辑、添加提交方法
@@ -206,7 +222,7 @@ export default {
       this.$refs[editData].validate(valid => {
         if (valid) {
           // 请求方法
-          IslandSave(this.editForm)
+          PostSave(this.editForm)
             .then(res => {
               this.editFormVisible = false
               this.loading = false
@@ -266,7 +282,7 @@ export default {
       })
         .then(() => {
           // 删除
-          IslandDelete({ Id: row.Id })
+          PostDelete({ Id: row.Id })
             .then(res => {
               if (res.Type == 'Success') {
                 this.$message({

@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using SqlSugar;
 using MentalIsland.Migrations.Extensions.ControllerEx;
 using MentalIsland.Migrations.Extensions.Auth;
+using MentalIsland.Web.Models.Extensions;
 
 namespace MentalIsland.Web.Areas.Api.Controllers;
 
@@ -60,6 +61,7 @@ public class PostController : WebApiBaseController<PostController>
     [HttpPost]
     public async Task<int> AddOrUpdatePost(PostInput post)
     {
+        if (post.Title.ContainsKeyWords() || post.Content.ContainsKeyWords()) throw Oops.Bah("您发表的内容包含敏感词").StatusCode();
         if (post.IslandId <= 0) Oops.Bah("岛群Id必须大于0").StatusCode();
         var postRes = post.Adapt<Island_Post>();
         bool isSuccess;
@@ -85,8 +87,9 @@ public class PostController : WebApiBaseController<PostController>
     public async Task<PostOutput> PostById(OnlyId model)
     {
         if (model.Id <= 0) throw Oops.Bah("Id必须大于0").StatusCode();
-        var result = await postRepository.AsQueryable().Includes(l => l.Replies).FirstAsync(l => l.Id == model.Id);
+        var result = await postRepository.AsQueryable().Includes(l => l.Replies.Where(wa => !wa.IsDeleted).ToList()).FirstAsync(l => l.Id == model.Id);
         if (result == null || result.IsDeleted) throw Oops.Bah("该帖子不存在或已删除").StatusCode();
+        // result.Replies = result.Replies.Where(wa => !wa.IsDeleted).ToList();
         return result.Adapt<PostOutput>();
     }
 
@@ -111,6 +114,7 @@ public class PostController : WebApiBaseController<PostController>
     [HttpPost]
     public async Task<int> AddOrUpdateReply(ReplyInput reply)
     {
+        if (reply.Content.ContainsKeyWords()) throw Oops.Bah("您发表的内容包含敏感词").StatusCode();
         if (reply.PostId <= 0) Oops.Bah("帖子Id必须大于0").StatusCode();
         var postRes = reply.Adapt<Island_Reply>();
         bool isSuccess;

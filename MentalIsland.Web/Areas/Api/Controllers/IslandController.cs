@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using SqlSugar;
 using MentalIsland.Migrations.Extensions.ControllerEx;
 using MentalIsland.Migrations.Extensions.Auth;
+using MentalIsland.Web.Models.Extensions;
 
 namespace MentalIsland.Web.Areas.Api.Controllers;
 
@@ -55,6 +56,7 @@ public class IslandController : WebApiBaseController<IslandController>
     [HttpPost]
     public async Task<int> AddOrUpdateIsland(IslandInput island)
     {
+        if (island.Name.ContainsKeyWords() || island.Description.ContainsKeyWords()) throw Oops.Bah("您发表的内容包含敏感词").StatusCode();
         var islandRes = island.Adapt<Island>();
         bool isSuccess;
         int Id = island.Id ?? 0;

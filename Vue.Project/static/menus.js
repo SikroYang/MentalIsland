@@ -8,24 +8,33 @@ export const menu = [
     menus: [
       {
         menuid: 101,
-        icon: 'icon-cus-manage',
         menuname: '用户管理',
         hasThird: 'N',
         url: 'system/user',
         menus: null
       }, {
         menuid: 102,
-        icon: 'li-icon-scxt',
         menuname: '岛群管理',
         hasThird: 'N',
         url: 'system/island',
         menus: null
       }, {
         menuid: 103,
-        icon: 'li-icon-scxt',
+        menuname: '帖子管理',
+        hasThird: 'N',
+        url: 'system/post',
+        menus: null
+      }, {
+        menuid: 104,
         menuname: '文章管理',
         hasThird: 'N',
         url: 'system/article',
+        menus: null
+      }, {
+        menuid: 105,
+        menuname: '屏蔽关键词管理',
+        hasThird: 'N',
+        url: 'system/blackword',
         menus: null
       },
     ]

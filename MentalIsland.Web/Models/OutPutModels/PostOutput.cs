@@ -59,6 +59,11 @@ public class PostOutput
 public class ReplyOutput
 {
     /// <summary>
+    /// 评论Id
+    /// </summary>
+    public int Id { get; set; }
+
+    /// <summary>
     /// 回复内容
     /// </summary>
     public string Content { get; set; } = default!;
