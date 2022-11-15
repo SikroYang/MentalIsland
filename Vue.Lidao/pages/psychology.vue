@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-10-28 09:24:55
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-11-15 13:49:27
+ * @LastEditTime: 2022-11-15 17:04:24
  * @FilePath: \project\pages\psychology.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -43,7 +43,7 @@
             人就这么一辈子，想到了这句话，如果我是英雄，便要创造更伟大的功业；如果我是学者，便要获取更高的学问；如果我爱什么人，便要大胆地告诉她。因为今日过去便不再来了；这一辈子过去，便什么都消逝了。一本书未读，一句话未讲，便再也没有机会了。这可珍贵的一辈子，我必须好好地把握住它啊！
           </p>
         </div>
-        <div class="juc pic">
+        <div class="juc pic_y">
           <!-- <p>在抉择的哪一刻，成败实已露出端倪。</p> -->
         </div>
       </div>
@@ -160,7 +160,7 @@ h3 {
 .textl {
   text-align: left;
 }
-.pic {
+.pic_y {
   background: url(../assets/pic5.jpg) no-repeat;
   background-size: 100% 100%;
 }
