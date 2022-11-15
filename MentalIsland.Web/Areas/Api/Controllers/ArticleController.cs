@@ -98,6 +98,19 @@ public class ArticleController : WebApiBaseController<ArticleController>
     }
 
     /// <summary>
+    /// 根据Id获取文章
+    /// </summary>
+    /// <returns></returns>
+    [HttpPost]
+    public async Task<ArticleOutput> ArticleById(OnlyId model)
+    {
+        var article = await articleRepository.GetByIdAsync(model.Id);
+        if (article == null || article.IsDeleted) throw Oops.Bah("该帖子不存在或已删除").StatusCode();
+
+        return article.Adapt<ArticleOutput>();
+    }
+
+    /// <summary>
     /// 删除文章
     /// </summary>
     /// <returns></returns>
