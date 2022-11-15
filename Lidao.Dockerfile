@@ -3,7 +3,7 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g" /etc/apk/repositorie
     && apk add --no-cache make gcc g++ python3
 
 WORKDIR /MentalIsland
-COPY . .
+COPY ./Vue.Lidao .
 RUN yarn
 
 EXPOSE 8000
