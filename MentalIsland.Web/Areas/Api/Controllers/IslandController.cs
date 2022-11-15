@@ -9,6 +9,7 @@ using SqlSugar;
 using MentalIsland.Migrations.Extensions.ControllerEx;
 using MentalIsland.Migrations.Extensions.Auth;
 using MentalIsland.Web.Models.Extensions;
+using Furion.DatabaseAccessor;
 
 namespace MentalIsland.Web.Areas.Api.Controllers;
 
@@ -54,6 +55,7 @@ public class IslandController : WebApiBaseController<IslandController>
     /// </summary>
     /// <returns></returns>
     [HttpPost]
+    [UnitOfWork]
     public async Task<int> AddOrUpdateIsland(IslandInput island)
     {
         if (island.Name.ContainsKeyWords() || island.Description.ContainsKeyWords()) throw Oops.Bah("您发表的内容包含敏感词").StatusCode();
@@ -64,6 +66,17 @@ public class IslandController : WebApiBaseController<IslandController>
         {
             Id = await islandRepository.AsInsertable(islandRes).ExecuteReturnIdentityAsync();
             isSuccess = Id > 0;
+
+            var opIsland = new Island
+            {
+                Id = Id,
+                Users = new List<User> { new User { Id = Convert.ToInt32(User.Id) } }
+            };
+
+            //默认模式：只更新关系表 （删除添加）
+            isSuccess = await islandRepository.Context.UpdateNav(opIsland)
+                            .Include(l => l.Users)
+                            .ExecuteCommandAsync();//技巧：只更新中间表可以只传A和B表的主键其他不用赋值
         }
         else
         {
@@ -152,5 +165,16 @@ public class IslandController : WebApiBaseController<IslandController>
         if (user == null || user.IsDeleted) throw Oops.Bah("该用户不存在或已删除").StatusCode();
 
         return user.Islands.Adapt<List<IslandOutput>>();
+    }
+
+    /// <summary>
+    /// 获取用户创建的岛屿
+    /// </summary>
+    /// <returns></returns>
+    [HttpPost]
+    public async Task<List<IslandOutput>> GetUserCreatedIsland()
+    {
+        var list = await islandRepository.AsQueryable().Where(wa => wa.CreatedUserId == User.Id).ToListAsync();
+        return list.Adapt<List<IslandOutput>>() ?? new List<IslandOutput>();
     }
 }
