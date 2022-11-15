@@ -4,7 +4,9 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g" /etc/apk/repositorie
 
 WORKDIR /MentalIsland
 COPY ./Vue.Lidao .
-RUN yarn
+
+ENV NODE_ENV=production
+RUN yarn && yarn build
 
 EXPOSE 8000
-ENTRYPOINT ["yarn", "dev"]
+ENTRYPOINT ["yarn", "start"]

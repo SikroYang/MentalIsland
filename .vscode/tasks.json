@@ -61,27 +61,27 @@
             "problemMatcher": "$msCompile"
         },
         {
-            "label": "yarn run",
+            "label": "BackEnd run",
             "type": "shell",
             "command": "yarn && yarn dev",
             "options": {
-                "cwd": "Vue.Project"
+                "cwd": "Vue.BackEnd"
             }
         },
         {
-            "label": "yarn build & copy",
+            "label": "BackEnd build & copy",
             "type": "shell",
             "command": "yarn && yarn build && cp -r -fo ./BackEnd ../MentalIsland.Web/wwwroot",
             "options": {
-                "cwd": "Vue.Project"
+                "cwd": "Vue.BackEnd"
             }
         },
         {
-            "label": "vue copy",
+            "label": "BackEnd copy",
             "type": "shell",
             "command": "cp -r -fo ./BackEnd ../MentalIsland.Web/wwwroot",
             "options": {
-                "cwd": "Vue.Project"
+                "cwd": "Vue.BackEnd"
             }
         }
     ]
