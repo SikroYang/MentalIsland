@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-10-24 15:15:45
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-11-11 13:48:29
+ * @LastEditTime: 2022-11-15 15:38:34
  * @FilePath: \project\pages\login.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -148,7 +148,7 @@ export default {
   display: flex;
   justify-items: center;
   align-items: center;
-  justify-content: end;
+  /* justify-content: end; */
 }
 .head {
   width: 50px;

@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-10-25 14:00:48
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-11-08 16:17:30
+ * @LastEditTime: 2022-11-15 15:03:54
  * @FilePath: \project\pages\signin.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -110,11 +110,11 @@
           </el-checkbox-group>
         </el-form-item> -->
 
-        <el-row style="text-align: center; margin-top: -10px">
+        <!-- <el-row style="text-align: center; margin-top: -10px">
           <p style="color: #8a8c8e">
             通过创建帐户，您同意我们的服务条款和隐私政策
           </p>
-        </el-row>
+        </el-row> -->
         <el-form-item>
           <el-button
             type="primary"

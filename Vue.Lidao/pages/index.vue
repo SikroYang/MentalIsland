@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-10-24 14:57:41
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-11-10 16:03:40
+ * @LastEditTime: 2022-11-15 15:53:55
  * @FilePath: \project\pages\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -13,14 +13,13 @@
       <div class="left">
         <div class="left_top">
           <div>
-            <h1>Hero Header</h1>
-            <h3>
-              I can arrange things well, but I can think of things I didn't
-              arrange
+            <!-- <h1>Hero Header</h1> -->
+            <h3 style="text-indent: 2em;">
+              在注册登陆「离岛Island」后即可加入社区，参与互动，阅读文章。期待你们的积极参与，也愿离岛这个独一无二的平台能够达到它的用处，真正的帮助到你们！
             </h3>
           </div>
           <div style="margin-top: 100px">
-            <button class="but">开始旅程</button>
+            <button class="but" @click="syPage">开始旅程</button>
             <button class="but" @click="login">登入</button>
           </div>
         </div>
@@ -63,6 +62,9 @@ export default {
     login() {
       this.$router.push("/login");
     },
+    syPage(){
+      this.$router.push("/home");
+    }
   },
 };
 </script>

@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-10-24 15:15:45
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-11-11 14:48:34
+ * @LastEditTime: 2022-11-15 14:48:06
  * @FilePath: \project\pages\login.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -60,29 +60,29 @@
                       >关注</el-button
                     >
 
-                    <el-popover
+                    <!-- <el-popover
                       placement="top-start"
                       width="200"
                       trigger="hover"
                     >
                       <p>QQ群号：{{ o.QQunNumber }}</p>
-                      <!-- <img
+                      <img
                         class="picture"
                         src="https://t7.baidu.com/it/u=2272690563,768132477&fm=193&f=GIF"
                         alt=""
                         srcset=""
-                      /> -->
+                      />
                       <el-button slot="reference" type="warning" class="button"
                         >加入</el-button
                       >
-                    </el-popover>
+                    </el-popover> -->
                   </div>
                 </div>
               </div>
             </el-card>
           </el-col>
         </el-row>
-        <el-pagination
+        <!-- <el-pagination
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
           :current-page.sync="currentPage1"
@@ -90,7 +90,7 @@
           layout="total, prev, pager, next"
           :total="1000"
         >
-        </el-pagination>
+        </el-pagination> -->
       </div>
       <div class="com-right flex mart">
         <el-button
@@ -111,9 +111,9 @@
               <el-form-item label="群岛简介" :label-width="formLabelWidth">
                 <el-input type="textarea" v-model="form.desc"></el-input>
               </el-form-item>
-              <el-form-item label="QQ群号" :label-width="formLabelWidth">
+              <!-- <el-form-item label="QQ群号" :label-width="formLabelWidth">
                 <el-input v-model="form.qq" autocomplete="off"></el-input>
-              </el-form-item>
+              </el-form-item> -->
               <!-- <el-form-item
                 label="上传群岛二维码"
                 :label-width="formLabelWidth"
@@ -229,7 +229,7 @@ export default {
       //群岛搜索
       let that = this;
       let data = { Name: that.reInput, Description: that.reInput };
-      this.qdLists(that.reInput, that.reInput);
+      this.qdLists(that.reInput, '');
     },
     qdLists(a, b) {
       //群岛列表
@@ -385,6 +385,7 @@ export default {
 .button {
   padding: 5px;
   margin-right: 5px;
+  width: 100px;
 }
 
 .image {

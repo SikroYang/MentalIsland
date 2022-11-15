@@ -2,33 +2,33 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-10-24 14:57:41
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-11-14 16:15:47
+ * @LastEditTime: 2022-11-15 13:33:53
  * @FilePath: \project\pages\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
   <div>
-    <Top />
     <div>
       <div class="right">
-        <!-- <h1>欢迎回家</h1> -->
+        <Top />
       </div>
       <div class="flex">
-        <!-- <div class="home_left">
-          <el-carousel indicator-position="outside" height="460px">
-            <el-carousel-item v-for="(item, i) in list" :key="i">
-              <img :src="item.image" class="pic" alt="" srcset="" />
-            </el-carousel-item>
-          </el-carousel>
-        </div> -->
+        <div class="home_left">
+          <img
+            src="../assets/welcome.jpg"
+            style="width: 640px; height: 430px"
+            alt=""
+            srcset=""
+          />
+        </div>
         <div class="home_right">
           <div>
-            <h3>今日名言</h3>
+            <h1>关于我们</h1>
             <div class="dictum">
-              不要停顿,因为别人会超过你;不要返顾,以免摔倒。——阿·雷哈尼
+              我们是致力于解决心理障碍的公益平台我们是致力于解决心理障碍的公益平台我们是致力于解决心理障碍的公益平台我们是致力于解决心理障碍的公益平台我们是致力于解决心理障碍的公益平台我们是致力于解决心理障碍的公益平台我们是致力于解决心理障碍的公益平台我们是致力于解决心理障碍的公益平台我们是致力于解决心理障碍的公益平台我们是致力于解决心理障碍的公益平台我们是致力于解决心理障碍的公益平台
             </div>
           </div>
-          <div class="flex">
+          <!-- <div class="flex">
             <div>
               <h3>今日心情</h3>
               <div>
@@ -43,7 +43,7 @@
             <div>
               <h3>今日笔记</h3>
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
@@ -71,7 +71,7 @@ export default {
           image: require("../assets/pic4.jpg"),
         },
       ],
-      radio:"喜悦"
+      radio: "喜悦",
     };
   },
   methods: {},
@@ -100,10 +100,9 @@ h3 {
   height: 100%;
 }
 .right {
-  width: 30%;
-  height: 300px;
-  margin: auto;
-  background: url("../assets/hy.png") no-repeat;
+  width: 100%;
+  height: 480px;
+  background: url("../assets/banner.jpg") no-repeat;
   background-size: 100% 100%;
 }
 .left_top {
@@ -129,12 +128,13 @@ h3 {
 .home_right {
   width: 55%;
   margin-left: 30px;
+  margin-top: 50px;
 }
 .dictum {
   width: 90%;
-  height: 60px;
-  background-color: #fadfcf;
-  padding: 20px 40px;
+  height: 160px;
+  line-height: 35px;
+  text-indent: 2em;
 }
 </style>
   

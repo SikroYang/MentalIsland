@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-10-24 15:15:45
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-11-12 09:19:48
+ * @LastEditTime: 2022-11-15 15:27:19
  * @FilePath: \project\pages\login.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -135,9 +135,9 @@
               <el-form-item label="群岛内容">
                 <el-input type="textarea" v-model="form3.nickDesc"></el-input>
               </el-form-item>
-              <el-form-item label="QQ群">
+              <!-- <el-form-item label="QQ群">
                 <el-input v-model="form3.qq"></el-input>
-              </el-form-item>
+              </el-form-item> -->
             </el-form>
             <span slot="footer" class="dialog-footer">
               <el-button type="primary" @click="information()"
@@ -235,7 +235,7 @@ export default {
       //群岛列表
       let that = this;
       this.$axios
-        .post("/Api/Island/List", { Name: a, Description: b })
+        .post("/Api/Island/GetUserCreatedIsland")
         .then((res) => {
           console.log(res);
           if (res.data.Code === 200) {
@@ -277,7 +277,7 @@ export default {
 </script>
   <style>
 .content {
-  width: 80%;
+  width: 50%;
   margin: auto;
   margin-top: 50px;
   border: 1px solid #ccc;
@@ -312,7 +312,7 @@ export default {
 .qd ul li {
   list-style: none;
 float: left;
-margin: 10px;
+margin: 20px;
 }
 .qd ul li img {
   width: 120px;

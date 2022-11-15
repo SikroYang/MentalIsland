@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-10-28 09:24:55
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-11-08 10:17:30
+ * @LastEditTime: 2022-11-15 13:50:47
  * @FilePath: \project\pages\psychology.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -10,7 +10,7 @@
   <div>
     <Top />
     <div class="center">
-      <h1>搜查结果：----</h1>
+      <h1>搜查结果：{{ text }}</h1>
       <div class="flex">
         <el-input placeholder="请输入内容" v-model="reInput" clearable>
         </el-input>
@@ -21,47 +21,32 @@
         </div>
       </div>
       <div class="mart">
-        <el-radio-group v-model="radio1" @change="sea()" fill="#F7BC99">
-          <el-radio-button  label="基础科普"></el-radio-button>
-          <el-radio-button  label="双向的著名作品"></el-radio-button>
-          <el-radio-button  label="一手调研"></el-radio-button>
-          <el-radio-button  label="有意思的案例"></el-radio-button>
+        <el-radio-group
+          v-model="radio1"
+          @change="sea()"
+          fill="#F7BC99"
+          v-for="(item, i) in gyRadio"
+          :key="i"
+        >
+          <el-radio-button :label="item.Id">{{ item.Name }}</el-radio-button>
         </el-radio-group>
       </div>
       <div class="j-c psyList">
         <ul>
-          <li @click="details()">
-            <img
-              class="pic"
-              src="~assets/p2.jpg"
-              alt=""
-              srcset=""
-            />
+          <li v-for="(item, i) in artList" :key="i">
+            <img class="pic" src="~assets/p2.jpg" alt="" srcset="" />
             <div class="article">
               <h3>
-                每个人都有自己喜爱的花，每个人都有许多种理由善待自己，把一生的光阴凝成时光长河中那一瓣恒久的心香。在盛开的一刹那，灿烂夺目的它会吸引所有的视线。
+                {{ item.Title }}
               </h3>
               <p>
-                然而，烦躁的都市啊，请不要忘记，这世界本是镜花水月。一切如花、花如一切。所以，佛祖拈花而迦叶微笑；这一笑，便是整个世界。
+                {{ item.Content | filterAmount(60) }}
               </p>
-              <i class="el-icon-right" style="color: #2a5caa;float: right;padding-right: 100px;"></i>
-            </div>
-          </li>
-          <li>
-            <img
-              class="pic"
-              src="~assets/p2.jpg"
-              alt=""
-              srcset=""
-            />
-            <div class="article">
-              <h3>
-                每个人都有自己喜爱的花，每个人都有许多种理由善待自己，把一生的光阴凝成时光长河中那一瓣恒久的心香。在盛开的一刹那，灿烂夺目的它会吸引所有的视线。
-              </h3>
-              <p>
-                然而，烦躁的都市啊，请不要忘记，这世界本是镜花水月。一切如花、花如一切。所以，佛祖拈花而迦叶微笑；这一笑，便是整个世界。
-              </p>
-              <i class="el-icon-right" style="color: #2a5caa;float: right;padding-right: 100px;"></i>
+              <i
+                class="el-icon-right"
+                style="color: #2a5caa; float: right; padding-right: 100px"
+                @click="details(item)"
+              ></i>
             </div>
           </li>
         </ul>
@@ -78,23 +63,77 @@ export default {
   data() {
     return {
       reInput: "",
-      radio1: "基础科普",
+      radio1: this.$route.query.id,
       text: this.$route.query.text,
+      gyRadio: [],
+      artList: [],
     };
+  },
+  filters: {
+    filterAmount(value, n) {
+      if (!n) n = 20;
+      if (value && value.length > n) {
+        value = value.substring(0, n) + "...";
+      }
+      return value;
+    },
+  },
+  created() {
+    console.log(this.$route.query);
+    if (this.$route.query.text != "") {
+      this.psy("", "", "", this.text);
+    } else {
+      this.psy("", "", this.radio1, "");
+    }
+
+    this.psyRadio();
   },
   methods: {
     sea() {
       let that = this;
       console.log(that.radio1);
+      that.psy("", "", that.radio1, "");
     },
     research() {
       let that = this;
       console.log(that.reInput);
+      this.psy("", "", "", this.reInput);
     },
-    details(){
-        let that = this;
-        this.$router.push({path:'./psydetails',query:{id:that.id}})
-    }
+    details(e) {
+      let that = this;
+      console.log(e);
+      localStorage.setItem("details", JSON.stringify(e));
+      that.$router.push({ path: "./psydetails" });
+    },
+    psy(a, b, c, d) {
+      //搜索结果
+      let that = this;
+      let data = { Page: a, Size: b, ArticleTypeId: c, Title: d };
+      this.$axios.post("/Api/Article/List", data).then((res) => {
+        if (res.data.Code === 200) {
+          // console.log(res.data.Data);
+          that.psyList = res.data.Data;
+          // console.log(that.psyList)
+          const obj = that.psyList.List;
+          // console.log(obj)
+          that.artList = obj;
+          // let arr = obj.filter((i) => {
+          //   return that.radio1 == i.ArticleTypeId;
+          // });
+          // that.artList=arr
+          // console.log(arr);
+        }
+      });
+    },
+    psyRadio() {
+      //按钮列表
+      let that = this;
+      this.$axios.post("/Api/Article/TypeList").then((res) => {
+        if (res.data.Code === 200) {
+          that.gyRadio = res.data.Data;
+        }
+      });
+    },
   },
 };
 </script>
@@ -150,7 +189,7 @@ h3 {
   margin-bottom: 30px;
 }
 .article {
-  padding:0 50px;
+  padding: 0 50px;
   color: #9f7861;
   background-color: #f5eed2;
 }
