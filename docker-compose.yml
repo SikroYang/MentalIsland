@@ -78,3 +78,18 @@ services:
       nginx:
         aliases:
           - MentalIsland
+
+  # 心理岛网站前端
+  lidao:
+    build:
+      context: .
+      dockerfile: Lidao.Dockerfile
+    image: yxx/lidao:latest
+    container_name: lidao
+    restart: always
+    ports:
+      - 8000:8000
+    networks:
+      nginx:
+        aliases:
+          - lidao

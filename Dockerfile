@@ -10,11 +10,11 @@ COPY ["MentalIsland.Web/","MentalIsland.Web/"]
 WORKDIR /MentalIsland/MentalIsland.Web
 RUN dotnet publish -c Release -o publish/
 
-FROM node:lts-bullseye as build
+FROM node:16.17.0-alpine as build
 WORKDIR /MentalIsland
 
-COPY ["Vue.Project/","Vue.Project/"]
-WORKDIR /MentalIsland/Vue.Project
+COPY ["Vue.BackEnd/","Vue.BackEnd/"]
+WORKDIR /MentalIsland/Vue.BackEnd
 RUN yarn && yarn build
 
 FROM base AS final
@@ -25,6 +25,6 @@ ENV ASPNETCORE_URLS=http://0.0.0.0:5775
 ENV TZ=Asia/Shanghai
 
 COPY --from=publish /MentalIsland/MentalIsland.Web/publish .
-COPY --from=build /MentalIsland/Vue.Project/BackEnd ./wwwroot/BackEnd
+COPY --from=build /MentalIsland/Vue.BackEnd/BackEnd ./wwwroot/BackEnd
 RUN cp -rf /usr/share/zoneinfo/${TZ} /etc/localtime && echo "${TZ}" > /etc/timezone
 ENTRYPOINT ["dotnet", "MentalIsland.Web.dll"]
