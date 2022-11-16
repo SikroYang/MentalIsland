@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-10-24 14:57:41
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-11-15 13:33:53
+ * @LastEditTime: 2022-11-16 10:17:49
  * @FilePath: \project\pages\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -25,7 +25,7 @@
           <div>
             <h1>关于我们</h1>
             <div class="dictum">
-              我们是致力于解决心理障碍的公益平台我们是致力于解决心理障碍的公益平台我们是致力于解决心理障碍的公益平台我们是致力于解决心理障碍的公益平台我们是致力于解决心理障碍的公益平台我们是致力于解决心理障碍的公益平台我们是致力于解决心理障碍的公益平台我们是致力于解决心理障碍的公益平台我们是致力于解决心理障碍的公益平台我们是致力于解决心理障碍的公益平台我们是致力于解决心理障碍的公益平台
+                我们是致力于给心理患者提供心理交流、心理科普的公益性平台。在这里你可以遇到一群志同道合的朋友，一起讨论有趣的话题；可以遇到资深的咨询师，接受专业的心理辅导。加入我们吧!!
             </div>
           </div>
           <!-- <div class="flex">
@@ -128,7 +128,7 @@ h3 {
 .home_right {
   width: 55%;
   margin-left: 30px;
-  margin-top: 50px;
+  margin-top: 5%;
 }
 .dictum {
   width: 90%;

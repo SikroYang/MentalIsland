@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-10-28 09:24:55
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-11-15 16:51:14
+ * @LastEditTime: 2022-11-16 09:58:59
  * @FilePath: \project\pages\psychology.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -12,9 +12,9 @@
     <div class="center col" v-for="(item,i) in list" :key="i">
       <h1>{{item.Title}}</h1>
       <div>
-        <p style="line-height:35px;text-indent:2em">
+        <pre class="pre_style">
           {{item.Content}}
-        </p>
+        </pre>
       </div>
     </div>
   </div>
@@ -42,6 +42,7 @@ export default {
       this.$axios.post("/Api/Article/ArticleById", data).then((res) => {
         if (res.data.Code === 200) {
           that.list.push(res.data.Data)
+          console.log(res.data.Data.Content)
         }
       });
     },
@@ -96,6 +97,14 @@ h3 {
 }
 .textl {
   text-align: left;
+}
+.pre_style{
+  all:initial;             /*清除继承样式*/
+  display:block;           /*设置布局流，避免换行导致的错误布局*/
+  white-space:pre-line;    /*保留换行符，设置溢出换行*/
+  font-size:16px;          /*设置字号*/
+  line-height: 35px;
+  font-family: "宋体";
 }
 </style>
     
