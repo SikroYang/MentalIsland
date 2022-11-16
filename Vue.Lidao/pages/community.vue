@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-10-24 15:15:45
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-11-15 14:48:06
+ * @LastEditTime: 2022-11-16 15:38:22
  * @FilePath: \project\pages\login.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -20,7 +20,7 @@
               v-for="(item , i) in follList"
               :key="i"
             >
-              <el-radio class="radio" :label="item.Id" >{{item.Name}}</el-radio>
+              <el-radio class="radio" :label="item.Id" >{{item.Name|filterAmount(8)}}</el-radio>
             </el-radio-group>
           </el-col>
         </el-row>
@@ -49,7 +49,7 @@
             <el-card :body-style="{ padding: '0px' }" style="margin: 10px;height: 220px">
               <img src="../assets/sq.png" class="image" />
               <div style="padding: 14px">
-                <span style="font-size: 15px;font-weight: 700;">{{ o.Name }}</span>
+                <span style="font-size: 15px;font-weight: 700;">{{ o.Name|filterAmount(6) }}</span>
                 <div class="bottom clearfix">
                   <time class="time">{{ o.Description|filterAmount(10) }}</time>
                   <div class="mar-t">
@@ -343,7 +343,11 @@ export default {
   <style scoped>
   .body{
   background-color: #F6F6F6;
-  /* height: 100vh; */
+  height: 98vh;
+}
+.el-button--primary{
+  background: #F7BC99;
+  border-color: #F7BC99;
 }
 .com-wrap {
   width: 15%;

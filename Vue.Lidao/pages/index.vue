@@ -2,27 +2,25 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-10-24 14:57:41
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-11-15 16:40:57
+ * @LastEditTime: 2022-11-16 16:44:10
  * @FilePath: \project\pages\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
-  <div>
+  <div >
     <Top />
     <div class="flex">
       <div class="left">
-        <div class="left_top">
           <div>
-            <!-- <h1>Hero Header</h1> -->
-            <h3 style="text-indent: 2em;">
-              在注册登陆「离岛Island」后即可加入社区，参与互动，阅读文章。期待你们的积极参与，也愿离岛这个独一无二的平台能够达到它的用处，真正的帮助到你们！
+            <h1>离岛Island</h1>
+            <h3>
+              期待你们的积极参与，也愿离岛这个独一无二的平台能够达到它的用处，真正的帮助到你们！
             </h3>
           </div>
           <div style="margin-top: 100px">
-            <button class="but" @click="syPage">开始旅程</button>
+            <button class="but" style="margin-right: 90px;" @click="syPage">开始旅程</button>
             <button class="but" @click="login">登入</button>
           </div>
-        </div>
       </div>
       <div class="right right_top">
         <el-carousel indicator-position="outside" height="560">
@@ -77,24 +75,27 @@ h3 {
   display: flex;
 }
 .but {
-  border: 1px solid #9f7861;
+  border: 1px solid #DFA9A7;
   background-color: #fff;
-  width: 260px;
-  padding: 35px;
+  width: 320px;
+  height: 100px;
+  line-height: 100px;
   cursor: pointer;
   border-radius: 5px;
+  color: #B24D11;
+  font-weight: bold;
 }
 .left {
   width: 60%;
   height: 100%;
+  margin: 250px 120px;
 }
 .right {
   width: 40%;
   height: 100%;
+ 
 }
-.left_top {
-  padding: 280px 120px;
-}
+
 .right_top {
   padding: 160px 120px;
 }

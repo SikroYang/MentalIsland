@@ -17,7 +17,6 @@ COPY ./Vue.BackEnd/package.json .
 COPY ./Vue.BackEnd/.yarnrc .
 RUN yarn
 
-
 WORKDIR /MentalIsland
 COPY ./Vue.BackEnd .
 

@@ -2,48 +2,65 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-10-24 14:57:41
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-11-16 10:17:49
+ * @LastEditTime: 2022-11-16 15:12:20
  * @FilePath: \project\pages\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
   <div>
     <div>
-      <div class="right">
+      <div>
         <Top />
+        <div class="banner"></div>
       </div>
       <div class="flex">
-        <div class="home_left">
+        <div class="welcome">
+          <h1 class="written">欢迎回家</h1>
           <img
-            src="../assets/welcome.jpg"
-            style="width: 640px; height: 430px"
+            src="~assets/sq.png"
+            class="welcome_left"
             alt=""
             srcset=""
+            width="220"
+          />
+          <img
+            src="~assets/s2.png"
+            class="welcome_center"
+            alt=""
+            srcset=""
+            width="240"
+          />
+          <img
+            src="~assets/s3.png"
+            class="welcome_right"
+            alt=""
+            srcset=""
+            width="220"
           />
         </div>
-        <div class="home_right">
+        <div class="angry">
           <div>
-            <h1>关于我们</h1>
-            <div class="dictum">
-                我们是致力于给心理患者提供心理交流、心理科普的公益性平台。在这里你可以遇到一群志同道合的朋友，一起讨论有趣的话题；可以遇到资深的咨询师，接受专业的心理辅导。加入我们吧!!
+            <h3>今日名言</h3>
+            <div class="saying">
+              <p>
+                世界很单纯，人生也一样。不是世界复杂，而是你把世界变复杂了。
+              </p>
             </div>
           </div>
-          <!-- <div class="flex">
-            <div>
-              <h3>今日心情</h3>
-              <div>
-                <el-radio-group v-model="radio">
-                  <el-radio-button label="喜悦"></el-radio-button>
-                  <el-radio-button label="愤怒"></el-radio-button>
-                  <el-radio-button label="悲哀"></el-radio-button>
-                  <el-radio-button label="恐惧"></el-radio-button>
-                </el-radio-group>
+          <div class="happy_flex">
+            <div class="happy_left">
+            <h3>今日心情</h3>
+            <div class="happy">
+              <div v-for="(item, i) in list" :key="i">
+                <img :src="i==ins?item.image2:item.image" width="64" @click="btn(i)" />
               </div>
             </div>
-            <div>
-              <h3>今日笔记</h3>
-            </div>
-          </div> -->
+          </div>
+          <div class="happy_right">
+            <h3>今日笔记</h3>
+            <el-input type="textarea"  placeholder="请输入内容" v-model="desc" :rows="6"></el-input>
+          </div>
+          </div>
         </div>
       </div>
     </div>
@@ -57,24 +74,38 @@ export default {
   components: { Top },
   data() {
     return {
+        ins:0,
       list: [
         {
-          image: require("../assets/pic1.jpg"),
+          id: 0,
+          image: require("../assets/happy2.png"),
+          image2: require("../assets/happy.png"),
         },
         {
-          image: require("../assets/pic2.jpg"),
+          id: 1,
+          image: require("../assets/upset2.png"),
+          image2: require("../assets/upset.png"),
         },
         {
-          image: require("../assets/pic3.jpg"),
+          id: 2,
+          image: require("../assets/angry2.png"),
+          image2: require("../assets/angry.png"),
         },
         {
-          image: require("../assets/pic4.jpg"),
+          id: 3,
+          image: require("../assets/embar2.png"),
+          image2: require("../assets/embar.png"),
         },
       ],
-      radio: "喜悦",
+      desc: "",
     };
   },
-  methods: {},
+  methods: {
+    btn(e){
+        this.ins=e
+        console.log(e)
+    }
+  },
 };
 </script>
   <style scoped>
@@ -87,54 +118,62 @@ h3 {
   justify-content: space-around;
   align-items: end;
 }
-.but {
-  border: 1px solid #9f7861;
-  background-color: #fff;
-  width: 260px;
-  padding: 35px;
-  cursor: pointer;
-  border-radius: 5px;
-}
-.left {
-  width: 60%;
-  height: 100%;
-}
-.right {
-  width: 100%;
-  height: 480px;
-  background: url("../assets/banner.jpg") no-repeat;
+.banner {
+  width: 1725px;
+  height: 281px;
+  /* background-color: #F5E9E9; */
+  background: url(../assets/banner.jpg) no-repeat;
   background-size: 100% 100%;
+  margin: auto;
 }
-.left_top {
-  padding: 280px 120px;
+.written {
+  position: absolute;
+  left: 245px;
 }
-
-/* 轮播 */
-.el-carousel__item h3 {
-  color: #475669;
-  font-size: 18px;
-  opacity: 0.75;
-  line-height: 300px;
-  margin: 0;
+.welcome {
+  margin-top: 100px;
+  width: 50%;
+  position: relative;
+  margin-left: 100px;
 }
-.pic {
-  width: 100%;
-  height: 100%;
+.welcome_left {
+  position: absolute;
 }
-.home_left {
-  width: 40%;
-  /* height: 460px; */
+.welcome_center {
+  position: absolute;
+  top: 85px;
+  left: 210px;
 }
-.home_right {
-  width: 55%;
-  margin-left: 30px;
-  margin-top: 5%;
+.welcome_right {
+  position: absolute;
+  left: 450px;
 }
-.dictum {
+.angry {
+  width: 50%;
+  margin-top: 50px;
+}
+.saying {
   width: 90%;
-  height: 160px;
-  line-height: 35px;
-  text-indent: 2em;
+  height: 120px;
+  background-color: #fadfcf;
+}
+.saying p {
+  padding: 30px 20px;
+}
+.happy_flex{
+    display: flex;
+}
+.happy_left{
+    width: 40%;
+}
+.happy_right{
+    width: 40%;
+    margin-left: 88px;
+}
+.happy {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
 }
 </style>
   
