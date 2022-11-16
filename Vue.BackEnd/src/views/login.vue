@@ -19,7 +19,7 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
-import { login } from '../api/userMG'
+import { login, userInfo } from '../api/userMG'
 import { setCookie, getCookie, delCookie } from '../utils/util'
 export default {
   name: 'login',
@@ -46,15 +46,25 @@ export default {
   },
   // 创建完毕状态(里面是操作)
   created() {
-    this.$message({
-      message: '请输入账号密码',
-      type: 'success'
-    })
-    // 获取图形验证码
-    // this.getcode()
-    // 获取存在本地的用户名密码
-    this.getuserpwd()
+    userInfo().then(res => {
+      if (res.Type == "Success") {
+        // 缓存用户个人信息
+        localStorage.setItem('userdata', JSON.stringify(res.Data))
+        this.$store.commit('login', 'true')
+        this.$router.push({ path: '/system/user' })
+      }
+      else {
+        this.$message({
+          message: '请输入账号密码',
+          type: 'success'
+        })
+        // 获取图形验证码
+        // this.getcode()
+        // 获取存在本地的用户名密码
+        this.getuserpwd()
 
+      }
+    })
   },
   // 里面的函数只有调用才会执行
   methods: {

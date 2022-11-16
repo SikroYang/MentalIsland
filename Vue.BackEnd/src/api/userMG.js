@@ -8,6 +8,8 @@ export const loginout = () => { return post("/Api/Auth/Logout") };
 /**
  * 用户管理
  **/
+// 用户管理-获取当前登录用户
+export const userInfo = (data) => { return post("/Api/User/UserInfo", data) };
 // 用户管理-获取用户列表
 export const userList = (data) => { return post("/Api/User/List", data) };
 // 用户管理-保存（添加编辑）

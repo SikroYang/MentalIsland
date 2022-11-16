@@ -16,7 +16,7 @@
   </el-menu>
 </template>
 <script>
-import { loginout } from '../api/userMG'
+import { userInfo, loginout } from '../api/userMG'
 export default {
   name: 'navcon',
   data() {
@@ -29,7 +29,18 @@ export default {
   },
   // 创建完毕状态(里面是操作)
   created() {
-    this.user = JSON.parse(localStorage.getItem('userdata'))
+    userInfo().then(res => {
+      if (res.Type == 'Success') {
+        localStorage.setItem('userdata', JSON.stringify(res.Data))
+        this.$store.commit('login', 'true')
+        this.user = res.Data
+      }
+      else {
+        this.$store.commit('logout', 'false')
+        this.$router.push({ path: '/login' })
+      }
+    })
+    // this.user = JSON.parse(localStorage.getItem('userdata'))
   },
   methods: {
     // 退出登录
