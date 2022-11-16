@@ -13,13 +13,11 @@ RUN dotnet publish -c Release -o publish/
 FROM node:16.17.0-alpine as build
 WORKDIR /MentalIsland
 
-COPY ./Vue.BackEnd/package.json ./Vue.BackEnd/
-COPY ./Vue.BackEnd/.yarnrc ./Vue.BackEnd/
-WORKDIR /MentalIsland/Vue.BackEnd
+COPY ./Vue.BackEnd/package.json .
+COPY ./Vue.BackEnd/.yarnrc .
 RUN yarn
 
-COPY ["Vue.BackEnd/","Vue.BackEnd/"]
-WORKDIR /MentalIsland/Vue.BackEnd
+COPY ./Vue.BackEnd .
 RUN yarn build
 
 FROM base AS final
@@ -30,6 +28,6 @@ ENV ASPNETCORE_URLS=http://0.0.0.0:5775
 ENV TZ=Asia/Shanghai
 
 COPY --from=publish /MentalIsland/MentalIsland.Web/publish .
-COPY --from=build /MentalIsland/Vue.BackEnd/BackEnd ./wwwroot/BackEnd
+COPY --from=build /MentalIsland/BackEnd ./wwwroot/BackEnd
 RUN cp -rf /usr/share/zoneinfo/${TZ} /etc/localtime && echo "${TZ}" > /etc/timezone
 ENTRYPOINT ["dotnet", "MentalIsland.Web.dll"]
