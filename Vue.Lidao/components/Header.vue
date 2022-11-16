@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-11-04 14:47:39
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-11-15 15:39:39
+ * @LastEditTime: 2022-11-16 15:25:35
  * @FilePath: \qundao\qundao\components\Header.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -71,7 +71,7 @@ export default {
   },
 
   created() {
-   
+   this.code()
   },
   mounted() {
     this.userList = this.$cookies.get("user");
@@ -112,10 +112,31 @@ export default {
         }
       });
     },
+    code(){
+      let that = this;
+      that.$axios.post("/Api/User/UserInfo").then((res) => {
+        if (res.data.Code === 401) {
+          this.$message({
+            message: res.data.Content,
+            type: "success",
+          });
+          this.$cookies.remove("user");
+        }
+      });
+    }
   },
 };
 </script>
 <style>
+.el-button--warning{background: #F7BC99;border-color: #F7BC99;}
+.el-button--warning:hover {
+    background: #f5d7b9;
+    border-color: #f5d7b9;
+    color: #FFF;
+}
+.el-menu--horizontal>.el-menu-item.is-active{
+  border-bottom: 2px solid #F7BC99
+}
 .el-menu-item {
   font-weight: bold;
 }
