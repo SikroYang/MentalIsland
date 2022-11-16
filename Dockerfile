@@ -13,9 +13,14 @@ RUN dotnet publish -c Release -o publish/
 FROM node:16.17.0-alpine as build
 WORKDIR /MentalIsland
 
+COPY ./Vue.BackEnd/package.json ./Vue.BackEnd/
+COPY ./Vue.BackEnd/.yarnrc ./Vue.BackEnd/
+WORKDIR /MentalIsland/Vue.BackEnd
+RUN yarn
+
 COPY ["Vue.BackEnd/","Vue.BackEnd/"]
 WORKDIR /MentalIsland/Vue.BackEnd
-RUN yarn && yarn build
+RUN yarn build
 
 FROM base AS final
 WORKDIR /MentalIsland

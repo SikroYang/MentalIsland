@@ -6,55 +6,55 @@ using SqlSugar;
 namespace MentalIsland.Core.CodeFirst.Models;
 
 /// <summary>
-/// ÓÃ»§
+/// ç”¨æˆ·
 /// </summary>
 [SugarTable("Users")]
-[Description("ÓÃ»§±í")]
+[Description("ç”¨æˆ·è¡¨")]
 public class User : Entity
 {
     /// <summary>
-    /// ÓÃ»§Ãû
+    /// ç”¨æˆ·å
     /// </summary>
     public string UserName { get; set; } = default!;
     /// <summary>
-    /// µç×ÓÓÊÏä
+    /// ç”µå­é‚®ç®±
     /// </summary>
     public string Email { get; set; } = default!;
     /// <summary>
-    /// ÊÖ»úºÅ
+    /// æ‰‹æœºå·
     /// </summary>
     public string PhoneNumber { get; set; } = default!;
     /// <summary>
-    /// êÇ³Æ
+    /// æ˜µç§°
     /// </summary>
     public string FullName { get; set; } = default!;
     /// <summary>
-    /// ÃÜÂëHash
+    /// å¯†ç Hash
     /// </summary>
     public string PasswordHash { get; set; } = default!;
     /// <summary>
-    /// ¹ú¼Ò/µØÇø
+    /// å›½å®¶/åœ°åŒº
     /// </summary>
     public string Country { get; set; } = default!;
     /// <summary>
-    /// ÊÇ·ñËø¶¨ÓÃ»§
+    /// æ˜¯å¦é”å®šç”¨æˆ·
     /// </summary>
     public bool IsLocked { get; set; } = false;
 
     /// <summary>
-    /// ÓÃ»§ÀàĞÍ
+    /// ç”¨æˆ·ç±»å‹
     /// </summary>
     public UserType UserType { get; set; } = UserType.Normal;
 
     /// <summary>
-    /// ÓÃ»§ÒÑ¹Ø×¢µºÈº
+    /// ç”¨æˆ·å·²å…³æ³¨å²›ç¾¤
     /// </summary>
     [SugarColumn(IsIgnore = true)]
     [Navigate(typeof(User_Island), nameof(User_Island.UserId), nameof(User_Island.IslandId))]
     public virtual List<Island> Islands { get; set; }
 
     /// <summary>
-    /// ÓÃ»§ÒÑ¹Ø×¢µºÈº
+    /// ç”¨æˆ·å·²å…³æ³¨å²›ç¾¤
     /// </summary>
     [SugarColumn(IsIgnore = true)]
     [Navigate(NavigateType.OneToMany, nameof(UserMoonNote.UserId))]

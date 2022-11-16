@@ -9,6 +9,7 @@ using SqlSugar;
 using MentalIsland.Migrations.Extensions.ControllerEx;
 using MentalIsland.Migrations.Extensions.Auth;
 using MentalIsland.Web.Models.Extensions;
+using Furion.DatabaseAccessor;
 
 namespace MentalIsland.Web.Areas.Api.Controllers;
 
@@ -26,6 +27,10 @@ public class PostController : WebApiBaseController<PostController>
     /// 用户操作仓库
     /// </summary>
     public readonly SqlSugarRepository<User> userRepository;
+    /// <summary>
+    /// 岛群操作仓库
+    /// </summary>
+    public readonly SqlSugarRepository<Island> islandRepository;
     /// <summary>
     /// 帖子操作仓库
     /// </summary>
@@ -59,17 +64,32 @@ public class PostController : WebApiBaseController<PostController>
     /// </summary>
     /// <returns></returns>
     [HttpPost]
+    [UnitOfWork]
     public async Task<int> AddOrUpdatePost(PostInput post)
     {
         if (post.Title.ContainsKeyWords() || post.Content.ContainsKeyWords()) throw Oops.Bah("您发表的内容包含敏感词").StatusCode();
-        if (post.IslandId <= 0) Oops.Bah("岛群Id必须大于0").StatusCode();
+        if (post.IslandId <= 0) throw Oops.Bah("岛群Id必须大于0").StatusCode();
+        var island = await islandRepository.AsQueryable().FirstAsync(wa => wa.Id == post.IslandId && !wa.IsDeleted);
+        if (island == null) throw Oops.Bah("当前岛群不存在或已删除").StatusCode();
         var postRes = post.Adapt<Island_Post>();
         bool isSuccess;
         int Id = post.Id ?? 0;
         if (Id == 0)
         {
-            Id = await postRepository.AsInsertable(postRes).ExecuteReturnIdentityAsync();
+            var entity = await postRepository.AsInsertable(postRes).ExecuteReturnEntityAsync();
+            Id = entity.Id;
             isSuccess = Id > 0;
+            if (isSuccess)
+            {
+                var updateIsland = new Island
+                {
+                    Id = entity.IslandId,
+                    LastPostTime = entity.CreatedTime,
+                    PostNumber = island.Posts.Count + 1
+                };
+                isSuccess = await islandRepository.AsUpdateable(updateIsland).IgnoreColumns(true).IgnoreColumns(l => new { l.CreatedTime }).ExecuteCommandHasChangeAsync();
+            }
+
         }
         else
         {
@@ -112,17 +132,38 @@ public class PostController : WebApiBaseController<PostController>
     /// </summary>
     /// <returns></returns>
     [HttpPost]
+    [UnitOfWork]
     public async Task<int> AddOrUpdateReply(ReplyInput reply)
     {
         if (reply.Content.ContainsKeyWords()) throw Oops.Bah("您发表的内容包含敏感词").StatusCode();
-        if (reply.PostId <= 0) Oops.Bah("帖子Id必须大于0").StatusCode();
+        if (reply.PostId <= 0) throw Oops.Bah("帖子Id必须大于0").StatusCode();
+        var post = await postRepository.AsQueryable().FirstAsync(wa => wa.Id == reply.PostId && !wa.IsDeleted);
+        if (post == null) throw Oops.Bah("当前帖子不存在或已删除").StatusCode();
         var postRes = reply.Adapt<Island_Reply>();
         bool isSuccess;
         int Id = reply.Id ?? 0;
         if (Id == 0)
         {
-            Id = await replyRepository.AsInsertable(postRes).ExecuteReturnIdentityAsync();
+            var entity = await replyRepository.AsInsertable(postRes).ExecuteReturnEntityAsync();
+            Id = entity.Id;
             isSuccess = Id > 0;
+            if (isSuccess)
+            {
+                var updatePost = new Island_Post
+                {
+                    Id = entity.PostId,
+                    LastReplyTime = entity.CreatedTime,
+                    ReplyNumber = post.Replies.Count + 1
+                };
+                isSuccess = await postRepository.AsUpdateable(updatePost).IgnoreColumns(true).IgnoreColumns(l => new { l.CreatedTime }).ExecuteCommandHasChangeAsync();
+
+                var updateIsland = new Island
+                {
+                    Id = post.IslandId,
+                    LastReplyTime = entity.CreatedTime,
+                };
+                isSuccess = await islandRepository.AsUpdateable(updateIsland).IgnoreColumns(true).IgnoreColumns(l => new { l.CreatedTime }).ExecuteCommandHasChangeAsync();
+            }
         }
         else
         {

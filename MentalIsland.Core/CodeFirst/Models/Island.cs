@@ -5,60 +5,60 @@ using SqlSugar;
 namespace MentalIsland.Core.CodeFirst.Models;
 
 /// <summary>
-/// µºÈº
+/// å²›ç¾¤
 /// </summary>
 [SugarTable("Islands")]
-[Description("µºÈº±í")]
+[Description("å²›ç¾¤è¡¨")]
 [SugarIndex("unique_Name_1", nameof(Name), OrderByType.Asc, true)]
 public class Island : Entity
 {
     /// <summary>
-    /// µºÈºÃû³Æ
+    /// å²›ç¾¤åç§°
     /// </summary>
     public string Name { get; set; } = default!;
     /// <summary>
-    /// µºÈºÃèÊö
+    /// å²›ç¾¤æè¿°
     /// </summary>
     [SugarColumn(IsNullable = true)]
     public string? Description { get; set; }
     /// <summary>
-    /// µºÈºQQÈººÅ
+    /// å²›ç¾¤QQç¾¤å·
     /// </summary>
     [SugarColumn(IsNullable = true)]
     public string? QQunNumber { get; set; }
     /// <summary>
-    /// µºÈºQQÈº¶şÎ¬Âë
+    /// å²›ç¾¤QQç¾¤äºŒç»´ç 
     /// </summary>
     [SugarColumn(IsNullable = true)]
     public string? QQunQRCodeFile { get; set; }
     /// <summary>
-    /// µºÈºÈËÊı
+    /// å²›ç¾¤äººæ•°
     /// </summary>
     public int PersonNumber { get; set; } = 0;
     /// <summary>
-    /// µºÈº·¢ÌûÊı
+    /// å²›ç¾¤å‘å¸–æ•°
     /// </summary>
     public int PostNumber { get; set; } = 0;
     /// <summary>
-    /// µºÈº×îºó·¢ÌûÊ±¼ä
+    /// å²›ç¾¤æœ€åå‘å¸–æ—¶é—´
     /// </summary>
     [SugarColumn(IsNullable = true)]
     public DateTime? LastPostTime { get; set; }
     /// <summary>
-    /// µºÈº×îºó»Ø¸´Ê±¼ä
+    /// å²›ç¾¤æœ€åå›å¤æ—¶é—´
     /// </summary>
     [SugarColumn(IsNullable = true)]
     public DateTime? LastReplyTime { get; set; }
 
     /// <summary>
-    /// ÒÑ¹Ø×¢µºÈºÓÃ»§
+    /// å·²å…³æ³¨å²›ç¾¤ç”¨æˆ·
     /// </summary>
     [SugarColumn(IsIgnore = true)]
     [Navigate(typeof(User_Island), nameof(User_Island.IslandId), nameof(User_Island.UserId))]
     public virtual List<User> Users { get; set; }
 
     /// <summary>
-    /// Ìû×ÓÁĞ±í
+    /// å¸–å­åˆ—è¡¨
     /// </summary>
     [SugarColumn(IsIgnore = true)]
     [Navigate(NavigateType.OneToMany, nameof(Island_Post.IslandId))]

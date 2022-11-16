@@ -164,7 +164,7 @@ public class IslandController : WebApiBaseController<IslandController>
         var user = await userRepository.AsQueryable().Includes(wa => wa.Islands).FirstAsync(wa => wa.Id == User.Id);
         if (user == null || user.IsDeleted) throw Oops.Bah("该用户不存在或已删除").StatusCode();
 
-        return user.Islands.Adapt<List<IslandOutput>>();
+        return user.Islands.Where(wa => !wa.IsDeleted).Adapt<List<IslandOutput>>();
     }
 
     /// <summary>
@@ -174,7 +174,7 @@ public class IslandController : WebApiBaseController<IslandController>
     [HttpPost]
     public async Task<List<IslandOutput>> GetUserCreatedIsland()
     {
-        var list = await islandRepository.AsQueryable().Where(wa => wa.CreatedUserId == User.Id).ToListAsync();
+        var list = await islandRepository.AsQueryable().Where(wa => !wa.IsDeleted && wa.CreatedUserId == User.Id).ToListAsync();
         return list.Adapt<List<IslandOutput>>() ?? new List<IslandOutput>();
     }
 }
