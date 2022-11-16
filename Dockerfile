@@ -17,7 +17,11 @@ COPY ./Vue.BackEnd/package.json .
 COPY ./Vue.BackEnd/.yarnrc .
 RUN yarn
 
+
+WORKDIR /MentalIsland
 COPY ./Vue.BackEnd .
+
+ENV NODE_ENV=production
 RUN yarn build
 
 FROM base AS final
