@@ -152,6 +152,7 @@ public class PostController : WebApiBaseController<PostController>
                 var updatePost = new Island_Post
                 {
                     Id = entity.PostId,
+                    IslandId = post.IslandId,
                     LastReplyTime = entity.CreatedTime,
                     ReplyNumber = post.Replies.Count + 1
                 };
