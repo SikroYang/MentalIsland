@@ -69,7 +69,7 @@ public class PostController : WebApiBaseController<PostController>
     {
         if (post.Title.ContainsKeyWords() || post.Content.ContainsKeyWords()) throw Oops.Bah("您发表的内容包含敏感词").StatusCode();
         if (post.IslandId <= 0) throw Oops.Bah("岛群Id必须大于0").StatusCode();
-        var island = await islandRepository.AsQueryable().FirstAsync(wa => wa.Id == post.IslandId && !wa.IsDeleted);
+        var island = await islandRepository.AsQueryable().Includes(l => l.Posts).FirstAsync(wa => wa.Id == post.IslandId && !wa.IsDeleted);
         if (island == null) throw Oops.Bah("当前岛群不存在或已删除").StatusCode();
         var postRes = post.Adapt<Island_Post>();
         bool isSuccess;
@@ -137,7 +137,7 @@ public class PostController : WebApiBaseController<PostController>
     {
         if (reply.Content.ContainsKeyWords()) throw Oops.Bah("您发表的内容包含敏感词").StatusCode();
         if (reply.PostId <= 0) throw Oops.Bah("帖子Id必须大于0").StatusCode();
-        var post = await postRepository.AsQueryable().FirstAsync(wa => wa.Id == reply.PostId && !wa.IsDeleted);
+        var post = await postRepository.AsQueryable().Includes(p => p.Replies).FirstAsync(wa => wa.Id == reply.PostId && !wa.IsDeleted);
         if (post == null) throw Oops.Bah("当前帖子不存在或已删除").StatusCode();
         var postRes = reply.Adapt<Island_Reply>();
         bool isSuccess;
