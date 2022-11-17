@@ -72,6 +72,7 @@ services:
       - 5775:5775
     volumes:
       - ./MentalIsland.Web/wwwroot/images:/MentalIsland/wwwroot/images
+      - ./MentalIsland.Web/wwwroot/Upload:/MentalIsland/wwwroot/Upload
       - ./database/MentalIsland.db:/MentalIsland/MentalIsland.db:rw
     # depends_on:
     #   - mssql
