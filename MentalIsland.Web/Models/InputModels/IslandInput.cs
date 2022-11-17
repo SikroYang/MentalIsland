@@ -35,7 +35,7 @@ public class IslandInput
 /// <summary>
 /// 岛群信息
 /// </summary>
-public class IslandSearchInput
+public class IslandSearchInput : Paged
 {
 
     /// <summary>

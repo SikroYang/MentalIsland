@@ -10,6 +10,7 @@ using MentalIsland.Migrations.Extensions.ControllerEx;
 using MentalIsland.Migrations.Extensions.Auth;
 using MentalIsland.Web.Models.Extensions;
 using Furion.DatabaseAccessor;
+using System.Linq;
 
 namespace MentalIsland.Web.Areas.Api.Controllers;
 
@@ -47,7 +48,7 @@ public class PostController : WebApiBaseController<PostController>
     /// </summary>
     /// <returns></returns>
     [HttpPost]
-    public async Task<List<PostOutput>> List(PostSearchInput searchInfo)
+    public async Task<PagedList<PostOutput>> List(PostSearchInput searchInfo)
     {
         var exp = new Expressionable<Island_Post>().And(i => !i.IsDeleted);
 
@@ -55,8 +56,12 @@ public class PostController : WebApiBaseController<PostController>
             exp.And(i => i.IslandId == searchInfo.IslandId);
         if (!string.IsNullOrWhiteSpace(searchInfo.Title))
             exp.And(i => i.Title.Contains(searchInfo.Title));
-        var result = await postRepository.AsQueryable().Includes(l => l.Replies).Where(exp.ToExpression()).ToListAsync();
-        return result.Adapt<List<PostOutput>>();
+        var result = postRepository.AsQueryable().Where(exp.ToExpression()).Select<PostOutput>();
+        var Total = await result.CountAsync();
+        var list = searchInfo.Page > 0 ? await result.ToPageListAsync(searchInfo.Page, searchInfo.Size) : await result.ToListAsync();
+        if (searchInfo.Page > 0)
+            return new PagedList<PostOutput> { Page = searchInfo.Page, Size = searchInfo.Size, Total = Total, List = list };
+        return new PagedList<PostOutput> { Total = Total, List = list };
     }
 
     /// <summary>
@@ -102,13 +107,23 @@ public class PostController : WebApiBaseController<PostController>
     /// </summary>
     /// <returns></returns>
     [HttpPost]
-    public async Task<PostOutput> PostById(OnlyId model)
+    public async Task<PostReplyOutput> PostById(ReplySearchInput searchInfo)
     {
-        if (model.Id <= 0) throw Oops.Bah("Id必须大于0").StatusCode();
-        var result = await postRepository.AsQueryable().Includes(l => l.Replies.Where(wa => !wa.IsDeleted).ToList()).FirstAsync(l => l.Id == model.Id);
+        if (searchInfo.Id <= 0) throw Oops.Bah("Id必须大于0").StatusCode();
+        var result = await postRepository.AsQueryable().Includes(l => l.Replies.Where(wa => !wa.IsDeleted).ToList()).FirstAsync(l => l.Id == searchInfo.Id);
         if (result == null || result.IsDeleted) throw Oops.Bah("该帖子不存在或已删除").StatusCode();
-        // result.Replies = result.Replies.Where(wa => !wa.IsDeleted).ToList();
-        return result.Adapt<PostOutput>();
+        var data = result.Adapt<PostReplyOutput>();
+        var Total = result.Replies.Count;
+        if (searchInfo.Page > 0)
+        {
+            data.Replies.Page = searchInfo.Page;
+            data.Replies.Size = searchInfo.Size;
+            data.Replies.Total = Total;
+            data.Replies.List = data.Replies.List.Skip((searchInfo.Page - 1) * searchInfo.Size).Take(searchInfo.Size).ToList();
+        }
+        else
+            data.Replies.Total = Total;
+        return data;
     }
 
     /// <summary>

@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-10-24 15:15:45
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-11-15 15:38:34
+ * @LastEditTime: 2022-11-17 16:42:21
  * @FilePath: \project\pages\login.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -15,7 +15,7 @@
           <p class="font">{{ title }}</p>
           <div class="flex">
             <div>
-              <img src="~assets/头像.png" alt="" srcset="" class="head" />
+              <img src="~assets/tx2.png" alt="" srcset="" class="head" />
             </div>
             <div style="margin-left: 20px">
               <p>{{ name }}</p>
@@ -26,10 +26,10 @@
         </div>
         <el-divider></el-divider>
         <p class="font">全部回帖</p>
-        <div v-for="(item, i) in reList.Replies" :key="i">
+        <div v-for="(item, i) in reList" :key="i">
           <div class="flex">
             <div>
-              <img src="~assets/头像.png" alt="" srcset="" class="head" />
+              <img src="~assets/tx2.png" alt="" srcset="" class="head" />
             </div>
             <div style="margin-left: 20px">
               <p>{{ item.CreatedUserName }}</p>
@@ -43,15 +43,14 @@
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
           :current-page="currentPage4"
-          :page-sizes="[100, 200, 300, 400]"
-          :page-size="100"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="400"
+          :page-size="10"
+          layout="total, prev, pager, next"
+          :total="totals"
         >
         </el-pagination>
       </div>
       <div class="flex" style="width: 90%; margin: auto">
-        <div><img src="~assets/头像.png" alt="" srcset="" class="head" /></div>
+        <div><img src="~assets/tx2.png" alt="" srcset="" class="head" /></div>
         <div style="margin-left: 20px; width: 100%">
           <el-input
             type="textarea"
@@ -77,32 +76,34 @@ export default {
   components: { Top },
   data: function () {
     return {
-      currentPage4: 4,
+      currentPage4: 1,
       desc: "",
       title: "",
       name: "",
       time: "",
       content: "",
       reList: [],
+      totals:10,
     };
   },
   created() {
     console.log(this.$route.query.id);
-    this.repliesList();
+    this.repliesList(1);
   },
   methods: {
-    repliesList() {
+    repliesList(a) {
       let that = this;
       this.$axios
-        .post("/Api/Post/PostById", { Id: this.$route.query.id })
+        .post("/Api/Post/PostById", { Id: this.$route.query.id , Page: a,Size: 10,})
         .then((res) => {
           if (res.data.Code === 200) {
             console.log(res.data.Data);
-            that.reList = res.data.Data;
+            that.reList = res.data.Data.Replies.List;
             that.name = res.data.Data.CreatedUserName;
             that.time = res.data.Data.CreatedTime;
             that.content = res.data.Data.Content;
             that.title = res.data.Data.Title;
+            that.totals= res.data.Data.Replies.Total;
             console.log(that.reList);
           }
         });
@@ -117,7 +118,7 @@ export default {
         .then((res) => {
           if (res.data.Code === 200) {
             console.log(res.data.Data);
-            this.repliesList();
+            this.repliesList(1);
             this.$message.success("恭喜你，回复成功");
           } else {
             this.$message.error("错了哦，回复失败");
@@ -129,6 +130,7 @@ export default {
     },
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
+      this.repliesList(val);
     },
   },
 };
@@ -137,6 +139,10 @@ export default {
 .body {
   background-color: #f6f6f6;
   font-size: 15px;
+}
+.el-button--primary {
+  background: #B28750;
+  border-color: #B28750;
 }
 .content {
   width: 60%;

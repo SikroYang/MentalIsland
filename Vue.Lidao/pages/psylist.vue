@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-10-28 09:24:55
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-11-15 16:47:08
+ * @LastEditTime: 2022-11-17 15:00:22
  * @FilePath: \project\pages\psychology.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -35,7 +35,7 @@
         <ul>
           <li v-for="(item, i) in artList" :key="i">
             <div style="width: 20%;">
-              <img class="pic" src="~assets/p2.jpg" alt="" srcset="" />
+              <img class="pic" :src="item.ImageUrl" alt="" srcset="" />
             </div>
             <div class="article">
               <h3>
@@ -44,11 +44,11 @@
               <p>
                 {{ item.Content | filterAmount(60) }}
               </p>
-              <i
-                class="el-icon-right"
-                style="color: #2a5caa; float: right; padding-right: 100px"
-                @click="details(item.Id)"
-              ></i>
+              <p style="float: right; padding-right: 100px;cursor: pointer;"
+                @click="details(item.Id)">
+                详细
+                <i class="el-icon-right"></i>
+              </p>
             </div>
           </li>
         </ul>

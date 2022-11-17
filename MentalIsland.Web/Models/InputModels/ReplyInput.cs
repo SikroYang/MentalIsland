@@ -27,3 +27,16 @@ public class ReplyInput
     public string Content { get; set; } = default!;
 
 }
+
+/// <summary>
+/// 帖子信息
+/// </summary>
+public class ReplySearchInput : Paged
+{
+    /// <summary>
+    /// 主键
+    /// </summary>
+    [Required(ErrorMessage = "Id不能为空")]
+    [RegularExpression(@"^\d+$", ErrorMessage = "Id只能为数字")]
+    public int? Id { get; set; }
+}

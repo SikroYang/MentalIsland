@@ -2,38 +2,58 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-10-24 15:15:45
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-11-16 15:38:22
+ * @LastEditTime: 2022-11-17 16:18:26
  * @FilePath: \project\pages\login.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
   <div class="body">
     <Top />
-    <div class="flex" style="width: 70%; margin: auto; align-items: baseline;margin-top: 20px;">
+    <div
+      class="flex"
+      style="width: 70%; margin: auto; align-items: baseline; margin-top: 20px"
+    >
       <div class="com-wrap">
         <el-row class="tac">
           <el-col :span="12">
-            <p style="font-size: 15px;font-weight: 700;">我的关注</p>
+            <p
+              style="
+                font-size: 20px;
+                font-weight: 700;
+                padding-bottom: 10px;
+                border-bottom: 1px solid #f8bf67;
+                color: #6d4732;
+                width: 200%;
+              "
+            >
+              我的关注
+            </p>
             <el-radio-group
               v-model="radio1"
-              @change="clickRadio()"
-              v-for="(item , i) in follList"
+              @change="clickRadio(item)"
+              v-for="(item, i) in follList"
               :key="i"
             >
-              <el-radio class="radio" :label="item.Id" >{{item.Name|filterAmount(8)}}</el-radio>
+              <el-radio class="radio" :label="item.Id">{{
+                item.Name | filterAmount(8)
+              }}</el-radio>
             </el-radio-group>
           </el-col>
         </el-row>
       </div>
       <div class="com-cont">
-        <div class="flex mar-b" style="width: 50%;margin: auto;">
+        <div class="flex mar-b" style="width: 50%; margin: auto">
           <el-input placeholder="请输入内容" v-model="reInput" clearable>
           </el-input>
           <div class="mar">
-            <el-button type="warning" icon="el-icon-search" @click="ss"
+            <el-button type="primary" icon="el-icon-search" @click="ss"
               >搜索</el-button
             >
           </div>
+        </div>
+        <div class="ggqd" style="display: flex;align-items: center;justify-content: center;">
+          <img src="../assets/tx2.png" alt="" style="width: 30px;height: 30px;margin-right: 10px;">
+          <p>公共群岛</p>
         </div>
         <!-- <el-radio-group
           class="mar-b"
@@ -46,18 +66,33 @@
         </el-radio-group> -->
         <el-row class="mar-b">
           <el-col :span="6" v-for="(o, index) in qdList" :key="index">
-            <el-card :body-style="{ padding: '0px' }" style="margin: 10px;height: 220px">
+            <el-card
+              :body-style="{ padding: '0px' }"
+              style="margin: 10px; height: 220px"
+            >
               <img src="../assets/sq.png" class="image" />
               <div style="padding: 14px">
-                <span style="font-size: 15px;font-weight: 700;">{{ o.Name|filterAmount(6) }}</span>
+                <span style="font-size: 15px; font-weight: 700">{{
+                  o.Name | filterAmount(6)
+                }}</span>
                 <div class="bottom clearfix">
-                  <time class="time">{{ o.Description|filterAmount(10) }}</time>
+                  <time class="time">{{
+                    o.Description | filterAmount(10)
+                  }}</time>
                   <div class="mar-t">
                     <el-button
                       type="primary"
                       class="button"
+                      v-if="o.IsFollow === false"
                       @click="follow(o.Id)"
                       >关注</el-button
+                    >
+                    <el-button
+                      type="warning"
+                      class="button"
+                      v-if="o.IsFollow === true"
+                      @click="qxFollow(o.Id)"
+                      >取消关注</el-button
                     >
 
                     <!-- <el-popover
@@ -82,15 +117,15 @@
             </el-card>
           </el-col>
         </el-row>
-        <!-- <el-pagination
+        <el-pagination
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
           :current-page.sync="currentPage1"
-          :page-size="100"
+          :page-size="8"
           layout="total, prev, pager, next"
-          :total="1000"
+          :total="totals"
         >
-        </el-pagination> -->
+        </el-pagination>
       </div>
       <div class="com-right flex mart">
         <el-button
@@ -103,7 +138,11 @@
           >发帖</el-button
         >
         <div>
-          <el-dialog title="新建群岛" width="700px" :visible.sync="dialogFormVisible">
+          <el-dialog
+            title="新建群岛"
+            width="700px"
+            :visible.sync="dialogFormVisible"
+          >
             <el-form :model="form">
               <el-form-item label="群岛名称" :label-width="formLabelWidth">
                 <el-input v-model="form.name" autocomplete="off"></el-input>
@@ -145,7 +184,10 @@
           <el-dialog title="发帖" width="700px" :visible.sync="ftVisible">
             <el-form :model="formFollow">
               <el-form-item label="标题" :label-width="formLabelWidth">
-                <el-input v-model="formFollow.name" autocomplete="off"></el-input>
+                <el-input
+                  v-model="formFollow.name"
+                  autocomplete="off"
+                ></el-input>
               </el-form-item>
               <el-form-item label="内容" :label-width="formLabelWidth">
                 <el-input type="textarea" v-model="formFollow.desc"></el-input>
@@ -205,20 +247,20 @@ export default {
       value: "",
       qdList: [],
       follList: [],
+      totals:8,
     };
   },
-  filters:{
+  filters: {
     filterAmount(value, n) {
-		if(!n) n = 20;
-		if(value && value.length > n) {
-			value = value.substring(0, n) + '...';
-		}
-		return value;
-	}
-
+      if (!n) n = 20;
+      if (value && value.length > n) {
+        value = value.substring(0, n) + "...";
+      }
+      return value;
+    },
   },
   created() {
-    this.qdLists("", "");
+    this.qdLists("", "",1);
     this.followList();
   },
   mounted() {
@@ -229,17 +271,18 @@ export default {
       //群岛搜索
       let that = this;
       let data = { Name: that.reInput, Description: that.reInput };
-      this.qdLists(that.reInput, '');
+      this.qdLists(that.reInput, "");
     },
-    qdLists(a, b) {
+    qdLists(a, b,c) {
       //群岛列表
       let that = this;
       this.$axios
-        .post("/Api/Island/List", { Name: a, Description: b })
+        .post("/Api/Island/List", { Name: a, Description: b,Page: c,Size: 8, })
         .then((res) => {
           console.log(res);
           if (res.data.Code === 200) {
-            that.qdList = res.data.Data;
+            that.qdList = res.data.Data.List;
+            that.totals=res.data.Data.Total
           }
         });
     },
@@ -248,12 +291,27 @@ export default {
       this.$axios.post("/Api/Island/FollowIsland", { Id: e }).then((res) => {
         console.log(res);
         if (res.data.Code === 200) {
-          this.$message.success("恭喜你，群岛关注成功");
-          this.followList()
+          this.$message.success(res.data.Data);
+          this.qdLists();
+          this.followList();
         } else {
           this.$message.error("错了哦，群岛关注失败");
         }
       });
+    },
+    qxFollow(e) {
+      //群岛取消关注
+      this.$axios
+        .post("/Api/Island/CancelFollowIsland", { Id: e })
+        .then((res) => {
+          if (res.data.Code === 200) {
+            this.$message.success(res.data.Data);
+            this.followList();
+            this.qdLists();
+          } else {
+            this.$message.error("错了哦，群岛取消关注失败");
+          }
+        });
     },
     followList() {
       //当前用户所有的关注群岛
@@ -267,28 +325,32 @@ export default {
         }
       });
     },
-    ftAdd(){//发帖
+    ftAdd() {
+      //发帖
       let that = this;
-      console.log(that.formFollow)
-      let data={Id:'',IslandId:that.formFollow.id,Title:that.formFollow.name,Content:that.formFollow.desc}
-      this.$axios
-        .post("/Api/Post/AddOrUpdatePost", data)
-        .then((res) => {
-          console.log(res);
-          if (res.data.Code === 200) {
-            this.ftVisible=false
+      console.log(that.formFollow);
+      let data = {
+        Id: "",
+        IslandId: that.formFollow.id,
+        Title: that.formFollow.name,
+        Content: that.formFollow.desc,
+      };
+      this.$axios.post("/Api/Post/AddOrUpdatePost", data).then((res) => {
+        console.log(res);
+        if (res.data.Code === 200) {
+          this.ftVisible = false;
           this.$message.success("恭喜你，发帖成功");
         } else {
           this.$message.error("错了哦，发帖失败");
         }
-        });
+      });
     },
-    clickRadio() {
+    clickRadio(e) {
       let that = this;
-      console.log(that.radio1);
+      console.log(that.radio1, e);
       this.$router.push({
         path: "./privateLetter",
-        query: { id: that.radio1 },
+        query: { id: that.radio1, text: e },
       });
     },
     sea() {
@@ -300,9 +362,7 @@ export default {
     },
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
-      this.$axios.post("/Api/Index/Index2/").then((res) => {
-        console.log(res);
-      });
+      this.qdLists("", "",val);
     },
     handleRemove(file, fileList) {
       console.log(file, fileList);
@@ -320,7 +380,7 @@ export default {
       let that = this;
       console.log(that.form, that.dialogImageUrl);
       let data = {
-        Id: '',
+        Id: "",
         Name: that.form.name,
         Description: that.form.desc,
         QQunNumber: that.form.qq,
@@ -330,8 +390,8 @@ export default {
         if (res.data.Code === 200) {
           that.dialogFormVisible = false;
           this.$message.success("恭喜你，群岛创建成功");
-          that.qdLists()
-          that.followList()
+          that.qdLists();
+          that.followList();
         } else {
           this.$message.error("错了哦，群岛创建失败");
         }
@@ -341,14 +401,19 @@ export default {
 };
 </script>
   <style scoped>
-  .body{
-  background-color: #F6F6F6;
+.body {
+  background-color: #f6f6f6;
   height: 98vh;
 }
-.el-button--primary{
-  background: #F7BC99;
-  border-color: #F7BC99;
+.el-button--primary {
+  background: #f7bc99;
+  border-color: #f7bc99;
 }
+.el-button--warning {
+  background: #ccc;
+  border-color: #ccc;
+}
+
 .com-wrap {
   width: 15%;
   margin-left: 20px;
@@ -362,6 +427,8 @@ export default {
   margin: auto;
   width: 60%;
   text-align: center;
+  border-left: 1px dashed #ccc;
+  border-right: 1px dashed #ccc;
 }
 .mar {
   margin-left: 20px;
@@ -414,6 +481,17 @@ export default {
 }
 .radio {
   margin: 10px;
+}
+.el-radio-group {
+  width: 200%;
+  background-color: #fbf7ec;
+  margin-bottom: 10px;
+}
+.ggqd{
+  background-color: #EED9D8;
+    padding: 2px;
+    margin: 0 10px;
+    color: #744F3A;
 }
 </style>
   

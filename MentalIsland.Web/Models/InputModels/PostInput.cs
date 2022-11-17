@@ -35,7 +35,7 @@ public class PostInput
 /// <summary>
 /// 帖子信息
 /// </summary>
-public class PostSearchInput
+public class PostSearchInput : Paged
 {
     /// <summary>
     /// 岛群Id

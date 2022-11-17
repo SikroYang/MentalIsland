@@ -41,7 +41,7 @@ public class IslandController : WebApiBaseController<IslandController>
     /// </summary>
     /// <returns></returns>
     [HttpPost]
-    public async Task<List<IslandOutput>> List(IslandSearchInput searchInfo)
+    public async Task<PagedList<IslandOutput>> List(IslandSearchInput searchInfo)
     {
         var exp = new Expressionable<Island>().And(i => !i.IsDeleted);
         if (!string.IsNullOrWhiteSpace(searchInfo.Name))
@@ -56,7 +56,12 @@ public class IslandController : WebApiBaseController<IslandController>
             o.IsFollow = wa.Users.Any(u => u.Id.ToString() == userId);
             return o;
         }).ToList();
-        return data;
+
+        var Total = data.Count;
+        var list = searchInfo.Page > 0 ? data.Skip((searchInfo.Page - 1) * searchInfo.Size).Take(searchInfo.Size).ToList() : data;
+        if (searchInfo.Page > 0)
+            return new PagedList<IslandOutput> { Page = searchInfo.Page, Size = searchInfo.Size, Total = Total, List = list };
+        return new PagedList<IslandOutput> { Total = Total, List = list };
     }
 
     /// <summary>
