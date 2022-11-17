@@ -356,7 +356,7 @@ export default {
     handleAvatarSuccess(res, file) {
       console.log(res, file)
       // UploadImage(file).then(res => {
-      if (res.Type = 'Success') {
+      if (res.Type == 'Success') {
         this.editForm.ImageUrl = res.Data;
         this.$message({
           type: 'success',
