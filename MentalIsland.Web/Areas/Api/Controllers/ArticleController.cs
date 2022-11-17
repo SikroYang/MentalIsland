@@ -61,9 +61,10 @@ public class ArticleController : WebApiBaseController<ArticleController>
                             Title = a.Title,
                             Content = a.Content,
                             CreatedTime = a.CreatedTime,
+                            ImageUrl = a.ImageUrl,
                             ArticleTypeName = t.Name
                         });
-        var sqlStr = result.ToSqlString();
+        // var sqlStr = result.ToSqlString();
 
         var Total = await result.CountAsync();
         var list = searchInfo.Page > 0 ? await result.ToPageListAsync(searchInfo.Page, searchInfo.Size) : await result.ToListAsync();

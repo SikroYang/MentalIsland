@@ -30,7 +30,7 @@
       border element-loading-text="拼命加载中" style="width: 100%;">
       <el-table-column align="center" type="selection" width="50">
       </el-table-column>
-      <el-table-column align="center" label="标题" width="240">
+      <el-table-column align="center" label="标题" width="180">
         <template slot-scope="scope">
           <el-popover trigger="hover" placement="top">
             <p>{{ scope.row.Title }}</p>
@@ -40,12 +40,12 @@
           </el-popover>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="内容" width="720">
+      <el-table-column align="center" label="内容" width="350">
         <template slot-scope="scope">
           <el-popover trigger="hover" placement="top">
             <p>{{ scope.row.Content }}</p>
             <div slot="reference" class="name-wrapper">
-              <el-tag size="medium">{{ scope.row.Content.substring(0, 50) }}</el-tag>
+              <el-tag size="medium">{{ scope.row.Content.substring(0, 30) }}</el-tag>
             </div>
           </el-popover>
         </template>
@@ -79,6 +79,14 @@
           <el-input type="textarea" :autosize="{ minRows: 3, maxRows: 12 }" size="small" v-model="editForm.Content"
             auto-complete="off" placeholder="请输入内容">
           </el-input>
+        </el-form-item>
+        <el-form-item label="上传图片" prop="ImageUrl">
+          <el-upload class="avatar-uploader" action="/Api/File/UploadImage" :show-file-list="false"
+            :on-success="handleAvatarSuccess">
+            <img v-if="editForm.ImageUrl" :src="editForm.ImageUrl" class="avatar">
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+          </el-upload>
+
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -115,6 +123,7 @@ export default {
         Title: '',
         Content: '',
         ArticleTypeId: '',
+        ImageUrl: ''
       },
       // 选择数据
       selectdata: [],
@@ -232,13 +241,14 @@ export default {
         this.editForm.Id = row.Id
         this.editForm.Title = row.Title
         this.editForm.Content = row.Content
-        this.editForm.ArticleTypeId = row.ArticleTypeId
+        this.editForm.ImageUrl = row.ImageUrl
       } else {
         this.title = '添加文章'
         this.editForm.Id = ''
         this.editForm.Title = ''
         this.editForm.Content = ''
         this.editForm.ArticleTypeId = ''
+        this.editForm.ImageUrl = ''
       }
     },
     // 编辑、添加提交方法
@@ -333,6 +343,24 @@ export default {
           })
         })
     },
+    handleAvatarSuccess(res, file) {
+      console.log(res, file)
+      if (res.Type = 'Success') {
+        this.editForm.ImageUrl = res.Data;
+        this.$message({
+          type: 'success',
+          message: '数据保存成功！'
+        })
+      }
+      else {
+        this.$message({
+          type: 'info',
+          message: res.Errors
+        })
+      }
+    },
+
+
   }
 }
 </script>
@@ -344,6 +372,33 @@ export default {
 
 .userRole {
   width: 100%;
+}
+
+.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.avatar-uploader .el-upload:hover {
+  border-color: #409EFF;
+}
+
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  line-height: 178px;
+  text-align: center;
+}
+
+.avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
 }
 </style>
 

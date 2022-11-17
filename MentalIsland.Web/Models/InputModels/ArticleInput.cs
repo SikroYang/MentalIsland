@@ -22,6 +22,10 @@ public class ArticleInput
     /// </summary>
     [Required(ErrorMessage = "文章内容不能为空")]
     public string Content { get; set; } = default!;
+    /// <summary>
+    /// 图片地址
+    /// </summary>
+    public string? ImageUrl { get; set; }
 
     /// <summary>
     /// 类型Id

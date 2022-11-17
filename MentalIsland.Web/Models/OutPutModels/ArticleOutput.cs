@@ -17,6 +17,10 @@ public class ArticleOutput
     /// 内容
     /// </summary>
     public string Content { get; set; } = default!;
+    /// <summary>
+    /// 图片地址
+    /// </summary>
+    public string ImageUrl { get; set; } = default!;
 
     /// <summary>
     /// 文章类型外键
