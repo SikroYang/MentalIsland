@@ -82,7 +82,7 @@
         </el-form-item>
         <el-form-item label="上传图片" prop="ImageUrl">
           <el-upload class="avatar-uploader" action="/Api/File/UploadImage" :show-file-list="false"
-            :on-success="handleAvatarSuccess">
+            :before-upload="beforeAvatarUpload" :on-success="handleAvatarSuccess">
             <img v-if="editForm.ImageUrl" :src="editForm.ImageUrl" class="avatar">
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
@@ -104,19 +104,15 @@ import {
   ArticlesList,
   ArticleSave,
   ArticleDelete,
-  ArticleTypesList
+  ArticleTypesList,
 } from '../../api/basisMG'
 import Pagination from '../../components/Pagination'
 export default {
   data() {
     return {
-      nshow: true, //switch开启
-      fshow: false, //switch关闭
       loading: false, //是显示加载
       title: '添加文章',
       editFormVisible: false, //控制编辑页面显示与隐藏
-      dataAccessshow: false, //控制数据权限显示与隐藏
-      unitAccessshow: false, //控制所属单位隐藏与显示
       // 编辑与添加
       editForm: {
         Id: '',
@@ -344,8 +340,22 @@ export default {
           })
         })
     },
+    beforeAvatarUpload(file) {
+      const isJPG = file.type === 'image/jpeg' || file.type === 'image/png';
+      const isLt2M = file.size / 1024 / 1024 < 2;
+
+      if (!isJPG) {
+        this.$message.error('上传图片只能是 JPG 或 PNG 格式!');
+      }
+      if (!isLt2M) {
+        this.$message.error('上传图片大小不能超过 2MB!');
+      }
+      // this.canUploadConsole = isJPG && isLt2M;
+      return isJPG && isLt2M;
+    },
     handleAvatarSuccess(res, file) {
       console.log(res, file)
+      // UploadImage(file).then(res => {
       if (res.Type = 'Success') {
         this.editForm.ImageUrl = res.Data;
         this.$message({
@@ -359,6 +369,7 @@ export default {
           message: res.Errors
         })
       }
+      // })
     },
 
 

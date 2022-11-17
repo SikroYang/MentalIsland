@@ -52,3 +52,7 @@ export const BlackWordList = (data) => { return post("/Api/User/BlackWord", data
 export const BlackWordSave = (data) => { return post("/Api/User/SetBlackWord", data) };
 // 关键词管理-保存关键词
 export const BlackWordDelete = (data) => { return post("/Api/User/BlackWordDelete", data) };
+
+
+// 关键词管理-保存关键词
+export const UploadImage = (data) => { return post("/Api/File/UploadImage", data) };
