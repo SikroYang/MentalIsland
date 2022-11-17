@@ -34,11 +34,11 @@ public class Island : Entity
     /// <summary>
     /// 岛群人数
     /// </summary>
-    public int PersonNumber { get; set; } = 0;
+    public int PersonNumber { get; set; }
     /// <summary>
     /// 岛群发帖数
     /// </summary>
-    public int PostNumber { get; set; } = 0;
+    public int PostNumber { get; set; }
     /// <summary>
     /// 岛群最后发帖时间
     /// </summary>

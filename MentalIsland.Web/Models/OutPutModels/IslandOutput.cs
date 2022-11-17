@@ -49,4 +49,8 @@ public class IslandOutput
     /// 岛群最后回复时间
     /// </summary>
     public DateTime? LastReplyTime { get; set; }
+    /// <summary>
+    /// 是否关注
+    /// </summary>
+    public bool IsFollow { get; set; }
 }

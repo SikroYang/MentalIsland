@@ -71,29 +71,27 @@ public class PostController : WebApiBaseController<PostController>
         if (post.IslandId <= 0) throw Oops.Bah("岛群Id必须大于0").StatusCode();
         var island = await islandRepository.AsQueryable().Includes(l => l.Posts).FirstAsync(wa => wa.Id == post.IslandId && !wa.IsDeleted);
         if (island == null) throw Oops.Bah("当前岛群不存在或已删除").StatusCode();
-        var postRes = post.Adapt<Island_Post>();
         bool isSuccess;
         int Id = post.Id ?? 0;
         if (Id == 0)
         {
-            var entity = await postRepository.AsInsertable(postRes).ExecuteReturnEntityAsync();
+            var entity = await postRepository.AsInsertable(post.Adapt<Island_Post>()).ExecuteReturnEntityAsync();
             Id = entity.Id;
             isSuccess = Id > 0;
             if (isSuccess)
             {
-                var updateIsland = new Island
-                {
-                    Id = entity.IslandId,
-                    LastPostTime = entity.CreatedTime,
-                    PostNumber = island.Posts.Count + 1
-                };
-                isSuccess = await islandRepository.AsUpdateable(updateIsland).IgnoreColumns(true).IgnoreColumns(l => new { l.CreatedTime }).ExecuteCommandHasChangeAsync();
+                isSuccess = await islandRepository.AsUpdateable()
+                                    .SetColumns(wa => wa.PostNumber == island.Posts.Count + 1)
+                                    .SetColumns(wa => wa.LastPostTime == entity.CreatedTime)
+                                    .Where(wa => wa.Id == entity.IslandId)
+                                    .ExecuteCommandHasChangeAsync();
             }
-
         }
         else
         {
-            isSuccess = await postRepository.AsUpdateable(postRes).IgnoreColumns(true).IgnoreColumns(l => new { l.CreatedTime }).ExecuteCommandHasChangeAsync();
+            isSuccess = await postRepository.AsUpdateable(post.Adapt<Island_Post>()).IgnoreColumns(true)
+                                .IgnoreColumns(l => new { l.CreatedTime, l.LastReplyTime, l.ReplyNumber })
+                                .ExecuteCommandHasChangeAsync();
         }
         if (!isSuccess) throw Oops.Bah("保存失败,请检查后重新尝试!").StatusCode();
         return Id;
@@ -139,36 +137,32 @@ public class PostController : WebApiBaseController<PostController>
         if (reply.PostId <= 0) throw Oops.Bah("帖子Id必须大于0").StatusCode();
         var post = await postRepository.AsQueryable().Includes(p => p.Replies).FirstAsync(wa => wa.Id == reply.PostId && !wa.IsDeleted);
         if (post == null) throw Oops.Bah("当前帖子不存在或已删除").StatusCode();
-        var postRes = reply.Adapt<Island_Reply>();
         bool isSuccess;
         int Id = reply.Id ?? 0;
         if (Id == 0)
         {
-            var entity = await replyRepository.AsInsertable(postRes).ExecuteReturnEntityAsync();
+            var entity = await replyRepository.AsInsertable(reply.Adapt<Island_Reply>()).ExecuteReturnEntityAsync();
             Id = entity.Id;
             isSuccess = Id > 0;
             if (isSuccess)
             {
-                var updatePost = new Island_Post
-                {
-                    Id = entity.PostId,
-                    IslandId = post.IslandId,
-                    LastReplyTime = entity.CreatedTime,
-                    ReplyNumber = post.Replies.Count + 1
-                };
-                isSuccess = await postRepository.AsUpdateable(updatePost).IgnoreColumns(true).IgnoreColumns(l => new { l.CreatedTime }).ExecuteCommandHasChangeAsync();
+                isSuccess = await postRepository.AsUpdateable()
+                                    .SetColumns(wa => wa.LastReplyTime == entity.CreatedTime)
+                                    .SetColumns(wa => wa.ReplyNumber == post.Replies.Count + 1)
+                                    .Where(wa => wa.Id == post.Id)
+                                    .ExecuteCommandHasChangeAsync();
 
-                var updateIsland = new Island
-                {
-                    Id = post.IslandId,
-                    LastReplyTime = entity.CreatedTime,
-                };
-                isSuccess = await islandRepository.AsUpdateable(updateIsland).IgnoreColumns(true).IgnoreColumns(l => new { l.CreatedTime }).ExecuteCommandHasChangeAsync();
+                isSuccess = await islandRepository.AsUpdateable()
+                                    .SetColumns(wa => wa.LastReplyTime == entity.CreatedTime)
+                                    .Where(l => l.Id == post.IslandId)
+                                    .ExecuteCommandHasChangeAsync();
             }
         }
         else
         {
-            isSuccess = await replyRepository.AsUpdateable(postRes).IgnoreColumns(true).IgnoreColumns(l => new { l.CreatedTime }).ExecuteCommandHasChangeAsync();
+            isSuccess = await replyRepository.AsUpdateable().UpdateColumns(wa => reply).IgnoreColumns(true)
+                                .IgnoreColumns(l => new { l.CreatedTime })
+                                .ExecuteCommandHasChangeAsync();
         }
         if (!isSuccess) throw Oops.Bah("保存失败,请检查后重新尝试!").StatusCode();
         return Id;

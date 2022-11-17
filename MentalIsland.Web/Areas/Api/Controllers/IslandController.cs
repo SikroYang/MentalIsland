@@ -10,6 +10,8 @@ using MentalIsland.Migrations.Extensions.ControllerEx;
 using MentalIsland.Migrations.Extensions.Auth;
 using MentalIsland.Web.Models.Extensions;
 using Furion.DatabaseAccessor;
+using System.Security.Claims;
+using Furion;
 
 namespace MentalIsland.Web.Areas.Api.Controllers;
 
@@ -46,8 +48,15 @@ public class IslandController : WebApiBaseController<IslandController>
             exp.And(i => i.Name.Contains(searchInfo.Name));
         if (!string.IsNullOrWhiteSpace(searchInfo.Description))
             exp.And(i => i.Description.Contains(searchInfo.Description));
-        var result = await islandRepository.AsQueryable().Where(exp.ToExpression()).ToListAsync();
-        return result.Adapt<List<IslandOutput>>();
+        var result = await islandRepository.AsQueryable().Where(exp.ToExpression()).Includes(wa => wa.Users).ToListAsync();
+        var userId = App.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var data = result.Select(wa =>
+        {
+            var o = wa.Adapt<IslandOutput>();
+            o.IsFollow = wa.Users.Any(u => u.Id.ToString() == userId);
+            return o;
+        }).ToList();
+        return data;
     }
 
     /// <summary>
@@ -59,12 +68,15 @@ public class IslandController : WebApiBaseController<IslandController>
     public async Task<int> AddOrUpdateIsland(IslandInput island)
     {
         if (island.Name.ContainsKeyWords() || island.Description.ContainsKeyWords()) throw Oops.Bah("您发表的内容包含敏感词").StatusCode();
-        var islandRes = island.Adapt<Island>();
+        var islandRes = await islandRepository.AsQueryable().Includes(l => l.Posts).FirstAsync(wa => wa.Id == island.Id && !wa.IsDeleted);
+        if (island == null) throw Oops.Bah("当前岛群不存在或已删除").StatusCode();
         bool isSuccess;
         int Id = island.Id ?? 0;
         if (Id == 0)
         {
-            Id = await islandRepository.AsInsertable(islandRes).ExecuteReturnIdentityAsync();
+            var islandRep = island.Adapt<Island>();
+            islandRep.PersonNumber = 1;
+            Id = await islandRepository.AsInsertable(islandRep).ExecuteReturnIdentityAsync();
             isSuccess = Id > 0;
 
             var opIsland = new Island
@@ -80,7 +92,9 @@ public class IslandController : WebApiBaseController<IslandController>
         }
         else
         {
-            isSuccess = await islandRepository.AsUpdateable(islandRes).IgnoreColumns(true).IgnoreColumns(l => new { l.CreatedTime }).ExecuteCommandHasChangeAsync();
+            isSuccess = await islandRepository.AsUpdateable(island.Adapt<Island>()).IgnoreColumns(true)
+                                .IgnoreColumns(l => new { l.CreatedTime, l.LastReplyTime, l.PostNumber, l.LastPostTime, l.PersonNumber })
+                                .ExecuteCommandHasChangeAsync();
         }
         if (!isSuccess) throw Oops.Bah("保存失败,请检查后重新尝试!").StatusCode();
         return Id;
@@ -121,6 +135,11 @@ public class IslandController : WebApiBaseController<IslandController>
                         .Include(l => l.Users)
                         .ExecuteCommandAsync();//技巧：只更新中间表可以只传A和B表的主键其他不用赋值
 
+        isSuccess = await islandRepository.AsUpdateable()
+                            .SetColumns(wa => wa.PersonNumber == wa.PersonNumber + 1)
+                            .Where(l => l.Id == island.Id)
+                            .ExecuteCommandHasChangeAsync();
+
         // var isSuccess = await islandRepository.RecycleByIdAsync<Island>(island.Id);
         if (!isSuccess) throw Oops.Bah("关注失败,请检查后重新尝试!").StatusCode();
         return "关注成功!";
@@ -148,6 +167,11 @@ public class IslandController : WebApiBaseController<IslandController>
         var isSuccess = await islandRepository.Context.DeleteNav(opIsland)
                         .Include(l => l.Users)
                         .ExecuteCommandAsync();
+
+        isSuccess = await islandRepository.AsUpdateable()
+                            .SetColumns(wa => wa.PersonNumber == wa.PersonNumber - 1)
+                            .Where(l => l.Id == island.Id)
+                            .ExecuteCommandHasChangeAsync();
 
         // var isSuccess = await islandRepository.RecycleByIdAsync<Island>(island.Id);
         if (!isSuccess) throw Oops.Bah("取消关注失败,请检查后重新尝试!").StatusCode();
