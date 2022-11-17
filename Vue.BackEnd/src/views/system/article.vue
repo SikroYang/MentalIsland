@@ -241,6 +241,7 @@ export default {
         this.editForm.Id = row.Id
         this.editForm.Title = row.Title
         this.editForm.Content = row.Content
+        this.editForm.ArticleTypeId = row.ArticleTypeId
         this.editForm.ImageUrl = row.ImageUrl
       } else {
         this.title = '添加文章'
