@@ -1,8 +1,5 @@
-using System.Text;
-using System.Security.Cryptography;
 using MentalIsland.Core.CodeFirst.Models;
 using MentalIsland.Core.CodeFirst.SqlSugarBase;
-using Furion.DataEncryption;
 
 namespace MentalIsland.Core.CodeFirst.SeedData;
 
@@ -11,9 +8,6 @@ namespace MentalIsland.Core.CodeFirst.SeedData;
 /// </summary>
 public class ArticleTypeSeedData : ISeedData, ISqlSugarEntitySeedData<ArticleType>
 {
-    // SqlServer 不需要插入Id(自增)
-    // Sqlite 需要出入Id(在数据种子层 自增不起作用)
-
     /// <summary>
     /// 文章类型数据种子
     /// </summary>
