@@ -47,6 +47,18 @@ public class User : Entity
     public UserType UserType { get; set; } = UserType.Normal;
 
     /// <summary>
+    /// 用户个性化注册类型
+    /// </summary>
+    [SugarColumn(IsNullable = true)]
+    public Personal? Personal { get; set; }
+
+    /// <summary>
+    /// 用户个性化备注
+    /// </summary>
+    [SugarColumn(IsNullable = true)]
+    public UserComment? UserComment { get; set; }
+
+    /// <summary>
     /// 用户已关注岛群
     /// </summary>
     [SugarColumn(IsIgnore = true)]

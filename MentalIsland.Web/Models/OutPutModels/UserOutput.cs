@@ -1,3 +1,5 @@
+using MentalIsland.Core.CodeFirst.Enums;
+
 namespace MentalIsland.Web.Models.OutPubModels;
 
 /// <summary>
@@ -37,4 +39,14 @@ public class UserOutput
     /// 是否锁定
     /// </summary>
     public bool IsLocked { get; set; } = default!;
+
+    /// <summary>
+    /// 用户个性化注册类型
+    /// </summary>
+    public Personal? Personal { get; set; }
+
+    /// <summary>
+    /// 用户个性化备注
+    /// </summary>
+    public UserComment? UserComment { get; set; }
 }

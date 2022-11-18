@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using MentalIsland.Core.CodeFirst.Enums;
 
 namespace MentalIsland.Web.Models.InputModels;
 
@@ -38,6 +39,15 @@ public class UserInput
     [Required(ErrorMessage = "国家或地区不能为空")]
     public string Country { get; set; } = default!;
 
+    /// <summary>
+    /// 用户个性化注册类型
+    /// </summary>
+    public Personal? Personal { get; set; }
+
+    /// <summary>
+    /// 用户个性化备注
+    /// </summary>
+    public UserComment? UserComment { get; set; }
 }
 
 /// <summary>
