@@ -52,5 +52,5 @@ public class UserOutput
     /// <summary>
     /// 用户个性化备注
     /// </summary>
-    public UserComment? UserComment { get; set; }
+    public List<UserComment> UserComment { get; set; }
 }

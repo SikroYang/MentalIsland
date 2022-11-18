@@ -61,7 +61,7 @@ public class User : Entity
     /// 用户个性化备注
     /// </summary>
     [SugarColumn(IsNullable = true)]
-    public UserComment? UserComment { get; set; }
+    public string? UserComment { get; set; }
 
     /// <summary>
     /// 用户已关注岛群
