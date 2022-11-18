@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-10-24 15:15:45
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-11-16 15:47:05
+ * @LastEditTime: 2022-11-18 15:38:25
  * @FilePath: \project\pages\login.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -13,7 +13,7 @@
       <el-tabs
         :tab-position="tabPosition"
         :stretch="true"
-        style="height: 600px"
+        style="height: 700px"
       >
         <el-tab-pane label="个人信息">
           <el-form ref="form" :model="form" label-width="80px">
@@ -45,10 +45,10 @@
             <el-form-item label="手机号">
               <el-input v-model="form.phone" style="width: 220px"></el-input>
             </el-form-item>
-            <!-- <el-form-item label="用户头像">
+            <el-form-item label="用户头像">
               <el-upload
                 class="avatar-uploader"
-                action="https://jsonplaceholder.typicode.com/posts/"
+                action="/Api/File/UploadImage"
                 :show-file-list="false"
                 :on-success="handleAvatarSuccess"
                 v-model="form.portrait"
@@ -56,28 +56,28 @@
                 <img v-if="imageUrl" :src="imageUrl" class="avatar" />
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
               </el-upload>
-            </el-form-item> -->
+            </el-form-item>
             <el-form-item label="修改邮箱">
               <el-input v-model="form.email" style="width: 220px"></el-input>
             </el-form-item>
             <el-form-item label="当前密码">
               <el-input v-model="form.psd" style="width: 220px"></el-input>
             </el-form-item>
-            <!-- <el-form-item label="注册类型">
+            <el-form-item label="注册类型">
               <el-radio-group v-model="form.resource">
-                <el-radio label="医疗人员"></el-radio>
-                <el-radio label="心理疾病患者"></el-radio>
-                <el-radio label="自救寻求着"></el-radio>
+                <el-radio label="1">医疗人员</el-radio>
+                <el-radio label="2">心理疾病患者</el-radio>
+                <el-radio label="3">自救寻求着</el-radio>
               </el-radio-group>
             </el-form-item>
             <el-form-item label="备注">
               <el-checkbox-group v-model="form.resource2">
-                <el-checkbox label="心情低落/极端" name="type"></el-checkbox>
-                <el-checkbox label="自我迷茫" name="type"></el-checkbox>
-                <el-checkbox label="知识欠缺" name="type"></el-checkbox>
-                <el-checkbox label="没有特别问题" name="type"></el-checkbox>
+                <el-checkbox label="1" name="type">心情低落/极端</el-checkbox>
+                <el-checkbox label="2" name="type">自我迷茫</el-checkbox>
+                <el-checkbox label="3" name="type">知识欠缺</el-checkbox>
+                <el-checkbox label="4" name="type">没有特别问题</el-checkbox>
               </el-checkbox-group>
-            </el-form-item> -->
+            </el-form-item>
             <el-form-item>
               <el-button type="primary" @click="onSubmit">保存</el-button>
             </el-form-item>
@@ -163,13 +163,13 @@ export default {
       country,
       form: {
         name: "",
-        phone:"",
+        phone: "",
         region: "",
         portrait: "",
         resource: "",
         resource2: [],
         email: "",
-        psd:""
+        psd: "",
       },
       form2: {
         psd: "",
@@ -180,9 +180,10 @@ export default {
         nickName: "",
         nickDesc: "",
         qq: "",
-        id:''
+        id: "",
       },
       imageUrl: "",
+      img:"",
       qdList: [],
       dialogVisible: false,
     };
@@ -197,13 +198,23 @@ export default {
       let that = this;
       console.log(that.form);
       this.$axios
-        .post("/Api/User/AddOrUpdateUser", { Id: this.$cookies.get("user").Id,Password:that.form.psd,Email:that.form.email,PhoneNumber:that.form.phone,FullName:that.form.name,Country:that.form.region})
+        .post("/Api/User/AddOrUpdateUser", {
+          Id: this.$cookies.get("user").Id,
+          Password: that.form.psd,
+          Email: that.form.email,
+          PhoneNumber: that.form.phone,
+          FullName: that.form.name,
+          Country: that.form.region,
+          HeadImage:that.img,
+          Personal:that.form.resource,
+          UserComment:that.form.resource2,
+        })
         .then((res) => {
           if (res.data.Code === 200) {
             this.$message.success("恭喜你，用户信息修改成功");
-          }else {
-          this.$message.error("错了哦，用户信息修改失败");
-        }
+          } else {
+            this.$message.error("错了哦，用户信息修改失败");
+          }
         });
     },
     // onSubmit2() {
@@ -212,7 +223,8 @@ export default {
     // },
     handleAvatarSuccess(res, file) {
       this.imageUrl = URL.createObjectURL(file.raw);
-      console.log(file);
+      console.log(file.response.Data);
+      this.img=file.response.Data
     },
     userList() {
       let that = this;
@@ -220,13 +232,14 @@ export default {
         .post("/Api/User/UserDetail", { Id: this.$cookies.get("user").Id })
         .then((res) => {
           if (res.data.Code === 200) {
-            console.log(res);
+            console.log(res.data.Data.UserComment.join(",").split(','));
             that.form.name = res.data.Data.FullName;
-            that.form.phone= res.data.Data.PhoneNumber;
+            that.form.phone = res.data.Data.PhoneNumber;
             that.form.region = res.data.Data.Country;
             // that.form.portrait=res.data.Data.
-            // that.form.resource=res.data.Data.
-            // that.form.resource2=res.data.Data.
+            that.form.resource=res.data.Data.Personal.toString();
+            that.form.resource2= res.data.Data.UserComment.join(",").split(',')
+            that.imageUrl=res.data.Data.HeadImage
             that.form.email = res.data.Data.Email;
           }
         });
@@ -234,14 +247,12 @@ export default {
     qdLists(a, b) {
       //群岛列表
       let that = this;
-      this.$axios
-        .post("/Api/Island/GetUserCreatedIsland")
-        .then((res) => {
-          console.log(res);
-          if (res.data.Code === 200) {
-            that.qdList = res.data.Data;
-          }
-        });
+      this.$axios.post("/Api/Island/GetUserCreatedIsland").then((res) => {
+        console.log(res);
+        if (res.data.Code === 200) {
+          that.qdList = res.data.Data;
+        }
+      });
     },
     dialog(e) {
       let that = this;
@@ -256,39 +267,49 @@ export default {
         that.form3.id = item.Id;
       });
     },
-    information(){
-        let that = this;
-        console.log(that.form3)
-        this.$axios
-        .post("/Api/Island/AddOrUpdateIsland", { Id: that.form3.id, Name: that.form3.nickName,Description:that.form3.nickDesc,QQunNumber:that.form3.qq })
+    information() {
+      let that = this;
+      console.log(that.form3);
+      this.$axios
+        .post("/Api/Island/AddOrUpdateIsland", {
+          Id: that.form3.id,
+          Name: that.form3.nickName,
+          Description: that.form3.nickDesc,
+          QQunNumber: that.form3.qq,
+        })
         .then((res) => {
           if (res.data.Code === 200) {
             this.$message.success("恭喜你，群岛修改成功");
             that.dialogVisible = false;
-            that.qdLists()
-          }else {
-          this.$message.error("错了哦，群岛修改失败");
-        }
+            that.qdLists();
+          } else {
+            this.$message.error("错了哦，群岛修改失败");
+          }
         });
-        
-    }
+    },
   },
 };
 </script>
   <style scoped>
-  .el-input__inner{
-    background-color: #F7EEED;
-    border: 1px solid #F7EEED
-  }
+ 
+  
+  .el-button--primary {
+  background: #f7bc99;
+  border-color: #f7bc99;
+}
+.el-input__inner {
+  background-color: #f7eeed;
+  border: 1px solid #f7eeed;
+}
 .content_y {
   width: 50%;
   margin: auto;
   margin-top: 50px;
-  border: 1px solid #F7EEED;
+  border: 1px solid #f7eeed;
   padding: 20px;
   border-radius: 40px;
-  height: 600px;
-  background-color: #F7EEED;
+  height: 700px;
+  background-color: #f7eeed;
 }
 .avatar-uploader .el-upload {
   border: 1px dashed #d9d9d9;
@@ -316,8 +337,8 @@ export default {
 
 .qd ul li {
   list-style: none;
-float: left;
-margin: 20px;
+  float: left;
+  margin: 20px;
 }
 .qd ul li img {
   width: 120px;

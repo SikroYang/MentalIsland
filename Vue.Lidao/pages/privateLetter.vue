@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-10-24 15:15:45
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-11-17 16:29:55
+ * @LastEditTime: 2022-11-18 09:54:55
  * @FilePath: \project\pages\login.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -182,6 +182,16 @@ export default {
   background-color: #fbf7ec;
   margin-bottom: 10px;
   border: 1px solid #FBDDCB;
+}
+.el-radio{
+  color: #B28750 !important;
+}
+.el-radio__input.is-checked + .el-radio__label {
+  color: #cc8d3b !important;
+}
+.el-radio__input.is-checked .el-radio__inner {
+  background: #cc8d3b !important;
+  border-color: #cc8d3b !important;
 }
 </style>
   

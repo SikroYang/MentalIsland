@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-11-04 14:47:39
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-11-16 15:25:35
+ * @LastEditTime: 2022-11-18 10:59:18
  * @FilePath: \qundao\qundao\components\Header.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -30,7 +30,7 @@
     </div>
     <div class="flex" v-if="show">
       <div class="block mar-r">
-        <el-avatar :size="40" :src="circleUrl"></el-avatar>
+        <img src="../assets/tx2.png" alt="" style="width: 40px;height: 40px;">
       </div>
       <el-dropdown trigger="click">
         <span class="el-dropdown-link">
@@ -61,8 +61,6 @@ export default {
         { name: "/exhibition", navItem: "过去活动+展览" },
         { name: "/team", navItem: "我们的团队" },
       ],
-      circleUrl:
-        "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
       isShow: true,
       show: false,
       userList: [],

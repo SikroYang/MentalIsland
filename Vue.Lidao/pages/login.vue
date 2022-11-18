@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-10-24 15:15:45
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-11-16 10:00:41
+ * @LastEditTime: 2022-11-18 10:37:54
  * @FilePath: \project\pages\login.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -38,8 +38,9 @@
             style="width: 100%"
           ></el-button>
         </el-form-item>
-        <el-row style="text-align: center; margin-top: -10px">
+        <el-row style="margin-top: -10px;display: flex;justify-content: space-between;">
           <el-link type="primary" @click="doRegister">注册账号</el-link>
+          <el-link type="primary" @click="goPsd">忘记密码</el-link>
         </el-row>
       </el-form>
     </div>
@@ -75,6 +76,9 @@ export default {
     doRegister() {
       this.$router.push("/signin");
     },
+    goPsd(){
+      this.$router.push("/goPsd");
+    }
   },
 };
 </script>

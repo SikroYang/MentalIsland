@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-10-25 14:00:48
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-11-15 15:03:54
+ * @LastEditTime: 2022-11-18 14:12:46
  * @FilePath: \project\pages\signin.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -93,22 +93,22 @@
             <el-button plain @click="code">获取验证码</el-button>
           </div>
         </el-form-item>
-        <!-- <el-form-item label="你是...">
+        <el-form-item label="你是...">
           <el-radio-group v-model="form.resource">
-            <el-radio label="医疗人员"></el-radio>
-            <el-radio label="心理疾病患者"></el-radio>
-            <el-radio label="自救寻求着"></el-radio>
+            <el-radio label="1">医疗人员</el-radio>
+            <el-radio label="2">心理疾病患者</el-radio>
+            <el-radio label="3">自救寻求着</el-radio>
           </el-radio-group>
         </el-form-item>
         <p style="color: #606266">你正在面临的问题...</p>
         <el-form-item>
           <el-checkbox-group v-model="form.resource2">
-            <el-checkbox label="心情低落/极端" name="type"></el-checkbox>
-            <el-checkbox label="自我迷茫" name="type"></el-checkbox>
-            <el-checkbox label="知识欠缺" name="type"></el-checkbox>
-            <el-checkbox label="没有特别问题" name="type"></el-checkbox>
+            <el-checkbox label="1" name="type">心情低落/极端</el-checkbox>
+            <el-checkbox label="2" name="type">自我迷茫</el-checkbox>
+            <el-checkbox label="3" name="type">知识欠缺</el-checkbox>
+            <el-checkbox label="4" name="type">没有特别问题</el-checkbox>
           </el-checkbox-group>
-        </el-form-item> -->
+        </el-form-item>
 
         <!-- <el-row style="text-align: center; margin-top: -10px">
           <p style="color: #8a8c8e">
@@ -167,6 +167,8 @@ export default {
               Country: that.form.region,
               VerifyCode: that.form.verification,
               Password: that.form.password,
+              Personal: that.form.resource,
+              UserComment: that.form.resource2,
             };
             that.$axios.post("/Api/Auth/Register", data).then((res) => {
               console.log(res);
