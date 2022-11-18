@@ -47,7 +47,7 @@ public class UserOutput
     /// <summary>
     /// 用户个性化注册类型
     /// </summary>
-    public Personal? Personal { get; set; }
+    public Personal Personal { get; set; }
 
     /// <summary>
     /// 用户个性化备注
