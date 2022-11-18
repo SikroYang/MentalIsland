@@ -9,7 +9,7 @@
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'qundao',
+    title: '离岛',
     htmlAttrs: {
       lang: 'en'
     },
