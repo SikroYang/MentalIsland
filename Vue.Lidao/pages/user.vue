@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-10-24 15:15:45
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-11-18 16:06:32
+ * @LastEditTime: 2022-11-18 16:35:00
  * @FilePath: \project\pages\login.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -241,7 +241,7 @@ export default {
             that.form.email = res.data.Data.Email;
             let personal=res.data.Data.Personal
             that.form.resource=personal.toString();
-            that.form.resource2= res.data.Data.UserComment.join(",").split(',')
+            that.form.resource2= res.data.Data.UserComment.map(String)
           }
         });
     },
