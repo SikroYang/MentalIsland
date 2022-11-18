@@ -86,7 +86,7 @@ public class AuthController : WebApiBaseController<AuthController>
     /// </summary>
     /// <returns></returns>
     [HttpPost]
-    public async Task<UserOutput> Login([Required] UserLoginInput userLogin)
+    public async Task<UserOutput> Login(UserLoginInput userLogin)
     {
         if (User?.Identity != null && User.Identity.IsAuthenticated) throw Oops.Bah("请勿重复登录!").StatusCode(500);
         var passwordHash = MD5Encryption.Encrypt(userLogin.Password);

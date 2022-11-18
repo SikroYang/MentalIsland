@@ -15,6 +15,7 @@ public class UserInput
     /// <summary>
     /// 密码
     /// </summary>
+    [RegularExpression(@"^([A-Za-z]\w{5,17})?$", ErrorMessage = "密码必须以字母开头，长度在6~18之间，只能包含字母、数字和下划线")]
     public string Password { get; set; } = default!;
     /// <summary>
     /// 电子邮箱
@@ -78,10 +79,12 @@ public class UserLoginInput
     /// <summary>
     /// 用户名
     /// </summary>
+    [Required(ErrorMessage = "用户名不能为空")]
     public string UserName { get; set; } = default!;
     /// <summary>
     /// 密码
     /// </summary>
+    [Required(ErrorMessage = "密码不能为空")]
     public string Password { get; set; } = default!;
 }
 
@@ -131,5 +134,11 @@ public class UserResetPwdInput : OnlyId
     /// <summary>
     /// 验证码
     /// </summary>
+    [RegularExpression(@"^([0-9]{6})?$", ErrorMessage = "验证码必须是6位数字")]
     public string VerifyCode { get; set; } = default!;
+    /// <summary>
+    /// 新密码
+    /// </summary>
+    [RegularExpression(@"^([A-Za-z]\w{5,17})?$", ErrorMessage = "密码必须以字母开头，长度在6~18之间，只能包含字母、数字和下划线")]
+    public string NewPassword { get; set; } = default!;
 }

@@ -153,16 +153,17 @@ public class UserController : WebApiBaseController<UserController>
     public async Task<string> ResetPwd(UserResetPwdInput model)
     {
         var user = await userRepository.GetByIdAsync(User.Id);
-        if (string.IsNullOrWhiteSpace(model.VerifyCode) && user.UserType >= Core.CodeFirst.Enums.UserType.Manager)
+        if (string.IsNullOrWhiteSpace(model.VerifyCode) && user.UserType < Core.CodeFirst.Enums.UserType.Manager)
             throw Oops.Bah("请输入验证码!").StatusCode();
 
         if (string.IsNullOrWhiteSpace(HttpContext.Session.GetString("VERIFYCODE")) || HttpContext.Session.GetString("VERIFYCODE") != model.VerifyCode)
-            Oops.Bah("请检查验证码是否正确").StatusCode();
+            throw Oops.Bah("请检查验证码是否正确").StatusCode();
         HttpContext.Session.Remove("VERIFYCODE");
 
         var resetUser = await userRepository.GetByIdAsync(model.Id);
         if (resetUser == null || resetUser.IsDeleted) throw Oops.Bah("该用户不存在或已删除").StatusCode();
-        var status = new { resetUser.Id, PasswordHash = MD5Encryption.Encrypt("Aa123456") };
+        var PasswordHash = MD5Encryption.Encrypt(string.IsNullOrWhiteSpace(model.NewPassword) ? "Aa123456" : model.NewPassword);
+        var status = new { resetUser.Id, PasswordHash };
         var isSuccess = await userRepository.AsUpdateable(status.Adapt<User>()).IgnoreColumns(true).UpdateColumns(
             x => new { x.PasswordHash, x.UpdatedTime, x.UpdatedUserId, x.UpdatedUserName }).ExecuteCommandHasChangeAsync();
         if (!isSuccess) throw Oops.Bah("重置密码失败,请检查后重新尝试!").StatusCode();
