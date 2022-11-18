@@ -37,10 +37,10 @@ public class SqlSugarRepository<T> : SimpleClient<T> where T : class, new()
     /// </summary>
     public async Task<bool> RecycleIslandAsync(int Id)
     {
-        var entity = new { Id = Id, IsDeleted = true };
         var lastName = new IdWorker(1, 1).NextId();
-        var isSuccess = await Context.Updateable<Island>(entity).IgnoreColumns(true)  // 允许更新的字段-AOP拦截自动设置UpdateTime、UpdateUserId
-            .SetColumns(x => x.Name == x.Name + lastName)
+        var isSuccess = await Context.Updateable<Island>()  // 允许更新的字段-AOP拦截自动设置UpdateTime、UpdateUserId
+            .SetColumns(x => x.IsDeleted == true)
+            .SetColumns(x => x.Name == x.Name + lastName.ToString())
             .Where(x => x.Id == Id)
             .ExecuteCommandHasChangeAsync();
         return isSuccess;
