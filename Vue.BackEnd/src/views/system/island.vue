@@ -80,13 +80,9 @@ import Pagination from '../../components/Pagination'
 export default {
   data() {
     return {
-      nshow: true, //switch开启
-      fshow: false, //switch关闭
       loading: false, //是显示加载
       title: '添加岛群',
       editFormVisible: false, //控制编辑页面显示与隐藏
-      dataAccessshow: false, //控制数据权限显示与隐藏
-      unitAccessshow: false, //控制所属单位隐藏与显示
       // 编辑与添加
       editForm: {
         Id: '',
@@ -167,11 +163,11 @@ export default {
             message: res.Content
           })
         } else {
-          this.userData = res.Data
+          this.userData = res.Data.List
           // 分页赋值
           this.pageparm.currentPage = this.formInline.Page
           this.pageparm.pageSize = this.formInline.Size
-          this.pageparm.total = res.Data.length
+          this.pageparm.total = res.Data.Total
         }
       })
     },

@@ -163,11 +163,11 @@ export default {
             message: res.Content
           })
         } else {
-          this.userData = res.Data.Replies
+          this.userData = res.Data.Replies.List
           // 分页赋值
           this.pageparm.currentPage = this.formInline.Page
           this.pageparm.pageSize = this.formInline.Size
-          this.pageparm.total = res.count
+          this.pageparm.total = res.Data.Replies.Total
         }
       })
     },
