@@ -94,11 +94,11 @@ public class UserController : WebApiBaseController<UserController>
     {
         if (!string.IsNullOrWhiteSpace(user.PhoneNumber) && !user.PhoneNumber.TryValidate(ValidationTypes.PhoneNumber).IsValid) throw Oops.Bah("不是有效的手机号码格式").StatusCode();
         var userRes = user.Adapt<User>();
-        userRes.UserName = string.IsNullOrWhiteSpace(user.PhoneNumber) ? user.Email : user.PhoneNumber;
         bool isSuccess;
         int Id = user.Id ?? 0;
         if (Id == 0)
         {
+            userRes.UserName = string.IsNullOrWhiteSpace(user.PhoneNumber) ? user.Email : user.PhoneNumber;
             var password = user.Password;
             if (string.IsNullOrWhiteSpace(password)) password = "Aa123456";
             userRes.PasswordHash = MD5Encryption.Encrypt(password);
