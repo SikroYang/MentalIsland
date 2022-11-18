@@ -22,6 +22,11 @@ public class Island : Entity
     [SugarColumn(IsNullable = true)]
     public string? Description { get; set; }
     /// <summary>
+    /// 岛群图标
+    /// </summary>
+    [SugarColumn(IsNullable = true)]
+    public string? IslandIcon { get; set; }
+    /// <summary>
     /// 岛群QQ群号
     /// </summary>
     [SugarColumn(IsNullable = true)]

@@ -39,6 +39,10 @@ public class UserInput
     /// </summary>
     [Required(ErrorMessage = "国家或地区不能为空")]
     public string Country { get; set; } = default!;
+    /// <summary>
+    /// 用户头像
+    /// </summary>
+    public string? HeadImage { get; set; }
 
     /// <summary>
     /// 用户个性化注册类型

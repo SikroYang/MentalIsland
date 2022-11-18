@@ -22,6 +22,10 @@ public class IslandInput
     /// </summary>
     public string Description { get; set; } = default!;
     /// <summary>
+    /// 岛群图标
+    /// </summary>
+    public string? IslandIcon { get; set; }
+    /// <summary>
     /// 岛群QQ群号
     /// </summary>
     public string QQunNumber { get; set; } = default!;

@@ -37,6 +37,11 @@ public class User : Entity
     /// </summary>
     public string Country { get; set; } = default!;
     /// <summary>
+    /// 用户头像
+    /// </summary>
+    [SugarColumn(IsNullable = true)]
+    public string? HeadImage { get; set; }
+    /// <summary>
     /// 是否锁定用户
     /// </summary>
     public bool IsLocked { get; set; } = false;

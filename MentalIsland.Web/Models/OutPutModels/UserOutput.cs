@@ -36,6 +36,10 @@ public class UserOutput
     /// </summary>
     public string Country { get; set; } = default!;
     /// <summary>
+    /// 用户头像
+    /// </summary>
+    public string HeadImage { get; set; }
+    /// <summary>
     /// 是否锁定
     /// </summary>
     public bool IsLocked { get; set; } = default!;
