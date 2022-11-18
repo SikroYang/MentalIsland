@@ -10,6 +10,7 @@ using Furion.DataEncryption;
 using MentalIsland.Migrations.Extensions.ControllerEx;
 using MentalIsland.Migrations.Extensions.Auth;
 using MentalIsland.Web.Models.Extensions;
+using Furion.DataValidation;
 
 namespace MentalIsland.Web.Areas.Api.Controllers;
 
@@ -91,8 +92,9 @@ public class UserController : WebApiBaseController<UserController>
     [HttpPost]
     public async Task<int> AddOrUpdateUser(UserInput user)
     {
+        if (!string.IsNullOrWhiteSpace(user.PhoneNumber) && !user.PhoneNumber.TryValidate(ValidationTypes.PhoneNumber).IsValid) throw Oops.Bah("不是有效的手机号码格式").StatusCode();
         var userRes = user.Adapt<User>();
-        userRes.UserName = user.PhoneNumber;
+        userRes.UserName = string.IsNullOrWhiteSpace(user.PhoneNumber) ? user.Email : user.PhoneNumber;
         bool isSuccess;
         int Id = user.Id ?? 0;
         if (Id == 0)

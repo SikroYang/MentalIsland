@@ -14,6 +14,7 @@ using NETCore.MailKit.Core;
 using System.Text;
 using MentalIsland.Migrations.Extensions.ControllerEx;
 using MentalIsland.Migrations.Extensions.Auth;
+using Furion.DataValidation;
 
 namespace MentalIsland.Web.Areas.Api.Controllers;
 
@@ -66,11 +67,13 @@ public class AuthController : WebApiBaseController<AuthController>
     public async Task<int> Register(UserRegistryInput user)
     {
         if (string.IsNullOrWhiteSpace(HttpContext.Session.GetString("VERIFYCODE")) || HttpContext.Session.GetString("VERIFYCODE") != user.VerifyCode)
-            Oops.Bah("请检查验证码是否正确").StatusCode();
+            throw Oops.Bah("请检查验证码是否正确").StatusCode();
         HttpContext.Session.Remove("VERIFYCODE");
 
+        if (!string.IsNullOrWhiteSpace(user.PhoneNumber) && !user.PhoneNumber.TryValidate(ValidationTypes.PhoneNumber).IsValid) throw Oops.Bah("不是有效的手机号码格式").StatusCode();
+
         var userRes = user.Adapt<User>();
-        userRes.UserName = user.PhoneNumber;
+        userRes.UserName = string.IsNullOrWhiteSpace(user.PhoneNumber) ? user.Email : user.PhoneNumber;
         bool isSuccess;
         user.Id = 0;
         userRes.PasswordHash = MD5Encryption.Encrypt(user.Password);

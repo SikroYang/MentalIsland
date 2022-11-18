@@ -26,8 +26,6 @@ public class UserInput
     /// <summary>
     /// 手机号
     /// </summary>
-    [Required(ErrorMessage = "手机号码不能为空")]
-    [Phone(ErrorMessage = "不是有效的手机号码格式")]
     public string PhoneNumber { get; set; } = default!;
     /// <summary>
     /// 昵称
