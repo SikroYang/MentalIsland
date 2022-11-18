@@ -81,6 +81,29 @@ public class AuthController : WebApiBaseController<AuthController>
         return user.Id.Value;
     }
 
+
+    /// <summary>
+    /// 忘记密码
+    /// </summary>
+    /// <returns></returns>
+    [HttpPost]
+    public async Task<string> ForgetPwd(UserForgetPwdInput model)
+    {
+        var user = await userRepository.AsQueryable().FirstAsync(u => u.Email == model.Email);
+        if (user == null || user.IsDeleted) throw Oops.Bah("该用户不存在或已删除").StatusCode();
+
+        if (string.IsNullOrWhiteSpace(HttpContext.Session.GetString("VERIFYCODE")) || HttpContext.Session.GetString("VERIFYCODE") != model.VerifyCode)
+            throw Oops.Bah("请检查验证码是否正确").StatusCode();
+        HttpContext.Session.Remove("VERIFYCODE");
+
+        var PasswordHash = MD5Encryption.Encrypt(string.IsNullOrWhiteSpace(model.NewPassword) ? "Aa123456" : model.NewPassword);
+        var status = new { user.Id, PasswordHash };
+        var isSuccess = await userRepository.AsUpdateable(status.Adapt<User>()).IgnoreColumns(true).UpdateColumns(
+            x => new { x.PasswordHash, x.UpdatedTime, x.UpdatedUserId, x.UpdatedUserName }).ExecuteCommandHasChangeAsync();
+        if (!isSuccess) throw Oops.Bah("重置密码失败,请检查后重新尝试!").StatusCode();
+        return "重置密码成功!";
+    }
+
     /// <summary>
     /// 登录
     /// </summary>

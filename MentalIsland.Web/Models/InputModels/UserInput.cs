@@ -142,3 +142,29 @@ public class UserResetPwdInput : OnlyId
     [RegularExpression(@"^([A-Za-z]\w{5,17})?$", ErrorMessage = "密码必须以字母开头，长度在6~18之间，只能包含字母、数字和下划线")]
     public string NewPassword { get; set; } = default!;
 }
+
+
+/// <summary>
+/// 忘记密码
+/// </summary>
+public class UserForgetPwdInput
+{
+    /// <summary>
+    /// 邮箱
+    /// </summary>
+    [Required(ErrorMessage = "邮箱不能为空")]
+    [EmailAddress(ErrorMessage = "不是有效的电子邮箱")]
+    public string Email { get; set; } = default!;
+    /// <summary>
+    /// 验证码
+    /// </summary>
+    [Required(ErrorMessage = "验证码不能为空")]
+    [RegularExpression(@"^[0-9]{6}$", ErrorMessage = "验证码必须是6位数字")]
+    public string VerifyCode { get; set; } = default!;
+    /// <summary>
+    /// 新密码
+    /// </summary>
+    [Required(ErrorMessage = "新密码不能为空")]
+    [RegularExpression(@"^[A-Za-z]\w{5,17}$", ErrorMessage = "密码必须以字母开头，长度在6~18之间，只能包含字母、数字和下划线")]
+    public string NewPassword { get; set; } = default!;
+}
