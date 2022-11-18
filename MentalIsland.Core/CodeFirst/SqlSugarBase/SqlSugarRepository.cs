@@ -1,5 +1,7 @@
 using Furion;
 using Mapster;
+using MentalIsland.Core.CodeFirst.Models;
+using Snowflake.Core;
 using SqlSugar;
 
 namespace MentalIsland.Core.CodeFirst.SqlSugarBase;
@@ -26,6 +28,20 @@ public class SqlSugarRepository<T> : SimpleClient<T> where T : class, new()
         var entity = new { Id = Id, IsDeleted = true };
         var isSuccess = await Context.Updateable<TEntity>(entity).IgnoreColumns(true)
             .UpdateColumns(x => new { x.IsDeleted, x.UpdatedTime, x.UpdatedUserId, x.UpdatedUserName })  // 允许更新的字段-AOP拦截自动设置UpdateTime、UpdateUserId
+            .ExecuteCommandHasChangeAsync();
+        return isSuccess;
+    }
+
+    /// <summary>
+    /// 逻辑删除
+    /// </summary>
+    public async Task<bool> RecycleIslandAsync(int Id)
+    {
+        var entity = new { Id = Id, IsDeleted = true };
+        var lastName = new IdWorker(1, 1).NextId();
+        var isSuccess = await Context.Updateable<Island>(entity).IgnoreColumns(true)  // 允许更新的字段-AOP拦截自动设置UpdateTime、UpdateUserId
+            .SetColumns(x => x.Name == x.Name + lastName)
+            .Where(x => x.Id == Id)
             .ExecuteCommandHasChangeAsync();
         return isSuccess;
     }

@@ -114,7 +114,7 @@ public class IslandController : WebApiBaseController<IslandController>
     {
         var deleteIsland = await islandRepository.GetByIdAsync(model.Id);
         if (deleteIsland == null || deleteIsland.IsDeleted) throw Oops.Bah("该岛群不存在或已删除").StatusCode();
-        var isSuccess = await islandRepository.RecycleByIdAsync<Island>(deleteIsland.Id);
+        var isSuccess = await islandRepository.RecycleIslandAsync(deleteIsland.Id);
         if (!isSuccess) throw Oops.Bah("删除失败,请检查后重新尝试!").StatusCode();
         return "删除成功!";
     }
