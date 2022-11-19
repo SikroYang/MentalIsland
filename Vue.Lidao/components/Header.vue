@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-11-04 14:47:39
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-11-18 16:12:15
+ * @LastEditTime: 2022-11-19 11:22:00
  * @FilePath: \qundao\qundao\components\Header.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -30,7 +30,7 @@
     </div>
     <div class="flex" v-if="show">
       <div class="block mar-r">
-        <img src="../assets/tx2.png" alt="" style="width: 40px;height: 40px;">
+        <img :src="imgs" alt="" style="width: 40px;height: 40px;">
       </div>
       <el-dropdown trigger="click">
         <span class="el-dropdown-link">
@@ -65,6 +65,7 @@ export default {
       show: false,
       userList: [],
       fullName: "",
+      imgs:"/Upload/Images/1593806053039017984.png"
     };
   },
 
@@ -74,7 +75,8 @@ export default {
   mounted() {
     this.userList = this.$cookies.get("user");
     // console.log(this.userList);
-    // console.log(this.$cookies.get("user"));
+    this.imgs=this.$cookies.get("userList").HeadImage
+    console.log(this.$cookies.get("userList"));
     if (this.userList != null) {
       this.fullName = this.userList.FullName;
       this.isShow = false;
@@ -117,6 +119,8 @@ export default {
     code(){
       let that = this;
       that.$axios.post("/Api/User/UserInfo").then((res) => {
+        // console.log(res.data.Data)
+        this.$cookies.set("userList", res.data.Data);
         if (res.data.Code === 401) {
           this.$message({
             message: res.data.Content,
