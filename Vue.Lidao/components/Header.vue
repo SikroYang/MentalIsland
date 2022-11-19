@@ -54,7 +54,7 @@ export default {
       show: false,
       userList: [],
       fullName: "",
-      imgs: "./assets/tx2.png"
+      imgs: "../assets/tx2.png"
     };
   },
 
