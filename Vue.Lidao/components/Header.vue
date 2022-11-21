@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-11-04 14:47:39
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-11-21 09:46:59
+ * @LastEditTime: 2022-11-21 10:28:21
  * @FilePath: \qundao\qundao\components\Header.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -30,8 +30,8 @@
     </div>
     <div class="flex" v-if="show">
       <div class="block mar-r">
-        <img v-show="imgs==''" src="../assets/tx2.png" alt="" style="width: 40px;height: 40px;border-radius: 50%;">
-        <img :src="imgs" alt="" style="width: 40px;height: 40px;border-radius: 50%;">
+        <img v-if="imgs" :src="imgs" alt="" style="width: 40px;height: 40px;border-radius: 50%;">
+        <img v-else src="../assets/tx2.png" alt="" style="width: 40px;height: 40px;border-radius: 50%;">
       </div>
       <el-dropdown trigger="click">
         <span class="el-dropdown-link">
@@ -77,8 +77,10 @@ export default {
     this.userList = this.$cookies.get("user");
     // console.log(this.userList);
     let image=this.$cookies.get("userList").HeadImage
-    console.log(image)
     this.imgs=this.$cookies.get("userList").HeadImage
+    console.log(image)
+   
+   
     // console.log(this.$cookies.get("userList"));
     if (this.userList != null) {
       this.fullName = this.userList.FullName;
