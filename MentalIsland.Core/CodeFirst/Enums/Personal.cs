@@ -21,5 +21,10 @@ public enum Personal
     /// 自我寻求者
     /// </summary>
     [Description("自我寻求者")]
-    PursueSelf
+    PursueSelf,
+    /// <summary>
+    /// 其他
+    /// </summary>
+    [Description("其他")]
+    Other
 }

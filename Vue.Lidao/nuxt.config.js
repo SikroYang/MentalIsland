@@ -35,7 +35,8 @@ export default {
     {
       src: '@/plugins/cookies',
       ssr: false
-    }
+    },
+    { src: '@/plugins/route.js', ssr: false }
 
   ],
 

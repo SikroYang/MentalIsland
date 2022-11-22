@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-10-28 09:24:55
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-11-17 10:08:15
+ * @LastEditTime: 2022-11-19 10:41:59
  * @FilePath: \project\pages\psychology.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -97,12 +97,7 @@ h3 {
 .textl {
   text-align: left;
 }
-/* pre {
-  white-space: pre-wrap;
-  white-space: -moz-pre-wrap;
-  white-space: -o-pre-wrap;
-  word-wrap: break-word;
-} */
+
 .pre_style{
   all:initial;             /*清除继承样式*/
   display:block;           /*设置布局流，避免换行导致的错误布局*/

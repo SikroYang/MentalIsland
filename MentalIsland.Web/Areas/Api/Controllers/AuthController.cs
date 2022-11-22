@@ -70,7 +70,7 @@ public class AuthController : WebApiBaseController<AuthController>
             throw Oops.Bah("请检查验证码是否正确").StatusCode();
         HttpContext.Session.Remove("VERIFYCODE");
 
-        if (!string.IsNullOrWhiteSpace(user.PhoneNumber) && !user.PhoneNumber.TryValidate(ValidationTypes.PhoneNumber).IsValid) throw Oops.Bah("不是有效的手机号码格式").StatusCode();
+        // if (!string.IsNullOrWhiteSpace(user.PhoneNumber) && !user.PhoneNumber.TryValidate(ValidationTypes.PhoneNumber).IsValid) throw Oops.Bah("不是有效的手机号码格式").StatusCode();
 
         var userRes = user.Adapt<User>();
         userRes.UserName = string.IsNullOrWhiteSpace(user.PhoneNumber) ? user.Email : user.PhoneNumber;

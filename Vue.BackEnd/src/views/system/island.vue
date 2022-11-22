@@ -28,7 +28,7 @@
       </el-table-column>
       <el-table-column align="center" prop="Name" label="岛群名" width="120">
       </el-table-column>
-      <el-table-column align="center" prop="Description" label="姓名" width="120">
+      <el-table-column align="center" prop="Description" label="群岛简介" width="120">
       </el-table-column>
       <el-table-column align="center" prop="QQunNumber" label="QQ群号" width="120">
       </el-table-column>

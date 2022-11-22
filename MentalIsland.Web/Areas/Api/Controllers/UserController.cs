@@ -92,7 +92,7 @@ public class UserController : WebApiBaseController<UserController>
     [HttpPost]
     public async Task<int> AddOrUpdateUser(UserInput user)
     {
-        if (!string.IsNullOrWhiteSpace(user.PhoneNumber) && !user.PhoneNumber.TryValidate(ValidationTypes.PhoneNumber).IsValid) throw Oops.Bah("不是有效的手机号码格式").StatusCode();
+        // if (!string.IsNullOrWhiteSpace(user.PhoneNumber) && !user.PhoneNumber.TryValidate(ValidationTypes.PhoneNumber).IsValid) throw Oops.Bah("不是有效的手机号码格式").StatusCode();
         var userRes = user.Adapt<User>();
         bool isSuccess;
         int Id = user.Id ?? 0;
