@@ -13,30 +13,15 @@
       <el-form class="login-container">
         <h1 class="title">登陆</h1>
         <el-form-item>
-          <el-input
-            type="text"
-            v-model="username"
-            prefix-icon="el-icon-user-solid"
-            placeholder="手机号/邮箱登录"
-            autocomplete="off"
-          ></el-input>
+          <el-input type="text" v-model="username" prefix-icon="el-icon-user-solid" placeholder="手机号/邮箱登录"
+            autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-input
-            type="password"
-            v-model="password"
-            prefix-icon="el-icon-user-solid"
-            placeholder="密码"
-            autocomplete="off"
-          ></el-input>
+          <el-input type="password" v-model="password" prefix-icon="el-icon-user-solid" placeholder="密码"
+            autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button
-            type="primary"
-            icon="el-icon-right"
-            @click="doLogin"
-            style="width: 100%"
-          ></el-button>
+          <el-button type="primary" icon="el-icon-right" @click="doLogin" style="width: 100%"></el-button>
         </el-form-item>
         <el-row style="margin-top: -10px;display: flex;justify-content: space-between;">
           <el-link type="primary" @click="doRegister">注册账号</el-link>
@@ -58,6 +43,9 @@ export default {
       password: "",
     };
   },
+  created() {
+    this.code()
+  },
   methods: {
     doLogin() {
       let that = this;
@@ -68,7 +56,7 @@ export default {
         if (res.data.Code === 200) {
           this.$cookies.set("user", res.data.Data);
           this.$router.push("/home");
-        }else{
+        } else {
           this.$message.error(res.data.Content);
         }
       });
@@ -76,8 +64,20 @@ export default {
     doRegister() {
       this.$router.push("/signin");
     },
-    goPsd(){
+    goPsd() {
       this.$router.push("/goPsd");
+    },
+    code() {
+      let that = this;
+      that.$axios.post("/Api/User/UserInfo").then((res) => {
+        if (res.data.Code == 200) {
+          this.$cookies.set("user", res.data.Data);
+          this.$router.push("/home");
+        }
+        if (res.data.Code === 401) {
+          this.$cookies.remove("user");
+        }
+      });
     }
   },
 };
