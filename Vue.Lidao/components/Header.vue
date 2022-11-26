@@ -8,14 +8,7 @@
 -->
 <template>
   <div class="header">
-    <el-menu
-      :default-active="this.$route.path"
-      class="el-menu-demo"
-      mode="horizontal"
-      router
-      
-      style="margin-left: auto"
-    >
+    <el-menu :default-active="this.$route.path" class="el-menu-demo" mode="horizontal" router style="margin-left: auto">
       <el-menu-item v-for="(item, i) in navList" :key="i" :index="item.name">
         <template slot="title">
           <span> {{ item.navItem }}</span>
@@ -39,12 +32,8 @@
           <i class="el-icon-arrow-down el-icon--right"></i>
         </span>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item @click.native="user"
-            >用户/群岛设置</el-dropdown-item
-          >
-          <el-dropdown-item @click.native="archipelago"
-            >退出登录</el-dropdown-item
-          >
+          <el-dropdown-item @click.native="user">用户/群岛设置</el-dropdown-item>
+          <el-dropdown-item @click.native="archipelago">退出登录</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </div>
@@ -66,23 +55,20 @@ export default {
       show: false,
       userList: [],
       fullName: "",
-      imgs:"",
+      imgs: "",
     };
   },
 
   created() {
-   this.code()
+    this.code()
   },
   mounted() {
     this.userList = this.$cookies.get("user");
-    // console.log(this.userList);
-    let image=this.$cookies.get("userList").HeadImage
-    this.imgs=this.$cookies.get("userList").HeadImage
-    console.log(image)
-   
-   
-    // console.log(this.$cookies.get("userList"));
-    if (this.userList != null) {
+    if (this.userList && this.userList != undefined) {
+      console.log(this.imgs)
+      if (this.userList.HeadImage && this.userList.HeadImage != undefined)
+        this.imgs = this.userList.HeadImage;
+
       this.fullName = this.userList.FullName;
       this.isShow = false;
       this.show = true;
@@ -110,27 +96,24 @@ export default {
             message: "退出成功",
             type: "success",
           });
-          this.$router.push("/");
           this.$cookies.remove("user");
           this.isShow = true;
           this.show = false;
-        }else if(res.data.Code === 401){
+          this.$router.push("/");
+        } else if (res.data.Code === 401) {
           this.$message.success(res.data.Content);
           this.$cookies.remove("user");
           this.$router.push("/");
         }
       });
     },
-    code(){
+    code() {
       let that = this;
       that.$axios.post("/Api/User/UserInfo").then((res) => {
         // console.log(res.data.Data)
-        this.$cookies.set("userList", res.data.Data);
+        if (res.data.Code == 200)
+          this.$cookies.set("user", res.data.Data);
         if (res.data.Code === 401) {
-          this.$message({
-            message: res.data.Content,
-            type: "success",
-          });
           this.$cookies.remove("user");
         }
       });
@@ -139,24 +122,32 @@ export default {
 };
 </script>
 <style>
-.el-button--warning{background: #F7BC99;border-color: #F7BC99;}
-.el-button--warning:hover {
-    background: #f5d7b9;
-    border-color: #f5d7b9;
-    color: #FFF;
+.el-button--warning {
+  background: #F7BC99;
+  border-color: #F7BC99;
 }
-.el-menu--horizontal>.el-menu-item.is-active{
+
+.el-button--warning:hover {
+  background: #f5d7b9;
+  border-color: #f5d7b9;
+  color: #FFF;
+}
+
+.el-menu--horizontal>.el-menu-item.is-active {
   border-bottom: 2px solid #F7BC99
 }
+
 .el-menu-item {
   font-weight: bold;
 }
+
 /* .el-menu-item.is-active {
   color: #ea5b2c !important;
 } */
 .el-menu.el-menu--horizontal {
   border: 0;
 }
+
 .header {
   display: flex;
   width: 100%;
@@ -164,15 +155,19 @@ export default {
   background-color: #fff;
   margin-bottom: 20px;
 }
+
 .el-dropdown {
   vertical-align: top;
 }
-.el-dropdown + .el-dropdown {
+
+.el-dropdown+.el-dropdown {
   margin-left: 15px;
 }
+
 .el-icon-arrow-down {
   font-size: 14px;
 }
+
 .el-dropdown-link {
   cursor: pointer;
   color: #9f7861;
@@ -183,6 +178,7 @@ export default {
   align-items: center;
   /* justify-content: center; */
 }
+
 .mar-r {
   margin-right: 10px;
 }

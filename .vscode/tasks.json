@@ -83,6 +83,14 @@
             "options": {
                 "cwd": "Vue.BackEnd"
             }
+        },
+        {
+            "label": "lidao run",
+            "type": "shell",
+            "command": "yarn && yarn dev",
+            "options": {
+                "cwd": "Vue.Lidao"
+            }
         }
     ]
 }
