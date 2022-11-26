@@ -31,6 +31,7 @@ services:
       - TZ="Asia/Shanghai"
     volumes:
       - ./nginx/config/nginx.conf:/usr/local/openresty/nginx/conf/nginx.conf:ro
+      - ./nginx/cert:/usr/local/openresty/nginx/conf/cert:ro
       - ./nginx/log:/usr/local/openresty/nginx/logs
       - /etc/localtime:/etc/localtime
     ports:
