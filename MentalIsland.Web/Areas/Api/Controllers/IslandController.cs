@@ -65,6 +65,20 @@ public class IslandController : WebApiBaseController<IslandController>
     }
 
     /// <summary>
+    /// 根据Id查询岛群信息
+    /// </summary>
+    /// <returns></returns>
+    [HttpPost]
+    public async Task<IslandOutput> IslandDetail(OnlyId model)
+    {
+        var result = await islandRepository.AsQueryable().Includes(wa => wa.Users).FirstAsync(i => i.Id == model.Id);
+        var userId = App.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var data = result.Adapt<IslandOutput>();
+        data.IsFollow = result.Users.Any(u => u.Id.ToString() == userId);
+        return data;
+    }
+
+    /// <summary>
     /// 添加或修改
     /// </summary>
     /// <returns></returns>
