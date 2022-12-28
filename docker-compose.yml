@@ -96,3 +96,18 @@ services:
       nginx:
         aliases:
           - lidao
+
+  # 心理岛网站前端(新版)
+  lidaonew:
+    build:
+      context: .
+      dockerfile: Lidao2.Dockerfile
+    image: yxx/lidaonew:latest
+    container_name: lidaonew
+    restart: always
+    ports:
+      - 8100:8100
+    networks:
+      nginx:
+        aliases:
+          - lidaonew
