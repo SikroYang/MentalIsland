@@ -98,6 +98,11 @@ public class IslandController : WebApiBaseController<IslandController>
         {
             var islandRep = island.Adapt<Island>();
             islandRep.PersonNumber = 1;
+
+            var random = RandomHelper.GetRandom();
+            var num = random.Next(1, 9);
+            islandRep.IslandIcon = $"/Images/IslandIcon/{num}.png";
+
             Id = await islandRepository.AsInsertable(islandRep).ExecuteReturnIdentityAsync();
             isSuccess = Id > 0;
 
@@ -222,5 +227,26 @@ public class IslandController : WebApiBaseController<IslandController>
     {
         var list = await islandRepository.AsQueryable().Where(wa => !wa.IsDeleted && wa.CreatedUserId == User.Id).ToListAsync();
         return list.Adapt<List<IslandOutput>>() ?? new List<IslandOutput>();
+    }
+
+    /// <summary>
+    /// 重置所有岛屿头像
+    /// </summary>
+    /// <returns></returns>
+    [HttpPost]
+    public async Task<string> ResetAllIslandIcon()
+    {
+        var list = await islandRepository.AsQueryable().Where(wa => !wa.IsDeleted).ToListAsync();
+        var random = RandomHelper.GetRandom();
+        foreach (var item in list)
+        {
+            item.IslandIcon = $"/Images/IslandIcon/{random.Next(1, 9)}.png";
+        }
+
+        var isSuccess = await islandRepository.AsUpdateable(list)
+                            .ExecuteCommandHasChangeAsync();
+
+        if (!isSuccess) throw Oops.Bah("修改失败,请检查后重新尝试!").StatusCode();
+        return "修改成功!";
     }
 }
