@@ -427,7 +427,8 @@ export default {
 }
 
 .image {
-  width: 50%;
+  width: 100px;
+  height: 100px;
   display: block;
   margin: auto;
   padding: 10px;
