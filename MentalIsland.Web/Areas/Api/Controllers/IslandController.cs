@@ -99,9 +99,12 @@ public class IslandController : WebApiBaseController<IslandController>
             var islandRep = island.Adapt<Island>();
             islandRep.PersonNumber = 1;
 
-            var random = RandomHelper.GetRandom();
-            var num = random.Next(1, 9);
-            islandRep.IslandIcon = $"/Images/IslandIcon/{num}.png";
+            if (string.IsNullOrWhiteSpace(islandRep.IslandIcon))
+            {
+                var random = RandomHelper.GetRandom();
+                var num = random.Next(1, 9);
+                islandRep.IslandIcon = $"/Images/IslandIcon/{num}.png";
+            }
 
             Id = await islandRepository.AsInsertable(islandRep).ExecuteReturnIdentityAsync();
             isSuccess = Id > 0;

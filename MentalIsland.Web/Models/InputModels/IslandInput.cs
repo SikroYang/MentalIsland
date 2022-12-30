@@ -21,10 +21,10 @@ public class IslandInput
     /// 岛群描述
     /// </summary>
     public string Description { get; set; } = default!;
-    // /// <summary>
-    // /// 岛群图标
-    // /// </summary>
-    // public string? IslandIcon { get; set; }
+    /// <summary>
+    /// 岛群图标
+    /// </summary>
+    public string? IslandIcon { get; set; }
     /// <summary>
     /// 岛群QQ群号
     /// </summary>
