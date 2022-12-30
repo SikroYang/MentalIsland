@@ -12,6 +12,7 @@ using MentalIsland.Web.Models.Extensions;
 using Furion.DatabaseAccessor;
 using System.Security.Claims;
 using Furion;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MentalIsland.Web.Areas.Api.Controllers;
 
@@ -41,6 +42,7 @@ public class IslandController : WebApiBaseController<IslandController>
     /// </summary>
     /// <returns></returns>
     [HttpPost]
+    [AllowAnonymous]
     public async Task<PagedList<IslandOutput>> List(IslandSearchInput searchInfo)
     {
         var exp = new Expressionable<Island>().And(i => !i.IsDeleted);
@@ -69,6 +71,7 @@ public class IslandController : WebApiBaseController<IslandController>
     /// </summary>
     /// <returns></returns>
     [HttpPost]
+    [AllowAnonymous]
     public async Task<IslandOutput> IslandDetail(OnlyId model)
     {
         var result = await islandRepository.AsQueryable().Includes(wa => wa.Users).FirstAsync(i => i.Id == model.Id);

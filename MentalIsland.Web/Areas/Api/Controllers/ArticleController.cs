@@ -43,6 +43,7 @@ public class ArticleController : WebApiBaseController<ArticleController>
     /// </summary>
     /// <returns></returns>
     [HttpPost]
+    [AllowAnonymous]
     public async Task<PagedList<ArticleOutput>> List(ArticleSearchInput searchInfo)
     {
         var exp = new Expressionable<Article, ArticleType>().And((a, t) => !a.IsDeleted && !t.IsDeleted);
@@ -103,6 +104,7 @@ public class ArticleController : WebApiBaseController<ArticleController>
     /// </summary>
     /// <returns></returns>
     [HttpPost]
+    [AllowAnonymous]
     public async Task<ArticleOutput> ArticleById(OnlyId model)
     {
         var article = await articleRepository.GetByIdAsync(model.Id);
@@ -130,6 +132,7 @@ public class ArticleController : WebApiBaseController<ArticleController>
     /// </summary>
     /// <returns></returns>
     [HttpPost]
+    [AllowAnonymous]
     public async Task<List<ArticleTypeOutput>> TypeList()
     {
         var result = await articleTypeRepository.AsQueryable().ToListAsync();

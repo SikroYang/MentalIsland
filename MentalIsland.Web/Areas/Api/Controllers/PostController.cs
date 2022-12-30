@@ -11,6 +11,7 @@ using MentalIsland.Migrations.Extensions.Auth;
 using MentalIsland.Web.Models.Extensions;
 using Furion.DatabaseAccessor;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MentalIsland.Web.Areas.Api.Controllers;
 
@@ -48,6 +49,7 @@ public class PostController : WebApiBaseController<PostController>
     /// </summary>
     /// <returns></returns>
     [HttpPost]
+    [AllowAnonymous]
     public async Task<PagedList<PostOutput>> List(PostSearchInput searchInfo)
     {
         var exp = new Expressionable<Island_Post>().And(i => !i.IsDeleted);
@@ -107,6 +109,7 @@ public class PostController : WebApiBaseController<PostController>
     /// </summary>
     /// <returns></returns>
     [HttpPost]
+    [AllowAnonymous]
     public async Task<PostReplyOutput> PostById(ReplySearchInput searchInfo)
     {
         if (searchInfo.Id <= 0) throw Oops.Bah("Id必须大于0").StatusCode();
