@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-10-24 15:15:45
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-12-22 16:18:16
+ * @LastEditTime: 2022-12-30 15:36:08
  * @FilePath: \project\pages\login.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -35,7 +35,7 @@
           :key="index"
           style="float: left; text-align: center"
         >
-          <img src="../assets/new/Group 7.png" class="image" />
+          <img :src="o.IslandIcon?'https://www.lidaoisland.com/'+o.IslandIcon:'~assets/new/Group 7.png'" class="image" />
           <div style="padding: 14px">
             <span
               @click="clickRadio(o)"
@@ -50,20 +50,16 @@
                     o.Description | filterAmount(10)
                   }}</time> -->
               <div class="mar-t">
-                <el-tag
-                  type="warning"
-                  effect="dark"
-                  v-if="o.IsFollow === false"
-                  @click="follow(o.Id)"
-                  >关注</el-tag
-                >
-                <el-tag
-                  type="warning"
-                  plain
+                <div v-if="o.IsFollow === false" @click="follow(o.Id)" class="btn">
+                  关注
+                </div>
+                <div
                   v-if="o.IsFollow === true"
                   @click="qxFollow(o.Id)"
-                  >取消关注</el-tag
+                  class="qxBtn"
                 >
+                  取消关注
+                </div>
               </div>
             </div>
           </div>
@@ -82,7 +78,7 @@
       </div>
     </div>
 
-    <div class="com-cont" style="margin-top: 18px;min-height: 500px;">
+    <div class="com-cont" style="margin-top: 18px; min-height: 500px">
       <h3>我关注的群岛</h3>
 
       <div style="display: flow-root">
@@ -97,7 +93,7 @@
             border-radius: 20px;
           "
         >
-          <img src="../assets/new/Group 7.png" class="image" />
+          <img :src="'https://www.lidaoisland.com/'+o.IslandIcon" class="image" />
           <div style="padding: 14px">
             <span
               @click="clickRadio(o)"
@@ -143,9 +139,10 @@
       <el-dialog
         title="新建群岛"
         width="700px"
+        center
         :visible.sync="dialogFormVisible"
       >
-        <el-form :model="form">
+        <el-form :model="form" label-position="top">
           <el-form-item label="群岛名称" :label-width="formLabelWidth">
             <el-input v-model="form.name" autocomplete="off"></el-input>
           </el-form-item>
@@ -243,7 +240,7 @@ export default {
     this.followList();
   },
   mounted() {
-    console.log(this.$cookies.get("user").Id);
+    // console.log(this.$cookies.get("user").Id);
   },
   methods: {
     ss() {
@@ -472,11 +469,41 @@ export default {
   background: #fc8f5e;
   border-color: #fc8f5e;
 }
-::v-deep .enterpriseName .el-input__inner{
+::v-deep .enterpriseName .el-input__inner {
   border-radius: 50px;
 }
-.el-tag{
+.el-tag {
   border-radius: 20px;
+}
+.btn{
+  width: 40px;
+  height: 17px;
+  padding: 5px;
+  border-radius: 50px;
+  font-family: "PingFang HK";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 17px;
+  text-align: center;
+  margin: auto;
+  background: #fc8f5e;
+  color: #ffffff;
+}
+.qxBtn {
+  width: 60px;
+  height: 17px;
+  padding: 5px;
+  border-radius: 50px;
+  font-family: "PingFang HK";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 17px;
+  text-align: center;
+  margin: auto;
+  color: #fc8f5e;
+  border: 1px solid #fc8f5e;
 }
 </style>
   

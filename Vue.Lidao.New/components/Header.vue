@@ -2,16 +2,16 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-11-04 14:47:39
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-12-27 12:56:43
+ * @LastEditTime: 2022-12-30 10:07:27
  * @FilePath: \qundao\qundao\components\Header.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
   <div class="header">
     <div>
-      <img style="height: 60px;" src="../assets/new/LOGO.png" alt="" srcset="">
+      <img style="height: 60px" src="../assets/new/LOGO.png" alt="" srcset="" />
     </div>
-    <el-menu 
+    <el-menu
       background-color="#fff"
       text-color="#000000"
       active-text-color="#000000"
@@ -54,12 +54,8 @@
           <i class="el-icon-arrow-down el-icon--right"></i>
         </span>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item @click.native="user"
-            >用户设置</el-dropdown-item
-          >
-          <el-dropdown-item @click.native="user_b"
-            >群岛设置</el-dropdown-item
-          >
+          <el-dropdown-item @click.native="user">用户设置</el-dropdown-item>
+          <el-dropdown-item @click.native="user_b">群岛设置</el-dropdown-item>
           <el-dropdown-item @click.native="archipelago"
             >退出登录</el-dropdown-item
           >
@@ -118,13 +114,13 @@ export default {
     user() {
       this.$router.push({
         path: "./user",
-        query: { id: 'a'},
+        query: { id: "a" },
       });
     },
-    user_b(){
+    user_b() {
       this.$router.push({
         path: "./user",
-        query: { id: 'b'},
+        query: { id: "b" },
       });
     },
     archipelago() {
@@ -193,7 +189,7 @@ export default {
   align-items: center;
   /* background: linear-gradient(284.44deg, #ffd0bc 1.62%, #ffffff 103.96%),
     #ffffff; */
-    background: #fff;
+  background: #fff;
   margin-bottom: 20px;
 }
 

@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-10-28 09:24:55
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-12-23 09:31:24
+ * @LastEditTime: 2022-12-30 10:03:24
  * @FilePath: \project\pages\psychology.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -15,7 +15,6 @@
         <el-input
             placeholder="请输入内容"
             v-model="reInput"
-            class="input-with-select enterpriseName"
             suffix-icon="el-icon-search"
             @change="research"
           ></el-input>
@@ -32,6 +31,7 @@
           v-model="radio1"
           @change="sea()"
           fill="#FFD8D8"
+          text-color="#793F28"
           v-for="(item, i) in gyRadio"
           :key="i"
         >
@@ -216,7 +216,7 @@ export default {
 }
 h1,
 h3 {
-  color: #9f7861;
+  color: #AF6D54;
 }
 .col {
   color: #9f7861;
@@ -287,8 +287,6 @@ h3 {
   font-size: 29px;
   color: #af6d54;
 }
-::v-deep .enterpriseName .el-input__inner{
-  border-radius: 50px;
-}
+
 </style>
   

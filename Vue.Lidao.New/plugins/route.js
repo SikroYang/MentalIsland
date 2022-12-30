@@ -8,31 +8,31 @@
  */
 import { Message } from 'element-ui';
 export default ({ app, redirect }) => {
-  console.log('全局插件执行了')
-  app.router.afterEach((to, from) => {
-    if (!$cookies.get('user')) {
-      // return redirect('/login')
-      console.log(1, to.path)
-      if (to.path != '/home') {
-        if (to.path != '/exhibition') {
-          if (to.path != '/team') {
-            if (to.path != '/goPsd') {
-              if (to.path != '/signin') {
-                Message({
-                  type: 'error',
-                  message: '请先登录！'
-                })
-                app.router.push('/login')
-              }
+    console.log('全局插件执行了')
+    app.router.afterEach((to, from) => {
+        if (!$cookies.get('user')) {
+            // return redirect('/login')
+            console.log(1, to.path)
+            if (to.path != '/home') {
+                if (to.path != '/exhibition') {
+                    if (to.path != '/team') {
+                       if(to.path != '/goPsd'){
+                        if (to.path != '/signin') {
+                            Message({
+                                type: 'error',
+                                message: '请先登录！'
+                            })
+                            app.router.push('/login')
+                        }
+                       }
+
+                    }
+                }
+
             }
 
-          }
         }
-
-      }
-
-    }
-  })
+    })
 }
 
 

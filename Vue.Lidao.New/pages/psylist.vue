@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-10-28 09:24:55
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-12-23 09:31:39
+ * @LastEditTime: 2022-12-30 14:23:56
  * @FilePath: \project\pages\psychology.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -10,12 +10,11 @@
   <div class="bac">
     <Top />
     <div class="center">
-      <h1>搜查结果：{{ text }}</h1>
+      <h1>你有什么感兴趣的吗？</h1>
       <div class="flex">
         <el-input
             placeholder="请输入内容"
             v-model="reInput"
-            class="input-with-select enterpriseName"
             suffix-icon="el-icon-search"
             @change="research"
           ></el-input>
@@ -32,6 +31,7 @@
           v-model="radio1"
           @change="sea()"
           fill="#FFD8D8"
+          text-color="#793F28"
           v-for="(item, i) in gyRadio"
           :key="i"
         >
@@ -151,12 +151,12 @@ export default {
     sea() {
       let that = this;
       console.log(that.radio1);
-      that.psy("", "", that.radio1, "");
+      that.psy(1, 6, that.radio1, "");
     },
     research() {
       let that = this;
       console.log(that.reInput);
-      this.psy("", "", "", this.reInput);
+      this.psy(1, 6, "", this.reInput);
     },
     details(e) {
       let that = this;
@@ -185,7 +185,7 @@ export default {
     },
     handleCurrentChange(currentPage) {
       console.log(currentPage); //点击第几页
-      this.psy(currentPage, 6, "", this.text);
+      this.psy(currentPage, 6, this.radio1, this.text);
     },
     psyRadio() {
       //按钮列表
@@ -202,7 +202,7 @@ export default {
   <style scoped>
 h1,
 h3 {
-  color: #9f7861;
+  color: #AF6D54;
 }
 .bac {
   background: linear-gradient(360deg, #ffd0bc 0%, rgba(255, 255, 255, 0) 53.89%),
@@ -285,8 +285,6 @@ h3 {
   text-align: center;
   line-height: 26px;
 }
-::v-deep .enterpriseName .el-input__inner{
-  border-radius: 50px;
-}
+
 </style>
     

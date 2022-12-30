@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-10-24 15:15:45
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-12-13 14:08:03
+ * @LastEditTime: 2022-12-30 10:36:28
  * @FilePath: \project\pages\login.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -295,8 +295,8 @@ export default {
     },
   },
 };
-</script>
-  <style scoped>
+</script >
+  <style  scoped>
  .bac {
   background: linear-gradient(284.44deg, #ffd0bc 1.62%, #ffffff 103.96%),
     #ffffff;
@@ -352,6 +352,55 @@ export default {
   width: 120px;
   height: 120px;
 }
+::v-deep .el-radio {
+  border: 1px solid #cfcccc;
+}
+
+::v-deep .el-radio.is-checked {
+  border: 1px solid #FF5734 !important;
+}
+::v-deep .el-radio .el-radio__input {
+  margin-bottom: px(5);
+}
+
+::v-deep .el-radio .el-radio__input.is-checked .el-radio__inner {
+  background-color: #FF5734;
+  border-color: #FF5734;
+}
+
+::v-deep .el-radio .el-radio__input.is-checked+.el-radio__label {
+  color: #FF5734 !important;
+}
+
+::v-deep .el-radio .el-radio__input .el-radio__inner:hover {
+  border-color: #FF5734;
+}
+/* 多选框 */
+
+::v-deep .el-checkbox {
+  border: 1px solid #cfcccc;
+}
+
+::v-deep .el-checkbox.is-checked {
+  border: 1px solid #FF5734 !important;
+}
+::v-deep .el-checkbox .el-checkbox__input {
+  margin-bottom: px(5);
+}
+
+::v-deep .el-checkbox .el-checkbox__input.is-checked .el-checkbox__inner {
+  background-color: #FF5734;
+  border-color: #FF5734;
+}
+
+::v-deep .el-checkbox .el-checkbox__input.is-checked+.el-checkbox__label {
+  color: #FF5734 !important;
+}
+
+::v-deep .el-checkbox .el-checkbox__input .el-checkbox__inner:hover {
+  border-color: #FF5734;
+}
+
 </style>
   
   

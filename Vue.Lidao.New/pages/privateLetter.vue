@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-10-24 15:15:45
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-12-22 16:20:30
+ * @LastEditTime: 2022-12-30 09:58:40
  * @FilePath: \project\pages\login.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -23,19 +23,18 @@
             <p>{{ text.Description }}</p>
           </div>
           <div style="position: absolute; right: 10px; top: 43px">
-            <el-tag
-              type="warning"
-              effect="dark"
-              v-if="text.IsFollow === false"
-              @click="follow(text.Id)"
-              >关注</el-tag
-            >
-            <el-tag
-              type="warning"
-              v-if="text.IsFollow === true"
+            
+            <div  v-if="text.IsFollow === false"
+              @click="follow(text.Id)" class="btn">
+                  关注
+                </div>
+                <div
+                v-if="text.IsFollow === true"
               @click="qxFollow(text.Id)"
-              >取消关注</el-tag
-            >
+                  class="qxBtn"
+                >
+                  取消关注
+                </div>
           </div>
         </div>
         <div class="com_bot">
@@ -304,8 +303,36 @@ export default {
   width: 120px;
   height: 120px;
 }
-.el-tag{
-  border-radius: 20px;
+
+.btn{
+  width: 40px;
+  height: 17px;
+  padding: 5px;
+  border-radius: 50px;
+  font-family: "PingFang HK";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 17px;
+  text-align: center;
+  margin: auto;
+  background: #fc8f5e;
+  color: #ffffff;
+}
+.qxBtn {
+  width: 60px;
+  height: 17px;
+  padding: 5px;
+  border-radius: 50px;
+  font-family: "PingFang HK";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 17px;
+  text-align: center;
+  margin: auto;
+  color: #fc8f5e;
+  border: 1px solid #fc8f5e;
 }
 </style>
   
