@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-10-24 15:15:45
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-12-30 18:35:16
+ * @LastEditTime: 2023-02-03 13:24:33
  * @FilePath: \project\pages\login.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -297,7 +297,7 @@ export default {
           console.log(res);
           that.follList = res.data.Data;
         } else {
-          // this.$message.error(res.data.Content);
+          this.$message.error(res.data.Data);
         }
       });
     },
@@ -366,7 +366,7 @@ export default {
         if (res.data.Code === 200) {
           that.dialogFormVisible = false;
           this.$message.success("恭喜你，群岛创建成功");
-          that.qdLists("", "", 1);
+          that.qdLists();
           that.followList();
         } else {
           this.$message.error("错了哦，群岛创建失败");
@@ -427,8 +427,8 @@ export default {
 }
 
 .image {
-  width: 100px;
-  height: 100px;
+  width: 50%;
+  height: 45%;
   display: block;
   margin: auto;
   padding: 10px;

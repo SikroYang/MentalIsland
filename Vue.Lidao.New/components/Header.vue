@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-11-04 14:47:39
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-12-30 10:07:27
+ * @LastEditTime: 2023-02-02 11:09:14
  * @FilePath: \qundao\qundao\components\Header.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -157,6 +157,9 @@ export default {
 };
 </script>
 <style>
+body{
+  font-size: 16px !important;
+}
 .el-button--warning {
   background: #f7bc99;
   border-color: #f7bc99;
