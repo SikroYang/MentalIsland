@@ -41,6 +41,7 @@ export default {
     },
     // { src: '@/plugins/route.js', ssr: false },
     { src: "@/plugins/vue-quill-editor.js", ssr: false },
+    { src: '@plugins/lib-flexible.js', ssr: false },
 
   ],
 
@@ -91,5 +92,10 @@ export default {
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
     transpile: [/^element-ui/],
+    postcss: [
+      require('postcss-px2rem')({
+        remUnit: 192  // 之所以写192是因为设了pc最大宽度1920px
+      })
+    ],
   }
 }
