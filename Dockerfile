@@ -1,6 +1,6 @@
-FROM registry.cn-hangzhou.aliyuncs.com/newbe36524/aspnet:6.0 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 
-FROM registry.cn-hangzhou.aliyuncs.com/newbe36524/sdk:6.0 AS publish
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS publish
 WORKDIR /MentalIsland
 
 COPY ["MentalIsland.AllDependency/","MentalIsland.AllDependency/"]
