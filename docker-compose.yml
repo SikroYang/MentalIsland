@@ -65,7 +65,9 @@ services:
 
   # 心理岛网站后端+后台
   MentalIsland:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
     image: yxx/mentalisland:latest
     container_name: MentalIsland
     restart: always
