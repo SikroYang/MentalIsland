@@ -34,7 +34,7 @@ export default {
   data() {
     return {
       isClient: false,
-      postingTitle:"",
+      postingTitle: "",
       content: "",
       editorOption: {
         placeholder: "请在这里输入",
@@ -56,6 +56,15 @@ export default {
             ["image"], //上传图片、上传视频
           ],
         },
+        // ImageExtend: {
+        //   loading: true,
+        //   name: "img",
+        //   action: "/Api/File/UploadImage", //这里写入请求后台地址 例如："http://xxx.xxx.xxx.xxx:xxx/api/file/upload/indexFile",
+        //   response: (res) => {
+        //     console.log(res);
+        //     return res; //这里写入请求返回的数据，也就是一个图片字符串
+        //   },
+        // },
       },
     };
   },
@@ -67,9 +76,45 @@ export default {
   },
   computed: {
     // 当前富文本实例
-    editor () {
-      return this.$refs.myQuillEditor.quill
+    editor() {
+      return this.$refs.myQuillEditor.quill;
+    },
+  },
+  beforeMount () {
+    const Quill = require('quill');
+    const {ImageExtend, QuillWatch} = require('quill-image-extend-module');
+    this.editorOption = {
+        bounds: 'app',
+        placeholder: '请在这里输入',
+        modules: {
+          ImageExtend: {
+            loading: true,
+            name: 'file',              // 后端接收的文件名称
+            action: '/Api/File/UploadImage', // 后端接收文件api
+            response: (res) => {
+              return res.Data // 此处返回的值一定要直接是后端回馈的图片在服务器的存储路径如：/images/xxx.jpg
+            }
+          },
+          toolbar: {
+            handlers: {
+              'image': function () {
+                QuillWatch.emit(this.quill.id)
+              }
+            },
+            container: [
+              ['bold', 'italic', 'underline', 'strike'],
+              [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+              [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+              [{ 'color': [] }, { 'background': [] }],
+              [{ 'align': [] }],
+              ['blockquote', 'code-block'],
+              [{ 'script': 'sub' }, { 'script': 'super' }],
+              ['link', 'image']
+            ]
+          }
+        }
     }
+    Quill.register('modules/ImageExtend', ImageExtend); 
   },
   mounted() {
     console.log("app init, my quill insrance object is:", this.myQuillEditor);
@@ -94,20 +139,20 @@ export default {
         this.content += "<p><br /></p>";
       }
     },
-    onEditorChange ({ editor, html, text }) {
-      this.$emit('change', this.escapeStringHTML(this.content))
-      console.log(editor, html, text)
-    }, 
-    escapeStringHTML (str) {
-      str = str.replace(/&lt;/g, '<')
-      str = str.replace(/&gt;/g, '>')
-      return str
+    onEditorChange({ editor, html, text }) {
+      this.$emit("change", this.escapeStringHTML(this.content));
+      console.log(editor, html, text);
+    },
+    escapeStringHTML(str) {
+      str = str.replace(/&lt;/g, "<");
+      str = str.replace(/&gt;/g, ">");
+      return str;
     },
     // onEditorChange({ editor, html, text }) {},
     // tj() {
     //   this.$emit("passfunction",this.content)
     //   console.log(this.postingTitle,this.content);
-      
+
     // },
   },
 };
@@ -150,12 +195,12 @@ export default {
   text-align: center;
   border: none;
 }
-.ace{
+.ace {
   width: 99.5%;
-    height: 31px;
-    margin-bottom: 10px;
+  height: 31px;
+  margin-bottom: 10px;
 }
-.but{
+.but {
   margin-top: 10px;
 }
 </style>

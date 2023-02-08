@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-10-24 15:15:45
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2023-02-03 16:08:32
+ * @LastEditTime: 2023-02-06 09:54:54
  * @FilePath: \project\pages\login.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -40,7 +40,7 @@
         <div class="com_bot">
           <h3>全部帖子</h3>
           <ul v-for="(item, i) in tableData" :key="i">
-            <li @click="tzCard(item.Id)">
+            <li @click="tzCard(item.Id)" style="cursor: pointer;">
               <div class="card">
                 <div>
                   <img src="../assets/new/tx.png" alt="" />
@@ -62,7 +62,7 @@
                   {{ item.Title }}
                 </p>
                 <!-- {{ item.Content | filterAmount(80) }} -->
-                <div style="white-space:pre-wrap;" v-html="$options.filters.filterAmount(item.Content,80)"></div>
+                <div class="pri_img" style="white-space:pre-wrap;" v-html="$options.filters.filterAmount(item.Content,80)"></div>
               </div>
             </li>
           </ul>
@@ -208,6 +208,10 @@ export default {
 }
 .flex {
   display: flex;
+}
+.pri_img >>> img{
+  width: 150px;
+  height: 150px;
 }
 .mar_10 {
   margin-left: 10px;

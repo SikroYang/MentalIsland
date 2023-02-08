@@ -2,14 +2,14 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-11-04 14:47:39
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2023-02-02 11:09:14
+ * @LastEditTime: 2023-02-04 09:10:37
  * @FilePath: \qundao\qundao\components\Header.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
   <div class="header">
     <div>
-      <img style="height: 60px" src="../assets/new/LOGO.png" alt="" srcset="" />
+      <img style="height: 60px;cursor: pointer;" @click="logo" src="../assets/new/LOGO.png" alt="" srcset="" />
     </div>
     <el-menu
       background-color="#fff"
@@ -105,6 +105,9 @@ export default {
     }
   },
   methods: {
+    logo() {
+      this.$router.push("/home");
+    },
     login() {
       this.$router.push("/login");
     },
