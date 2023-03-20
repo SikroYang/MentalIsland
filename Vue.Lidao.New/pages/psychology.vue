@@ -1,8 +1,8 @@
 <!--
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-10-28 09:24:55
- * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-12-30 10:03:24
+ * @LastEditors: error: error: git config user.name & please set dead value or install git && error: git config user.email & please set dead value or install git & please set dead value or install git
+ * @LastEditTime: 2023-03-20 10:23:15
  * @FilePath: \project\pages\psychology.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -40,12 +40,12 @@
       </div>
       <div class="j-c" v-for="(item, i) in psyList2" :key="i">
         <div class="juc textl">
-          <div class="day_c">
+          <!-- <div class="day_c">
             <div>{{ getPartTime(item.CreatedTime).toString() | filterTime() }}</div>
             <div>
               {{ getPartTime(item.CreatedTime).toString() | filterMonth() }}
             </div>
-          </div>
+          </div> -->
           <h3>今日话题：{{ item.Title }}</h3>
           <p class="col">
             有人安于某种生活，有人不能。因此能安于自已目前处境的不妨就如此生活下去，不能的只好努力另找出路。你无法断言哪里才是成功的，也无法肯定当自已到达了某一点之后，会不会快乐。有些人永远不会感到满足，他的快乐只建立在不断地追求与争取的过程之中，因此，他的目标不断地向远处推移。这种人的快乐可能少，但成就可能大。
@@ -211,7 +211,7 @@ export default {
 .bac {
   background: linear-gradient(360deg, #ffd0bc 0%, rgba(255, 255, 255, 0) 53.89%),
     #ffffff;
-  height: 98vh;
+  height: 100vh;
   overflow: hidden;
 }
 h1,
