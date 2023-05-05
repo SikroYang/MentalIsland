@@ -49,7 +49,7 @@ public class IslandController : WebApiBaseController<IslandController>
         if (!string.IsNullOrWhiteSpace(searchInfo.Name))
             exp.And(i => i.Name.Contains(searchInfo.Name));
         if (!string.IsNullOrWhiteSpace(searchInfo.Description))
-            exp.And(i => i.Description.Contains(searchInfo.Description));
+            exp.And(i => i.Description != null && i.Description.Contains(searchInfo.Description));
         var result = await islandRepository.AsQueryable().Where(exp.ToExpression()).Includes(wa => wa.Users).ToListAsync();
         var userId = App.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         var data = result.Select(wa =>

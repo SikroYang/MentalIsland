@@ -20,7 +20,7 @@ public class ArticleOutput
     /// <summary>
     /// 图片地址
     /// </summary>
-    public string ImageUrl { get; set; } = default!;
+    public string? ImageUrl { get; set; }
 
     /// <summary>
     /// 文章类型外键

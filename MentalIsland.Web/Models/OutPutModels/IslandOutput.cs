@@ -28,7 +28,7 @@ public class IslandOutput
     /// <summary>
     /// 岛群图标
     /// </summary>
-    public string IslandIcon { get; set; }
+    public string IslandIcon { get; set; } = default!;
     /// <summary>
     /// 岛群QQ群号
     /// </summary>

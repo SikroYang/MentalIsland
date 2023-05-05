@@ -38,7 +38,7 @@ public class UserOutput
     /// <summary>
     /// 用户头像
     /// </summary>
-    public string HeadImage { get; set; }
+    public string HeadImage { get; set; } = default!;
     /// <summary>
     /// 是否锁定
     /// </summary>
@@ -52,5 +52,5 @@ public class UserOutput
     /// <summary>
     /// 用户个性化备注
     /// </summary>
-    public List<UserComment> UserComment { get; set; }
+    public List<UserComment> UserComment { get; set; } = default!;
 }

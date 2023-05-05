@@ -39,7 +39,7 @@ public class PostOutput
     /// <summary>
     /// 创建者名称
     /// </summary>
-    public virtual string CreatedUserName { get; set; }
+    public virtual string CreatedUserName { get; set; } = default!;
 
     /// <summary>
     /// 创建时间
@@ -88,7 +88,7 @@ public class PostReplyOutput
     /// <summary>
     /// 创建者名称
     /// </summary>
-    public virtual string CreatedUserName { get; set; }
+    public virtual string CreatedUserName { get; set; } = default!;
 
     /// <summary>
     /// 创建时间
@@ -98,7 +98,7 @@ public class PostReplyOutput
     /// <summary>
     /// 评论列表
     /// </summary>
-    public PagedList<ReplyOutput> Replies { get; set; }
+    public PagedList<ReplyOutput> Replies { get; set; } = default!;
 }
 
 
@@ -130,7 +130,7 @@ public class ReplyOutput
     /// <summary>
     /// 创建者名称
     /// </summary>
-    public virtual string CreatedUserName { get; set; }
+    public virtual string CreatedUserName { get; set; } = default!;
 
     /// <summary>
     /// 创建时间

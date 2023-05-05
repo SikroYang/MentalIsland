@@ -165,7 +165,7 @@ public class ArticleController : WebApiBaseController<ArticleController>
     }
 
     /// <summary>
-    /// 删除文章
+    /// 删除文章类型
     /// </summary>
     /// <returns></returns>
     [HttpPost]

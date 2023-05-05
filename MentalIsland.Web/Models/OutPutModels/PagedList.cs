@@ -24,5 +24,5 @@ public class PagedList<T>
     /// <summary>
     /// 数据列表
     /// </summary>
-    public List<T> List { get; set; }
+    public List<T> List { get; set; } = default!;
 }
