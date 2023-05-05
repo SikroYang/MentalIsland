@@ -91,6 +91,14 @@
             "options": {
                 "cwd": "Vue.Lidao"
             }
+        },
+        {
+            "label": "lidao_new run",
+            "type": "shell",
+            "command": "yarn && yarn dev",
+            "options": {
+                "cwd": "Vue.Lidao.New"
+            }
         }
     ]
 }
