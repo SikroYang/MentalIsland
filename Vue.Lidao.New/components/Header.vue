@@ -11,16 +11,8 @@
     <div>
       <img style="height: 60px;cursor: pointer;" @click="logo" src="../assets/new/LOGO.png" alt="" srcset="" />
     </div>
-    <el-menu
-      background-color="#fff"
-      text-color="#000000"
-      active-text-color="#000000"
-      :default-active="this.$route.path"
-      class="el-menu-demo"
-      mode="horizontal"
-      router
-      style="margin-left: auto"
-    >
+    <el-menu background-color="#fff" text-color="#000000" active-text-color="#000000" :default-active="this.$route.path"
+      class="el-menu-demo" mode="horizontal" router style="margin-left: auto">
       <el-menu-item v-for="(item, i) in navList" :key="i" :index="item.name">
         <template slot="title">
           <span> {{ item.navItem }}</span>
@@ -35,18 +27,8 @@
     </div>
     <div class="flex" v-if="show">
       <div class="block mar-r">
-        <img
-          v-if="imgs"
-          :src="imgs"
-          alt=""
-          style="width: 40px; height: 40px; border-radius: 50%"
-        />
-        <img
-          v-else
-          src="../assets/new/tx.png"
-          alt=""
-          style="width: 40px; height: 40px; border-radius: 50%"
-        />
+        <img v-if="imgs" :src="imgs" alt="" style="width: 40px; height: 40px; border-radius: 50%" />
+        <img v-else src="../assets/new/tx.png" alt="" style="width: 40px; height: 40px; border-radius: 50%" />
       </div>
       <el-dropdown trigger="click">
         <span class="el-dropdown-link">
@@ -56,9 +38,7 @@
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item @click.native="user">用户设置</el-dropdown-item>
           <el-dropdown-item @click.native="user_b">群岛设置</el-dropdown-item>
-          <el-dropdown-item @click.native="archipelago"
-            >退出登录</el-dropdown-item
-          >
+          <el-dropdown-item @click.native="archipelago">退出登录</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </div>
@@ -74,9 +54,9 @@ export default {
         { name: "/community", navItem: "群岛社区" },
         { name: "/psychology", navItem: "心理科普" },
         { name: "", navItem: "活动展览" },
-        { name: "", navItem: "我们的团队" },
+        // { name: "", navItem: "我们的团队" },
         // { name: "/exhibition", navItem: "活动展览" },
-        // { name: "/team", navItem: "我们的团队" },
+        { name: "/team", navItem: "我们的团队" },
       ],
       isShow: true,
       show: false,
@@ -160,9 +140,10 @@ export default {
 };
 </script>
 <style>
-body{
+body {
   font-size: 16px !important;
 }
+
 .el-button--warning {
   background: #f7bc99;
   border-color: #f7bc99;
@@ -174,7 +155,7 @@ body{
   color: #fff;
 }
 
-.el-menu--horizontal > .el-menu-item.is-active {
+.el-menu--horizontal>.el-menu-item.is-active {
   border-bottom: 2px solid black;
 }
 
@@ -203,7 +184,7 @@ body{
   vertical-align: top;
 }
 
-.el-dropdown + .el-dropdown {
+.el-dropdown+.el-dropdown {
   margin-left: 15px;
 }
 
