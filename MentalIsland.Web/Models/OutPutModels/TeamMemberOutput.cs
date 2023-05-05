@@ -10,6 +10,10 @@ public class TeamMemberOutput
     /// </summary>
     public int Id { get; set; }
     /// <summary>
+    /// 创建时间
+    /// </summary>
+    public virtual DateTime CreatedTime { get; set; }
+    /// <summary>
     /// 姓名
     /// </summary>
     public string Name { get; set; } = default!;

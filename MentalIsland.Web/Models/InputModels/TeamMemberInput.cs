@@ -20,7 +20,7 @@ public class TeamMemberInput
     /// 描述
     /// </summary>
     [Required(ErrorMessage = "描述不能为空")]
-    public string Country { get; set; } = default!;
+    public string Description { get; set; } = default!;
     /// <summary>
     /// 照片地址
     /// </summary>

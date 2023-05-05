@@ -18,6 +18,7 @@ import article from '@/views/system/article';
 import post from '@/views/system/post';
 import reply from '@/views/system/reply';
 import blackword from '@/views/system/blackword';
+import teamMember from '@/views/system/teamMember';
 
 // 启用路由
 Vue.use(Router);
@@ -96,6 +97,15 @@ export default new Router({
       component: blackword,
       meta: {
         title: "屏蔽关键词管理",
+        requireAuth: true
+      }
+    },
+    {
+      path: '/system/teamMember',
+      name: '团队成员管理',
+      component: teamMember,
+      meta: {
+        title: "团队成员管理",
         requireAuth: true
       }
     }]

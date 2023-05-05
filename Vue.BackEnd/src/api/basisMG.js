@@ -56,3 +56,15 @@ export const BlackWordDelete = (data) => { return post("/Api/User/BlackWordDelet
 
 // 关键词管理-保存关键词
 export const UploadImage = (data) => { return post("/Api/File/UploadImage", data) };
+
+/**
+ * 团队成员管理
+ **/
+// 团队成员管理-获取团队成员列表
+export const TeamMembersList = (data) => { return post("/Api/TeamMember/List", data) };
+// 团队成员管理-保存团队成员
+export const TeamMemberSave = (data) => { return post("/Api/TeamMember/AddOrUpdate", data) };
+// 团队成员管理-根据Id获取团队成员
+export const TeamMemberById = (data) => { return post("/Api/TeamMember/TeamMemberById", data) };
+// 团队成员管理-删除团队成员
+export const TeamMemberDelete = (data) => { return post("/Api/TeamMember/DeleteTeamMember", data) };

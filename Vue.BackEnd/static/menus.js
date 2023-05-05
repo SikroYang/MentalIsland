@@ -36,6 +36,12 @@ export const menu = [
         hasThird: 'N',
         url: 'system/blackword',
         menus: null
+      }, {
+        menuid: 106,
+        menuname: '团队成员管理',
+        hasThird: 'N',
+        url: 'system/teamMember',
+        menus: null
       },
     ]
   },
