@@ -375,6 +375,7 @@ export default {
   width: 200px;
   height: 260px;
   display: block;
+  border: 1px solid #dcdfe6;
 }
 </style>
 
