@@ -114,8 +114,8 @@ export default {
         Name: [
           { required: true, message: '请输入姓名', trigger: 'blur' }
         ],
-        Description: [
-          { required: true, message: '请输入简介', trigger: 'blur' }
+        PhotoUrl: [
+          { required: true, message: '请上传人员头像', trigger: 'blur' }
         ],
       },
       // 请求数据参数
