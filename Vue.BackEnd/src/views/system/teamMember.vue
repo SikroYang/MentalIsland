@@ -362,11 +362,11 @@ export default {
 }
 
 .avatar-uploader-icon {
-  font-size: 28px;
+  font-size: 50px;
   color: #8c939d;
   width: 200px;
   height: 260px;
-  line-height: 178px;
+  line-height: 260px;
   text-align: center;
   border: 1px solid #dcdfe6;
 }
