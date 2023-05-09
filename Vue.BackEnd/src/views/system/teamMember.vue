@@ -368,6 +368,7 @@ export default {
   height: 260px;
   line-height: 178px;
   text-align: center;
+  border: 1px solid #dcdfe6;
 }
 
 .avatar {
