@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-10-26 10:01:20
  * @LastEditors: error: error: git config user.name & please set dead value or install git && error: git config user.email & please set dead value or install git & please set dead value or install git
- * @LastEditTime: 2023-05-09 10:10:58
+ * @LastEditTime: 2023-05-11 10:36:41
  * @FilePath: \project\pages\team.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -10,15 +10,17 @@
     <div class="bac">
       <Top />
       <div class="content">
-        <p class="about" style="font-weight: bold;">关于我们</p>
+        <div style="padding-left: 40px;">
+          <p class="about" style="font-weight: bold;">关于我们</p>
         <p class="about" style="color: rgba(0, 0, 0, 0.5);">ABOUT US</p>
+        </div>
         <div class="introductio">
             <ul>
                 <li class="introduction_li" v-for="(item,i) in list" :key="i">
                     <img class="pic" :src="'https://www.lidaoisland.com/'+item.PhotoUrl" alt="" srcset="">
                     <p style="color: black;font-size: 24px;">{{ item.Name }}</p>
                     <!-- <p style="font-size: 16px;">Knowledge is power</p> -->
-                    <div style="white-space: pre;">{{ item.Description }}</div>
+                    <div style="white-space: pre;font-size: 12px;">{{ item.Description }}</div>
                     <!-- <div>
                         <img class="in_img" src="~assets/instagram.png" alt="" srcset="">
                         <img class="in_img" src="~assets/twitter.png" alt="" srcset="">
@@ -80,19 +82,20 @@
 
 .introductio{
     padding-top: 40px;
-    width: 95%;
+    width: 100%;
     color: #9f7861;
 }
 .introductio ul{
   width: 100%;
+  display: flex;
+  flex-flow: wrap;
 }
 .introductio ul li{
     list-style: none;
-    width: 20%;
+    width: 200px;
     height: 450px;
+    margin-right: 66px;
     text-align: left;
-    margin-right: 5%;
-    float: left;
 }
 .pic{
 width: 200px;
