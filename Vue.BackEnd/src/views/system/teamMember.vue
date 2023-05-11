@@ -38,10 +38,11 @@
           </el-popover>
         </template>
       </el-table-column>
-      </el-table-column>
       <el-table-column align="center" label="查看照片" min-width="120">
         <template slot-scope="scope">
-          <el-link :href="`${scope.row.PhotoUrl}`" target="_blank">点击查看</el-link>
+          <el-link :href="`${scope.row.PhotoUrl}`" target="_blank">
+            <el-image style="width: 100px; height: 130px" :src="`${scope.row.PhotoUrl}`" :fit="none"></el-image>
+          </el-link>
         </template>
       </el-table-column>
       <el-table-column align="center" prop="CreatedTime" label="创建时间" min-width="120">
