@@ -2,112 +2,119 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-10-26 10:01:20
  * @LastEditors: error: error: git config user.name & please set dead value or install git && error: git config user.email & please set dead value or install git & please set dead value or install git
- * @LastEditTime: 2023-05-05 15:31:14
+ * @LastEditTime: 2023-05-09 10:10:58
  * @FilePath: \project\pages\team.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
-  <div class="bac">
-    <Top />
-    <div class="content">
-      <p class="about" style="font-weight: bold;">关于我们</p>
-      <p class="about" style="color: rgba(0, 0, 0, 0.5);">ABOUT US</p>
-      <div class="introductio">
-        <ul>
-          <li class="introduction_li" v-for="(item, i) in list" :key="i">
-            <img class="pic" :src="'https://www.lidaoisland.com/' + item.PhotoUrl" alt="" srcset="">
-            <p style="color: black;font-size: 24px;">{{ item.Name }}</p>
-            <!-- <p style="font-size: 16px;">Knowledge is power</p> -->
-            <p style="white-space: pre-line">{{ item.Description }}</p>
-            <!-- <div>
+    <div class="bac">
+      <Top />
+      <div class="content">
+        <p class="about" style="font-weight: bold;">关于我们</p>
+        <p class="about" style="color: rgba(0, 0, 0, 0.5);">ABOUT US</p>
+        <div class="introductio">
+            <ul>
+                <li class="introduction_li" v-for="(item,i) in list" :key="i">
+                    <img class="pic" :src="'https://www.lidaoisland.com/'+item.PhotoUrl" alt="" srcset="">
+                    <p style="color: black;font-size: 24px;">{{ item.Name }}</p>
+                    <!-- <p style="font-size: 16px;">Knowledge is power</p> -->
+                    <div style="white-space: pre;">{{ item.Description }}</div>
+                    <!-- <div>
                         <img class="in_img" src="~assets/instagram.png" alt="" srcset="">
                         <img class="in_img" src="~assets/twitter.png" alt="" srcset="">
                         <img class="in_img" src="~assets/facebook.png" alt="" srcset="">
                     </div> -->
-          </li>
-
-        </ul>
+                </li>
+               
+            </ul>
+        </div>
+        
       </div>
+      <div class="map"></div>
     </div>
-  </div>
-</template>
-
-<script>
-import Top from "../components/Header.vue";
-export default {
-  name: "TeamPage",
-  components: { Top },
-  data: function () {
+  </template>
+  
+  <script>
+  import Top from "../components/Header.vue";
+  export default {
+    name: "TeamPage",
+    components: { Top },
+    data: function () {
     return {
       list: [],
     };
   },
-  methods: {},
-  mounted() {
-    this.$axios.post("/Api/TeamMember/List", {
-      headers: {
-        'Content-Type': "application/json;charset=UTF-8",
-      },
-    }).then((res) => {
-      console.log(res.data.Data.List);
-      this.list = res.data.Data.List
-    });
-  }
-
-};
-</script>
-<style scoped>
-.bac {
+    methods: {},
+    mounted(){
+      this.$axios.post("/Api/TeamMember/List", {
+        headers: {
+          'Content-Type': "application/json;charset=UTF-8",
+        },
+      }).then((res) => {
+        console.log(res.data.Data.List);
+        this.list=res.data.Data.List
+      });
+    }
+    
+  };
+  </script>
+  <style scoped>
+  .bac {
   background: radial-gradient(66.85% 40.65% at 15.86% 11.82%, #FFE0B0 0%, #CEFFFB 91.92%), #FFFFFF;
-  height: 100vh;
+  height: 2477px;
+  position: relative;
 }
+  h1,
+  h3 {
+    color: #9f7861;
+  }
+  .flex {
+    display: flex;
+  }
+ .content{
+    width: 70%;
+    margin: 0 auto;
+    padding-top: 40px;
+   
+ }
 
-h1,
-h3 {
-  color: #9f7861;
+.introductio{
+    padding-top: 40px;
+    width: 95%;
+    color: #9f7861;
 }
-
-.flex {
-  display: flex;
+.introductio ul{
+  width: 100%;
 }
-
-.content {
-  width: 70%;
-  margin: 0 auto;
-  padding-top: 40px;
+.introductio ul li{
+    list-style: none;
+    width: 20%;
+    height: 450px;
+    text-align: left;
+    margin-right: 5%;
+    float: left;
 }
-
-.introductio {
-  padding-top: 80px;
-  width: 80%;
-  color: #9f7861;
+.pic{
+width: 200px;
+height: 260px;
 }
-
-.introductio ul {
-  display: flex;
-  justify-content: space-between;
+.in_img{
+    width: 30px;
+    height: 30px;
+    margin-right: 5px;
 }
-
-.introductio ul li {
-  list-style: none;
-  width: 16%;
-  text-align: left;
-  margin-right: 15%;
-}
-
-.pic {
-  width: 160px;
-  height: 200px;
-}
-
-.in_img {
-  width: 30px;
-  height: 30px;
-  margin-right: 5px;
-}
-
-.about {
+.about{
   font-weight: 400;
-  font-size: 30px;
-  line-height: 15px;
-}</style>
+font-size: 30px;
+line-height: 15px;
+}
+.map{
+  background: url(../assets/map/mapbase.png) no-repeat;
+  background-size: 100%;
+  width: 100%;
+  height: 1100px;
+  position: absolute;
+  bottom: 0;
+}
+  </style>
+  
