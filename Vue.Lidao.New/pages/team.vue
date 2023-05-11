@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-10-26 10:01:20
  * @LastEditors: error: error: git config user.name & please set dead value or install git && error: git config user.email & please set dead value or install git & please set dead value or install git
- * @LastEditTime: 2023-05-11 11:02:20
+ * @LastEditTime: 2023-05-11 14:20:49
  * @FilePath: \project\pages\team.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -32,7 +32,13 @@
         </div>
         
       </div>
-      <div class="map"></div>
+      <div class="map">
+        <div class="map_sz">
+          <p>中国·苏州</p>
+          <img src="../assets/map/Paradam studios 1.png" alt="">
+        </div>
+        
+      </div>
     </div>
   </template>
   
@@ -118,6 +124,22 @@ line-height: 0px;
   height: 1100px;
   position: absolute;
   bottom: 0;
+}
+.map_sz{
+  position: absolute;
+  top: 206px;
+    right: 476px;
+    text-align: center;
+}
+.map_sz img{
+width: 66px;
+height: 64px;
+}
+.map_sz p{
+  background-color: black;
+  color: white;
+  padding: 10px 15px;
+  border-radius: 5px;
 }
   </style>
   
