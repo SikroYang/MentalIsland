@@ -85,7 +85,7 @@ export default {
     host: '0.0.0.0' // default: localhost,
   },
   router: {
-    base: '/newland/'
+    base: '/'
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
