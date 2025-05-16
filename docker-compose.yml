@@ -17,51 +17,62 @@ services:
     ports:
       - 3089:9000
     networks:
-      nginx:
-        aliases:
-          - portainer
+      - nginx
 
   # nginx 扩展分支
   openresty:
     image: openresty/openresty:buster
     container_name: openresty
+    labels:
+      - sh.acme.autoload.domain=lidaoisland.com
     restart: always
     user: root
     environment:
       - TZ="Asia/Shanghai"
     volumes:
       - ./nginx/config/nginx.conf:/usr/local/openresty/nginx/conf/nginx.conf:ro
-      - ./nginx/cert:/usr/local/openresty/nginx/conf/cert:ro
+      - ./nginx/cert:/etc/nginx/cert
       - ./nginx/log:/usr/local/openresty/nginx/logs
       - /etc/localtime:/etc/localtime
     ports:
       - 80:80
       - 443:443
     networks:
-      nginx:
-        aliases:
-          - nginx
+      - nginx
 
-  # mssql:
-  #   image: mcr.microsoft.com/mssql/server:2019-latest
-  #   container_name: mssql
-  #   restart: unless-stopped
-  #   user: root
-  #   environment:
-  #     ACCEPT_EULA: Y
-  #     MSSQL_SA_PASSWORD: MentalIsland.2022
-  #     # MSSQL_SA_PASSWORD: /run/secrets/mysql_root_password #Sikro.1993
-  #     MSSQL_PID: Express
-  #   volumes:
-  #     - ./mssql/data:/var/opt/mssql/data
-  #     - ./mssql/log:/var/opt/mssql/log
-  #     - ./mssql/backup:/var/opt/backup
-  #   ports:
-  #     - 1433:1433
-  #   networks:
-  #     nginx:
-  #       aliases:
-  #         - mssql
+  # 添加acme.sh服务
+  acme:
+    image: neilpang/acme.sh:latest
+    container_name: acme
+    restart: always
+    volumes:
+      - ./acmeout:/acme.sh
+      - /etc/localtime:/etc/localtime
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      # 设置发布证书地址
+      - DEPLOY_DOCKER_CONTAINER_LABEL=sh.acme.autoload.domain=lidaoisland.com
+      - DEPLOY_DOCKER_CONTAINER_RELOAD_CMD="openresty -s reload"
+      # 设置通知(钉钉)
+      - DINGTALK_WEBHOOK=https://oapi.dingtalk.com/robot/send?access_token=5e65b00be18b9d433b63a3ab30e3628a80e5ce7d3e61d1b7d663bb8629233583
+      - DINGTALK_KEYWORD=证书提醒
+    command: 
+      - daemon
+    depends_on:
+      - openresty
+    networks:
+      - nginx
+    # 首次手动执行
+    # 设置默认证书服务为letsencrypt
+    # dc exec -it acme acme.sh --set-default-ca --server letsencrypt
+    # 设置钉钉通知
+    # dc exec -it acme acme.sh --set-notify --notify-hook dingtalk
+    # 创建证书
+    # dc exec -it acme acme.sh --issue --dns dns_acmedns -d lidaoisland.com -d '*.lidaoisland.com'
+    # dc exec -it acme acme.sh --issue --dns dns_acmedns -d zincsspace.com -d '*.zincsspace.com'
+    # 部署证书
+    # dc exec -it acme acme.sh --deploy -d lidaoisland.com --deploy-hook docker
+    # dc exec -it acme acme.sh --deploy -d zincsspace.com --deploy-hook docker
 
   # 心理岛网站后端+后台
   MentalIsland:
@@ -77,27 +88,8 @@ services:
       - ./MentalIsland.Web/wwwroot/images:/MentalIsland/wwwroot/images
       - ./MentalIsland.Web/wwwroot/Upload:/MentalIsland/wwwroot/Upload
       - ./database/MentalIsland.db:/MentalIsland/MentalIsland.db:rw
-    # depends_on:
-    #   - mssql
     networks:
-      nginx:
-        aliases:
-          - MentalIsland
-
-  # 心理岛网站前端
-  # lidao:
-  #   build:
-  #     context: .
-  #     dockerfile: Lidao.Dockerfile
-  #   image: yxx/lidao:latest
-  #   container_name: lidao
-  #   restart: always
-  #   ports:
-  #     - 8000:8000
-  #   networks:
-  #     nginx:
-  #       aliases:
-  #         - lidao
+      - nginx
 
   # 心理岛网站前端(新版)
   lidaonew:
@@ -109,7 +101,7 @@ services:
     restart: always
     ports:
       - 8100:8100
+    depends_on:
+      - MentalIsland
     networks:
-      nginx:
-        aliases:
-          - lidaonew
+      - nginx
